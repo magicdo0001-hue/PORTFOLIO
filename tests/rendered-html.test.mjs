@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(path = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", { headers: { accept: "text/html" } }),
+    new Request(`http://localhost${path}`, {
+      headers: { accept: "text/html" },
+    }),
     {
       ASSETS: {
         fetch: async () => new Response("Not found", { status: 404 }),
@@ -18,25 +20,46 @@ async function render() {
   );
 }
 
-test("renders Wenhou Yan's complete portfolio", async () => {
+test("renders the portfolio index and three distinct case studies", async () => {
   const response = await render();
   const html = await response.text();
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   assert.match(html, /严文厚 Wenhou Yan/);
-  assert.match(html, /把研究与工程/);
+  assert.match(html, /把概念推进到/);
   assert.match(html, /SANGRE/);
   assert.match(html, /BAMBINO V2/);
   assert.match(html, /SIMPLE UNI LIFE/);
   assert.match(html, /wyan39702@gmail\.com/);
 
-  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  const assets = [...page.matchAll(/["'](\/portfolio\/[^"']+)["']/g)].map(
-    ([, path]) => path,
+  const cases = [
+    ["/work/sangre", /慢性病管理需要的/],
+    ["/work/bambino", /不该在锁定手柄时/],
+    ["/work/simple-uni-life", /高风险的小决策/],
+  ];
+
+  for (const [path, expected] of cases) {
+    const caseResponse = await render(path);
+    assert.equal(caseResponse.status, 200);
+    assert.match(await caseResponse.text(), expected);
+  }
+
+  const sources = await Promise.all(
+    [
+      "../app/page.tsx",
+      "../app/work/sangre/page.tsx",
+      "../app/work/bambino/page.tsx",
+      "../app/work/simple-uni-life/page.tsx",
+    ].map((path) => readFile(new URL(path, import.meta.url), "utf8")),
+  );
+  const assets = sources.flatMap((source) =>
+    [...source.matchAll(/["'](\/portfolio\/[^"']+)["']/g)].map(
+      ([, path]) => path,
+    ),
   );
 
-  assert.ok(assets.length >= 10);
+  assert.ok(assets.length >= 20);
   await Promise.all(
     assets.map((path) =>
       access(new URL(`../public${path}`, import.meta.url)),
