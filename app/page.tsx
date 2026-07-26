@@ -7,9 +7,9 @@ const projects = [
     period: "14 周",
     role: "主设计师",
     tools: "SolidWorks · KeyShot · Figma · FDM",
-    hero: "/portfolio/sangre-hero.jpg",
+    hero: "/portfolio/sangre-hero.webp",
     supporting: [
-      "/portfolio/sangre-prototype.jpg",
+      "/portfolio/sangre-prototype.webp",
       "/portfolio/sangre-exploded.jpg",
     ],
     statement: "把复杂血检，收进一台愿意长期使用的家庭设备。",
@@ -32,7 +32,7 @@ const projects = [
     hero: "/portfolio/bambino-hero.jpg",
     supporting: [
       "/portfolio/bambino-prototype.jpg",
-      "/portfolio/bambino-detail.png",
+      "/portfolio/bambino-detail.webp",
     ],
     statement: "让锁定更稳，让每一次操作都得到清晰回应。",
     description:
@@ -51,10 +51,10 @@ const projects = [
     period: "14 周",
     role: "产品 / UI/UX / 前端协作",
     tools: "Figma · Codex · User Research",
-    hero: "/portfolio/unilife-hero.png",
+    hero: "/portfolio/unilife-hero.webp",
     supporting: [
-      "/portfolio/unilife-context.png",
-      "/portfolio/unilife-mobile.png",
+      "/portfolio/unilife-context.webp",
+      "/portfolio/unilife-mobile.webp",
     ],
     statement: "把散落的学生经验，变成可以比较和判断的信息。",
     description:
@@ -121,7 +121,7 @@ export default function Home() {
         </header>
 
         <div className="hero-visual" aria-hidden="true">
-          <img src="/portfolio/sangre-hero.jpg" alt="" />
+          <img src="/portfolio/sangre-hero.webp" alt="" />
           <div className="hero-overlay" />
         </div>
 
