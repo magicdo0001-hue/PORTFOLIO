@@ -1,4 +1,9 @@
-import { FactRail, ProjectEnd, ProjectHero } from "../../project-shell";
+import {
+  AssetPlaceholder,
+  FactRail,
+  ProjectEnd,
+  ProjectHero,
+} from "../../project-shell";
 
 export const metadata = {
   title: "Simple Uni Life — Wenhou Yan",
@@ -63,12 +68,10 @@ export default function SimpleUniLifePage() {
             访谈与情境研究显示，学生必须跨越课程官网、社交平台和零散评价，才能拼出一个勉强可用的判断。
           </p>
         </div>
-        <figure>
-          <img
-            src="/portfolio/unilife-problem.webp"
-            alt="Simple Uni Life 用户问题情境"
-          />
-        </figure>
+        <AssetPlaceholder
+          label="UNI LIFE / RESEARCH CONTEXT"
+          spec="MIN 1800 × 1300 PX · PORTRAIT CROP SAFE"
+        />
       </section>
 
       <section className="unilife-flow chapter">
@@ -93,34 +96,22 @@ export default function SimpleUniLifePage() {
           <strong>DRAG / SCROLL →</strong>
         </div>
         <div className="screen-rail__track">
-          <figure>
-            <img
-              src="/portfolio/unilife-mobile.webp"
-              alt="Simple Uni Life 移动端搜索"
-            />
-            <figcaption>COURSE SEARCH / MOBILE</figcaption>
-          </figure>
-          <figure>
-            <img
-              src="/portfolio/unilife-list.webp"
-              alt="Simple Uni Life 课程列表"
-            />
-            <figcaption>STRUCTURED RESULTS</figcaption>
-          </figure>
-          <figure>
-            <img
-              src="/portfolio/unilife-course.webp"
-              alt="Simple Uni Life 课程详情"
-            />
-            <figcaption>COURSE DECISION PAGE</figcaption>
-          </figure>
-          <figure>
-            <img
-              src="/portfolio/unilife-dashboard.webp"
-              alt="Simple Uni Life 个人课程界面"
-            />
-            <figcaption>USER DASHBOARD</figcaption>
-          </figure>
+          <AssetPlaceholder
+            label="UNI LIFE / COURSE SEARCH · MOBILE"
+            spec="MIN 1000 × 1600 PX · PORTRAIT"
+          />
+          <AssetPlaceholder
+            label="UNI LIFE / STRUCTURED RESULTS"
+            spec="MIN 1800 × 1200 PX · LANDSCAPE"
+          />
+          <AssetPlaceholder
+            label="UNI LIFE / COURSE DECISION PAGE"
+            spec="MIN 1800 × 1200 PX · LANDSCAPE"
+          />
+          <AssetPlaceholder
+            label="UNI LIFE / USER DASHBOARD"
+            spec="MIN 1800 × 1200 PX · LANDSCAPE"
+          />
         </div>
       </section>
 

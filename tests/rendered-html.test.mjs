@@ -34,15 +34,25 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(html, /wyan39702@gmail\.com/);
 
   const cases = [
-    ["/work/sangre", /慢性病管理需要的/],
-    ["/work/bambino", /不该在锁定手柄时/],
-    ["/work/simple-uni-life", /高风险的小决策/],
+    [
+      "/work/sangre",
+      /慢性病管理需要的/,
+      ["FORM STUDIES", "VOLUME ITERATION", "VACUUM FORMING", "INTERACTION TEST"],
+    ],
+    ["/work/bambino", /不该在锁定手柄时/, ["LOCKING MECHANISM"]],
+    [
+      "/work/simple-uni-life",
+      /高风险的小决策/,
+      ["RESEARCH CONTEXT", "COURSE SEARCH", "STRUCTURED RESULTS", "COURSE DECISION PAGE", "USER DASHBOARD"],
+    ],
   ];
 
-  for (const [path, expected] of cases) {
+  for (const [path, expected, pendingAssets] of cases) {
     const caseResponse = await render(path);
     assert.equal(caseResponse.status, 200);
-    assert.match(await caseResponse.text(), expected);
+    const caseHtml = await caseResponse.text();
+    assert.match(caseHtml, expected);
+    for (const label of pendingAssets) assert.match(caseHtml, new RegExp(label));
   }
 
   const sources = await Promise.all(
@@ -59,7 +69,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
     ),
   );
 
-  assert.ok(assets.length >= 20);
+  assert.ok(assets.length > 0);
   await Promise.all(
     assets.map((path) =>
       access(new URL(`../public${path}`, import.meta.url)),

@@ -1,4 +1,9 @@
-import { FactRail, ProjectEnd, ProjectHero } from "../../project-shell";
+import {
+  AssetPlaceholder,
+  FactRail,
+  ProjectEnd,
+  ProjectHero,
+} from "../../project-shell";
 
 export const metadata = {
   title: "SANGRE — Wenhou Yan",
@@ -61,24 +66,18 @@ export default function SangrePage() {
           </p>
         </aside>
         <div className="sangre-discovery__media">
-          <figure>
-            <img src="/portfolio/sangre-sketches.webp" alt="SANGRE 概念草图" />
-            <figcaption>FORM STUDIES / 01</figcaption>
-          </figure>
-          <figure>
-            <img
-              src="/portfolio/sangre-iterations.webp"
-              alt="SANGRE 泡沫原型迭代"
-            />
-            <figcaption>VOLUME ITERATION / 02</figcaption>
-          </figure>
-          <figure>
-            <img
-              src="/portfolio/sangre-forming.webp"
-              alt="SANGRE 真空成型样件"
-            />
-            <figcaption>VACUUM FORMING / 03</figcaption>
-          </figure>
+          <AssetPlaceholder
+            label="SANGRE / FORM STUDIES"
+            spec="MIN 1800 × 1160 PX · LANDSCAPE"
+          />
+          <AssetPlaceholder
+            label="SANGRE / VOLUME ITERATION"
+            spec="MIN 1400 × 900 PX · LANDSCAPE"
+          />
+          <AssetPlaceholder
+            label="SANGRE / VACUUM FORMING"
+            spec="MIN 1400 × 900 PX · LANDSCAPE"
+          />
         </div>
       </section>
 
@@ -96,9 +95,9 @@ export default function SangrePage() {
           <p>
             多轮实体模型用于验证屏幕角度、耗材接近性、试纸操作和收纳逻辑。每一次制造，都直接改变下一轮设计决策。
           </p>
-          <img
-            src="/portfolio/sangre-interaction.webp"
-            alt="SANGRE 原型交互测试"
+          <AssetPlaceholder
+            label="SANGRE / INTERACTION TEST"
+            spec="MIN 1400 × 1040 PX · LANDSCAPE"
           />
         </div>
       </section>

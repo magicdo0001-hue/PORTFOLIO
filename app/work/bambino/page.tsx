@@ -1,4 +1,9 @@
-import { FactRail, ProjectEnd, ProjectHero } from "../../project-shell";
+import {
+  AssetPlaceholder,
+  FactRail,
+  ProjectEnd,
+  ProjectHero,
+} from "../../project-shell";
 
 export const metadata = {
   title: "Bambino V2 — Wenhou Yan",
@@ -71,12 +76,11 @@ export default function BambinoPage() {
       </section>
 
       <section className="bambino-lock">
-        <div className="bambino-lock__visual">
-          <img
-            src="/portfolio/bambino-lock.webp"
-            alt="Bambino 锁定机构细节"
-          />
-        </div>
+        <AssetPlaceholder
+          className="bambino-lock__visual"
+          label="BAMBINO / LOCKING MECHANISM"
+          spec="MIN 2000 × 1400 PX · PORTRAIT CROP SAFE"
+        />
         <div className="bambino-lock__copy">
           <p className="chapter-label">03 / MECHANISM</p>
           <span className="display-number">↓</span>
