@@ -106,7 +106,8 @@ figure, h1, h2, h3, p { margin: 0; }
   box-shadow: 0 0 18px rgba(186, 255, 49, 0.68);
 }
 .hero h1 {
-  max-width: 1330px;
+  max-width: 1120px;
+  margin-left: clamp(120px, 18vw, 320px);
   font-size: clamp(58px, 8.3vw, 150px);
   font-weight: 430;
   letter-spacing: -0.065em;
@@ -395,7 +396,7 @@ footer {
   .nav { height: 78px; }
   .brand small, .nav-contact { display: none; }
   .hero-content { min-height: calc(100svh - 78px); padding-bottom: 30px; }
-  .hero h1 { font-size: clamp(46px, 15vw, 78px); }
+  .hero h1 { margin-left: 0; font-size: clamp(46px, 15vw, 78px); }
   .hero-footer { display: block; }
   .hero-footer a { margin-top: 24px; }
   .intro-grid { margin-top: 50px; }
