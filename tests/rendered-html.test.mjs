@@ -27,7 +27,8 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   assert.match(html, /严文厚 Wenhou Yan/);
-  assert.match(html, /把概念推进到/);
+  assert.match(html, /Research into/);
+  assert.match(html, /把复杂问题推进到/);
   assert.match(html, /SANGRE/);
   assert.match(html, /BAMBINO V2/);
   assert.match(html, /SIMPLE UNI LIFE/);

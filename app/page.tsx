@@ -36,39 +36,77 @@ export default function Home() {
     <main className="home">
       <section className="home-hero" id="top">
         <SiteHeader />
-        <div className="home-hero__image" aria-hidden="true">
-          <img src="/portfolio/sangre-hero.webp" alt="" />
-        </div>
-        <div className="home-hero__grid shell">
-          <p className="micro">
-            PRODUCT DESIGNER
-            <br />
-            NANJING / SYDNEY
-          </p>
-          <h1>
-            WENHOU
-            <br />
-            <span>YAN</span>
-          </h1>
-          <p className="home-hero__statement">
-            我在研究、工程与界面之间工作，
-            <br />
-            把概念推进到<span>真实可用</span>。
-          </p>
-          <a className="scroll-cue" href="#work">
-            SELECTED WORK <span aria-hidden="true">↓</span>
-          </a>
+        <div className="home-hero__layout shell">
+          <div className="home-hero__intro">
+            <div className="home-hero__proof">
+              <span>
+                <img src="/portfolio/sangre-hero.webp" alt="" />
+                <img src="/portfolio/bambino-hero.jpg" alt="" />
+                <img src="/portfolio/unilife-hero.webp" alt="" />
+              </span>
+              <p>3 SELECTED PROJECTS · PRODUCT / UIUX / ENGINEERING</p>
+            </div>
+            <h1>
+              Research into
+              <br />
+              <em>working products.</em>
+            </h1>
+            <p className="home-hero__statement">
+              在工业设计、交互与工程之间，
+              <br />
+              把复杂问题推进到可制造、可测试、可使用。
+            </p>
+            <a className="home-hero__cta" href="#work">
+              <span aria-hidden="true">↘</span>
+              VIEW SELECTED WORK
+            </a>
+          </div>
+
+          <Link
+            className="home-hero__visual"
+            href="/work/bambino"
+            aria-label="查看 Bambino V2 项目"
+          >
+            <img src="/portfolio/bambino-hero.jpg" alt="Bambino V2 咖啡机设计" />
+            <span>
+              FEATURED OBJECT
+              <strong>BAMBINO V2 / 2024</strong>
+            </span>
+          </Link>
+
+          <ol className="home-hero__process" aria-label="设计工作流程">
+            <li>
+              <i aria-hidden="true">◇</i>
+              <span>RESEARCH</span>
+              <small>01</small>
+            </li>
+            <li>
+              <i aria-hidden="true">⌁</i>
+              <span>FRAME</span>
+              <small>02</small>
+            </li>
+            <li>
+              <i aria-hidden="true">◎</i>
+              <span>PROTOTYPE</span>
+              <small>03</small>
+            </li>
+            <li>
+              <i aria-hidden="true">↗</i>
+              <span>DELIVER</span>
+              <small>04</small>
+            </li>
+          </ol>
         </div>
       </section>
 
       <section className="manifesto">
         <div className="shell">
           <p>
-            Industrial design is not the final image. It is the chain of
-            decisions that makes an idea manufacturable, testable and useful.
+            从问题、证据到可验证的原型。我的工作跨越工业设计、交互与工程，
+            关注产品如何真正被理解、制造和使用。
           </p>
           <span className="manifesto__mark" aria-hidden="true">
-            ✣
+            WY
           </span>
         </div>
       </section>
