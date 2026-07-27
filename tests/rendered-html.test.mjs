@@ -38,6 +38,21 @@ test("renders the portfolio index and three distinct case studies", async () => 
       html.indexOf("项目") < html.indexOf("下载简历"),
     "navigation follows 关于 → 项目 → 下载简历",
   );
+  assert.ok(
+    html.indexOf("PROFILE / 2026") < html.indexOf("PROJECT INDEX / 03 CASES"),
+    "profile content appears before the project gateway",
+  );
+
+  const workResponse = await render("/work");
+  assert.equal(workResponse.status, 200);
+  const workHtml = await workResponse.text();
+  assert.match(workHtml, /Projects in/);
+  assert.match(workHtml, /SANGRE/);
+  assert.match(workHtml, /BAMBINO V2/);
+  assert.match(workHtml, /SIMPLE UNI LIFE/);
+  assert.match(workHtml, /\/work\/sangre/);
+  assert.match(workHtml, /\/work\/bambino/);
+  assert.match(workHtml, /\/work\/simple-uni-life/);
 
   const cases = [
     [
@@ -65,6 +80,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
     [
       "../app/page.tsx",
       "../app/home-project-wheel.tsx",
+      "../app/work/infinite-project-menu.tsx",
       "../app/work/sangre/page.tsx",
       "../app/work/bambino/page.tsx",
       "../app/work/simple-uni-life/page.tsx",

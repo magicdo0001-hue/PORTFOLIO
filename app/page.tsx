@@ -2,36 +2,6 @@ import Link from "next/link";
 import HomeProjectWheel from "./home-project-wheel";
 import { ContactFooter, SiteHeader } from "./project-shell";
 
-const projects = [
-  {
-    index: "01",
-    href: "/work/sangre",
-    className: "home-case--sangre",
-    title: "SANGRE",
-    type: "MEDICAL PRODUCT / 14 WEEKS",
-    image: "/portfolio/sangre-hero.webp",
-    copy: "把血脂、血糖与尿酸检测，组织成更低负担的家庭健康流程。",
-  },
-  {
-    index: "02",
-    href: "/work/bambino",
-    className: "home-case--bambino",
-    title: "BAMBINO V2",
-    type: "PRODUCT REDESIGN / 12 WEEKS",
-    image: "/portfolio/bambino-cutout.png",
-    copy: "重新设计机械锁定与动态反馈，让每一次操作都更稳、更清楚。",
-  },
-  {
-    index: "03",
-    href: "/work/simple-uni-life",
-    className: "home-case--unilife",
-    title: "SIMPLE UNI LIFE",
-    type: "DIGITAL PRODUCT / 14 WEEKS",
-    image: "/portfolio/unilife-hero.webp",
-    copy: "把散落的学生经验，转化为可以比较、判断和行动的课程信息。",
-  },
-];
-
 export default function Home() {
   return (
     <main className="home">
@@ -57,10 +27,10 @@ export default function Home() {
               <br />
               把复杂问题推进到可制造、可测试、可使用。
             </p>
-            <a className="home-hero__cta" href="#work">
+            <Link className="home-hero__cta" href="/work">
               <span aria-hidden="true">↘</span>
               VIEW SELECTED WORK
-            </a>
+            </Link>
           </div>
 
           <HomeProjectWheel />
@@ -100,33 +70,6 @@ export default function Home() {
             WY
           </span>
         </div>
-      </section>
-
-      <section className="project-index" id="work" aria-label="精选项目">
-        {projects.map((project) => (
-          <article
-            className={`home-case ${project.className}`}
-            key={project.href}
-          >
-            <Link href={project.href} aria-label={`查看 ${project.title} 案例`}>
-              <div className="home-case__chrome shell">
-                <span>{project.index} / 03</span>
-                <span>{project.type}</span>
-                <span>VIEW CASE ↗</span>
-              </div>
-              <div className="home-case__stage shell">
-                <div className="home-case__copy">
-                  <p>{project.copy}</p>
-                  <h2>{project.title}</h2>
-                </div>
-                <figure>
-                  <img src={project.image} alt={`${project.title} 项目`} />
-                </figure>
-                <strong aria-hidden="true">{project.index}</strong>
-              </div>
-            </Link>
-          </article>
-        ))}
       </section>
 
       <section className="profile-statement" id="profile">
@@ -170,6 +113,19 @@ export default function Home() {
             DOWNLOAD RESUME ↗
           </a>
         </aside>
+      </section>
+
+      <section className="work-gateway" id="work">
+        <Link href="/work" aria-label="进入精选项目总览">
+          <span>PROJECT INDEX / 03 CASES</span>
+          <h2>
+            Explore the work
+            <br />
+            <em>as a connected field.</em>
+          </h2>
+          <p>拖动、滚动或使用方向键浏览项目，点击当前项目进入完整案例。</p>
+          <strong aria-hidden="true">↗</strong>
+        </Link>
       </section>
 
       <ContactFooter />
