@@ -5,7 +5,6 @@ import {
   type CSSProperties,
   type KeyboardEvent,
   type PointerEvent,
-  type WheelEvent,
   useEffect,
   useRef,
   useState,
@@ -43,6 +42,7 @@ export default function HomeProjectWheel() {
   const [paused, setPaused] = useState(false);
   const dragStart = useRef<number | null>(null);
   const wheelLocked = useRef(false);
+  const optionsRef = useRef<HTMLDivElement>(null);
 
   const select = (index: number) => {
     setActive((index + wheelProjects.length) % wheelProjects.length);
@@ -56,15 +56,29 @@ export default function HomeProjectWheel() {
     return () => window.clearInterval(timer);
   }, [paused]);
 
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    if (wheelLocked.current || Math.abs(event.deltaY) < 4) return;
-    wheelLocked.current = true;
-    select(active + (event.deltaY > 0 ? 1 : -1));
-    window.setTimeout(() => {
-      wheelLocked.current = false;
-    }, 420);
-  };
+  useEffect(() => {
+    const options = optionsRef.current;
+    if (!options) return;
+
+    const handleWheel = (event: globalThis.WheelEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (wheelLocked.current || Math.abs(event.deltaY) < 4) return;
+
+      wheelLocked.current = true;
+      setActive(
+        (current) =>
+          (current + (event.deltaY > 0 ? 1 : -1) + wheelProjects.length) %
+          wheelProjects.length,
+      );
+      window.setTimeout(() => {
+        wheelLocked.current = false;
+      }, 420);
+    };
+
+    options.addEventListener("wheel", handleWheel, { passive: false });
+    return () => options.removeEventListener("wheel", handleWheel);
+  }, []);
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     dragStart.current = event.clientY;
@@ -124,10 +138,10 @@ export default function HomeProjectWheel() {
       </Link>
 
       <div
+        ref={optionsRef}
         className="home-project-wheel__options"
         role="listbox"
         aria-label="选择首页主视觉项目"
-        onWheel={handleWheel}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {

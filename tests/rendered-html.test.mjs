@@ -33,6 +33,11 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(html, /BAMBINO V2/);
   assert.match(html, /SIMPLE UNI LIFE/);
   assert.match(html, /wyan39702@gmail\.com/);
+  assert.ok(
+    html.indexOf("关于") < html.indexOf("项目") &&
+      html.indexOf("项目") < html.indexOf("下载简历"),
+    "navigation follows 关于 → 项目 → 下载简历",
+  );
 
   const cases = [
     [

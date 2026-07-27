@@ -4,18 +4,29 @@ import type { ReactNode } from "react";
 export function SiteHeader({ light = false }: { light?: boolean }) {
   return (
     <header className={`site-nav shell${light ? " site-nav--light" : ""}`}>
-      <Link className="site-nav__brand" href="/" aria-label="严文厚作品集首页">
+      <Link
+        className="site-nav__brand site-nav__glass"
+        href="/"
+        aria-label="严文厚作品集首页"
+      >
         <span>WY</span>
         <strong>WENHOU YAN</strong>
       </Link>
       <nav aria-label="主导航">
-        <Link href="/#work">项目</Link>
-        <Link href="/#profile">关于</Link>
-        <a href="/wenhou-yan-resume.pdf" download>
-          简历
+        <Link className="site-nav__glass" href="/#profile">
+          关于
+        </Link>
+        <Link className="site-nav__glass" href="/#work">
+          项目
+        </Link>
+        <a className="site-nav__glass" href="/wenhou-yan-resume.pdf" download>
+          下载简历
         </a>
       </nav>
-      <a className="site-nav__contact" href="mailto:wyan39702@gmail.com">
+      <a
+        className="site-nav__contact site-nav__glass"
+        href="mailto:wyan39702@gmail.com"
+      >
         联系我 <span aria-hidden="true">↗</span>
       </a>
     </header>

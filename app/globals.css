@@ -85,7 +85,33 @@ figcaption {
   text-transform: uppercase;
 }
 .site-nav__brand strong { font-size: 11px; letter-spacing: 0.14em; }
-.site-nav nav { display: flex; gap: 42px; }
+.site-nav nav { display: flex; gap: 16px; }
+.site-nav__glass {
+  position: relative;
+  isolation: isolate;
+  border-radius: 11px;
+  transform-style: preserve-3d;
+  transition:
+    color .25s ease,
+    transform .3s cubic-bezier(.83, 0, .17, 1);
+}
+.site-nav__glass::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
+  box-shadow: 6px -6px 14px rgba(16,22,18,.14);
+  opacity: 0;
+  transform: rotate(0) translate3d(0,0,-1px);
+  transform-origin: 100% 100%;
+  transition:
+    opacity .3s cubic-bezier(.83, 0, .17, 1),
+    transform .3s cubic-bezier(.83, 0, .17, 1);
+}
+.site-nav nav .site-nav__glass { padding: 10px 13px; }
 .site-nav__contact {
   display: flex;
   min-width: 132px;
@@ -289,6 +315,7 @@ figcaption {
   cursor: grab;
   user-select: none;
   touch-action: none;
+  overscroll-behavior: contain;
 }
 .home-project-wheel__options:active { cursor: grabbing; }
 .home-project-wheel__options button {
@@ -480,6 +507,7 @@ figcaption {
   padding: 4vh 2vw;
   object-fit: contain;
   object-position: center;
+  transform: scale(1.25);
 }
 .home-case--bambino .home-case__stage > strong { color: var(--white); }
 .home-case--unilife {
@@ -838,8 +866,19 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
 
 @media (hover: hover) {
   .site-nav a, .site-footer a, .next-project a { transition: color .18s ease; }
-  .site-nav nav a:hover, .site-footer a:hover, .next-project a:hover { color: var(--acid); }
+  .site-nav__glass:hover,
+  .site-nav__glass:focus-visible {
+    color: var(--acid);
+    transform: translate3d(0,-2px,12px);
+  }
+  .site-nav__glass:hover::before,
+  .site-nav__glass:focus-visible::before {
+    opacity: 1;
+    transform: rotate(4deg) translate3d(-3px,-3px,-1px);
+  }
+  .site-footer a:hover, .next-project a:hover { color: var(--acid); }
   .home-case:hover figure img { transform: scale(1.025); }
+  .home-case--bambino:hover figure img { transform: scale(1.28); }
 }
 
 @media (max-width: 980px) {
