@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HomeProjectWheel from "./home-project-wheel";
 import { ContactFooter, SiteHeader } from "./project-shell";
 
 const projects = [
@@ -17,7 +18,7 @@ const projects = [
     className: "home-case--bambino",
     title: "BAMBINO V2",
     type: "PRODUCT REDESIGN / 12 WEEKS",
-    image: "/portfolio/bambino-hero.jpg",
+    image: "/portfolio/bambino-cutout.png",
     copy: "重新设计机械锁定与动态反馈，让每一次操作都更稳、更清楚。",
   },
   {
@@ -62,17 +63,7 @@ export default function Home() {
             </a>
           </div>
 
-          <Link
-            className="home-hero__visual"
-            href="/work/bambino"
-            aria-label="查看 Bambino V2 项目"
-          >
-            <img src="/portfolio/bambino-hero.jpg" alt="Bambino V2 咖啡机设计" />
-            <span>
-              FEATURED OBJECT
-              <strong>BAMBINO V2 / 2024</strong>
-            </span>
-          </Link>
+          <HomeProjectWheel />
 
           <ol className="home-hero__process" aria-label="设计工作流程">
             <li>

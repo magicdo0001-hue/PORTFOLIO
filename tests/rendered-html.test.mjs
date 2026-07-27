@@ -59,6 +59,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
   const sources = await Promise.all(
     [
       "../app/page.tsx",
+      "../app/home-project-wheel.tsx",
       "../app/work/sangre/page.tsx",
       "../app/work/bambino/page.tsx",
       "../app/work/simple-uni-life/page.tsx",
