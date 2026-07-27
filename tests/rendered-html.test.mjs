@@ -46,10 +46,12 @@ test("renders the portfolio index and three distinct case studies", async () => 
   const workResponse = await render("/work");
   assert.equal(workResponse.status, 200);
   const workHtml = await workResponse.text();
-  assert.match(workHtml, /Projects in/);
+  assert.match(workHtml, /可旋转项目球面/);
   assert.match(workHtml, /SANGRE/);
   assert.match(workHtml, /BAMBINO V2/);
   assert.match(workHtml, /SIMPLE UNI LIFE/);
+  assert.match(workHtml, /OPEN/);
+  assert.match(workHtml, /PROJECT/);
   assert.match(workHtml, /\/work\/sangre/);
   assert.match(workHtml, /\/work\/bambino/);
   assert.match(workHtml, /\/work\/simple-uni-life/);
@@ -80,7 +82,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
     [
       "../app/page.tsx",
       "../app/home-project-wheel.tsx",
-      "../app/work/infinite-project-menu.tsx",
+      "../app/work/sphere-project-menu.tsx",
       "../app/work/sangre/page.tsx",
       "../app/work/bambino/page.tsx",
       "../app/work/simple-uni-life/page.tsx",
