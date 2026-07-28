@@ -61,9 +61,16 @@ test("renders the portfolio index and three distinct case studies", async () => 
     new URL("../app/work/sphere-project-menu.tsx", import.meta.url),
     "utf8",
   );
+  const globalStyles = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
   assert.match(sphereSource, /snapNode\.current = frontNode/);
   assert.match(sphereSource, /--focus-scale/);
   assert.match(sphereSource, /\/portfolio\/sangre-sphere\.jpg/);
+  assert.match(globalStyles, /\.site-nav[\s\S]*backdrop-filter: blur\(28px\)/);
+  assert.match(globalStyles, /\.site-nav__glass[\s\S]*border-radius: 999px/);
+  assert.match(globalStyles, /\.site-nav__glass:active/);
 
   const cases = [
     [
