@@ -620,8 +620,17 @@ figcaption {
     translate(-50%,-50%)
     rotateY(var(--tile-lon))
     rotateX(var(--tile-lat))
-    translateZ(var(--sphere-radius));
+    translateZ(var(--sphere-radius))
+    scale(var(--focus-scale,1));
   backface-visibility: hidden;
+  opacity: var(--focus-opacity,.5);
+  filter: brightness(var(--focus-brightness,.7)) saturate(.82);
+  will-change: transform, opacity, filter;
+  transition:
+    opacity .1s linear,
+    filter .1s linear,
+    border-color .25s ease,
+    box-shadow .25s ease;
   cursor: pointer;
 }
 .sphere-project-menu__tile img {

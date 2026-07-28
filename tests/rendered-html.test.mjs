@@ -56,6 +56,13 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(workHtml, /\/work\/bambino/);
   assert.match(workHtml, /\/work\/simple-uni-life/);
 
+  const sphereSource = await readFile(
+    new URL("../app/work/sphere-project-menu.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(sphereSource, /snapNode\.current = frontNode/);
+  assert.match(sphereSource, /--focus-scale/);
+
   const cases = [
     [
       "/work/sangre",
