@@ -39,9 +39,10 @@ test("renders the portfolio index and three distinct case studies", async () => 
     "navigation follows 关于 → 项目 → 下载简历",
   );
   assert.ok(
-    html.indexOf("PROFILE / 2026") < html.indexOf("PROJECT INDEX / 03 CASES"),
-    "profile content appears before the project gateway",
+    html.indexOf("PROFILE / 2026") < html.indexOf("可旋转项目球面"),
+    "profile content appears before the embedded project index",
   );
+  assert.doesNotMatch(html, /PROJECT INDEX \/ 03 CASES/);
 
   const workResponse = await render("/work");
   assert.equal(workResponse.status, 200);
@@ -62,6 +63,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
   );
   assert.match(sphereSource, /snapNode\.current = frontNode/);
   assert.match(sphereSource, /--focus-scale/);
+  assert.match(sphereSource, /\/portfolio\/sangre-sphere\.jpg/);
 
   const cases = [
     [

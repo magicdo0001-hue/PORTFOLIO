@@ -18,7 +18,7 @@ const projects = [
     type: "MEDICAL PRODUCT",
     year: "2024",
     href: "/work/sangre",
-    image: "/portfolio/sangre-hero.webp",
+    image: "/portfolio/sangre-sphere.jpg",
     description: "家庭慢病检测系统，从研究、交互到可验证原型。",
   },
   {
@@ -42,22 +42,17 @@ const projects = [
 ];
 
 const sphereNodes = [
-  ...[0, 72, 144, 216, 288].map((lon, index) => ({
-    lat: -46,
-    lon,
-    project: index % 3,
+  { lat: -54, offset: 0, projectOffset: 0 },
+  { lat: -18, offset: 30, projectOffset: 1 },
+  { lat: 18, offset: 0, projectOffset: 2 },
+  { lat: 54, offset: 30, projectOffset: 0 },
+].flatMap((ring) =>
+  Array.from({ length: 6 }, (_, index) => ({
+    lat: ring.lat,
+    lon: ring.offset + index * 60,
+    project: (index + ring.projectOffset) % projects.length,
   })),
-  ...[36, 108, 180, 252, 324].map((lon, index) => ({
-    lat: 0,
-    lon,
-    project: (index + 2) % 3,
-  })),
-  ...[0, 72, 144, 216, 288].map((lon, index) => ({
-    lat: 46,
-    lon,
-    project: (index + 1) % 3,
-  })),
-];
+);
 
 const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
 
@@ -95,7 +90,7 @@ export default function SphereProjectMenu() {
   const activeRef = useRef(0);
   const viewportRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<HTMLDivElement>(null);
-  const rotation = useRef({ x: -8, y: 8 });
+  const rotation = useRef({ x: 54, y: 0 });
   const velocity = useRef({ x: 0, y: 0 });
   const pointer = useRef({ x: 0, y: 0 });
   const dragging = useRef(false);
@@ -123,10 +118,10 @@ export default function SphereProjectMenu() {
           const node = sphereNodes[snapNode.current];
           const targetX = closestRotation(rotation.current.x, -node.lat);
           const targetY = closestRotation(rotation.current.y, -node.lon);
-          velocity.current.x += (targetX - rotation.current.x) * 0.065;
-          velocity.current.y += (targetY - rotation.current.y) * 0.065;
-          velocity.current.x *= reducedMotion ? 0.55 : 0.78;
-          velocity.current.y *= reducedMotion ? 0.55 : 0.78;
+          velocity.current.x += (targetX - rotation.current.x) * 0.082;
+          velocity.current.y += (targetY - rotation.current.y) * 0.082;
+          velocity.current.x *= reducedMotion ? 0.5 : 0.79;
+          velocity.current.y *= reducedMotion ? 0.5 : 0.79;
           rotation.current.x += velocity.current.x;
           rotation.current.y += velocity.current.y;
 
@@ -157,21 +152,22 @@ export default function SphereProjectMenu() {
       tiles.forEach((tile, index) => {
         const proximity = Math.max(
           0,
-          Math.min(1, (depths[index] - 0.42) / 0.58),
+          Math.min(1, (depths[index] - 0.28) / 0.72),
         );
-        const emphasis = proximity * proximity;
+        const emphasis = proximity * proximity * proximity;
         tile.style.setProperty(
           "--focus-scale",
-          (1 + emphasis * 0.38).toFixed(3),
+          (1 + emphasis * 0.64).toFixed(3),
         );
         tile.style.setProperty(
           "--focus-opacity",
-          (0.34 + proximity * 0.66).toFixed(3),
+          (0.18 + proximity * 0.82).toFixed(3),
         );
         tile.style.setProperty(
           "--focus-brightness",
-          (0.58 + proximity * 0.42).toFixed(3),
+          (0.44 + proximity * 0.56).toFixed(3),
         );
+        tile.style.setProperty("--focus-glow", emphasis.toFixed(3));
       });
 
       const next = sphereNodes[nearest].project;
@@ -225,9 +221,9 @@ export default function SphereProjectMenu() {
     const dx = event.clientX - pointer.current.x;
     const dy = event.clientY - pointer.current.y;
     if (Math.hypot(dx, dy) > 3) didDrag.current = true;
-    rotation.current.x -= dy * 0.28;
-    rotation.current.y += dx * 0.28;
-    velocity.current = { x: -dy * 0.045, y: dx * 0.045 };
+    rotation.current.x -= dy * 0.32;
+    rotation.current.y += dx * 0.32;
+    velocity.current = { x: -dy * 0.052, y: dx * 0.052 };
     pointer.current = { x: event.clientX, y: event.clientY };
   };
 

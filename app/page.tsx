@@ -1,6 +1,7 @@
 import Link from "next/link";
 import HomeProjectWheel from "./home-project-wheel";
 import { ContactFooter, SiteHeader } from "./project-shell";
+import SphereProjectMenu from "./work/sphere-project-menu";
 
 export default function Home() {
   return (
@@ -115,17 +116,12 @@ export default function Home() {
         </aside>
       </section>
 
-      <section className="work-gateway" id="work">
-        <Link href="/work" aria-label="进入精选项目总览">
-          <span>PROJECT INDEX / 03 CASES</span>
-          <h2>
-            Explore the work
-            <br />
-            <em>as a connected field.</em>
-          </h2>
-          <p>拖动、滚动或使用方向键浏览项目，点击当前项目进入完整案例。</p>
-          <strong aria-hidden="true">↗</strong>
-        </Link>
+      <section
+        className="work-index__hero home-work-index"
+        id="work"
+        aria-label="精选项目"
+      >
+        <SphereProjectMenu />
       </section>
 
       <ContactFooter />
