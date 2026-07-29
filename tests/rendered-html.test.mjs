@@ -69,9 +69,27 @@ test("renders the portfolio index and three distinct case studies", async () => 
   );
   assert.match(sphereSource, /snapNode\.current = frontNode/);
   assert.match(sphereSource, /--focus-scale/);
-  assert.match(sphereSource, /\/portfolio\/sangre-sphere\.jpg/);
+  assert.match(sphereSource, /\/portfolio\/sangre-menu-01\.jpg/);
   assert.match(sphereSource, /imageIndex: ringIndex/);
   assert.match(sphereSource, /project\.images\[node\.imageIndex\]/);
+  const menuAssets = [
+    "sangre-menu-01.jpg",
+    "sangre-menu-02.jpg",
+    "sangre-menu-03.png",
+    "sangre-menu-04.jpg",
+    "bambino-menu-01.jpg",
+    "bambino-menu-02.jpg",
+    "bambino-menu-03.jpg",
+    "bambino-menu-04.jpg",
+    "unilife-menu-01.png",
+    "unilife-menu-02.png",
+    "unilife-menu-03.png",
+    "unilife-menu-04.png",
+  ];
+  for (const asset of menuAssets) {
+    assert.match(sphereSource, new RegExp(asset.replace(".", "\\.")));
+    await access(new URL(`../public/portfolio/${asset}`, import.meta.url));
+  }
   assert.match(globalStyles, /\.site-nav[\s\S]*backdrop-filter: blur\(28px\)/);
   assert.match(globalStyles, /\.site-nav__glass[\s\S]*border-radius: 999px/);
   assert.match(globalStyles, /\.site-nav__glass:active/);
