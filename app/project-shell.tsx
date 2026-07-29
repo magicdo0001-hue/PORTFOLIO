@@ -10,7 +10,7 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
         aria-label="严文厚作品集首页"
       >
         <span>WY</span>
-        <strong>WENHOU YAN</strong>
+        <strong>严文厚</strong>
       </Link>
       <nav aria-label="主导航">
         <Link className="site-nav__glass" href="/#profile">
@@ -72,12 +72,12 @@ export function ProjectHero({
           <span>{role}</span>
         </div>
         <div className="project-hero__title">
-          <p>SELECTED CASE STUDY</p>
+          <p>精选项目案例</p>
           <h1>{title}</h1>
         </div>
         <p className="project-hero__lede">{lede}</p>
         <a className="scroll-cue" href="#story">
-          EXPLORE <span aria-hidden="true">↓</span>
+          查看详情 <span aria-hidden="true">↓</span>
         </a>
       </div>
     </section>
@@ -97,7 +97,7 @@ export function ProjectEnd({
     <>
       <section className="next-project">
         <Link href={nextHref}>
-          <span>NEXT CASE / {nextIndex}</span>
+          <span>下一个项目 / {nextIndex}</span>
           <strong>{nextTitle}</strong>
           <i aria-hidden="true">↗</i>
         </Link>
@@ -111,18 +111,18 @@ export function ContactFooter() {
   return (
     <footer className="site-footer">
       <div className="shell">
-        <p>AVAILABLE FOR PRODUCT DESIGN OPPORTUNITIES</p>
+        <p>寻找产品设计机会</p>
         <a href="mailto:wyan39702@gmail.com">wyan39702@gmail.com ↗</a>
         <div>
-          <span>© 2026 WENHOU YAN</span>
+          <span>© 2026 严文厚</span>
           <a
             href="https://www.linkedin.com/in/wenhou-yan-3546653b8"
             target="_blank"
             rel="noreferrer"
           >
-            LINKEDIN
+            领英
           </a>
-          <Link href="/">BACK HOME ↑</Link>
+          <Link href="/">返回首页 ↑</Link>
         </div>
       </div>
     </footer>

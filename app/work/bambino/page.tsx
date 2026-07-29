@@ -5,7 +5,7 @@ import {
 } from "../../project-shell";
 
 export const metadata = {
-  title: "Bambino V2 — Wenhou Yan",
+  title: "BAMBINO V2 — 严文厚",
   description: "围绕机械锁定和动态反馈的家用意式咖啡机再设计。",
 };
 
@@ -15,9 +15,9 @@ export default function BambinoPage() {
       <ProjectHero
         index="02"
         title="BAMBINO V2"
-        category="PRODUCT REDESIGN"
-        period="12 WEEKS"
-        role="INDIVIDUAL PROJECT"
+        category="产品再设计"
+        period="12 周"
+        role="独立项目"
         lede="让锁定更稳，让每一次操作都得到清晰回应。"
         image="/portfolio/bambino-hero.jpg"
         tone="bambino"
@@ -25,7 +25,7 @@ export default function BambinoPage() {
 
       <section className="project-brief project-brief--dark" id="story">
         <div className="shell">
-          <p className="chapter-label">01 / THE TENSION</p>
+          <p className="chapter-label">01 / 核心矛盾</p>
           <h2>
             一台小型咖啡机，
             <br />
@@ -57,7 +57,7 @@ export default function BambinoPage() {
 
       <section className="bambino-balance chapter">
         <div className="bambino-balance__copy">
-          <p className="chapter-label">02 / USER MOTION</p>
+          <p className="chapter-label">02 / 用户动作</p>
           <h2>先观察动作，再改变机器。</h2>
           <p>
             研究暴露出三个紧密相连的问题：旋转扭矩、操作视角和状态反馈。设计将锁定动作重新分配给结构，并为用户保留清晰的触觉与视觉回应。
@@ -83,12 +83,12 @@ export default function BambinoPage() {
           />
         </figure>
         <div className="bambino-lock__copy">
-          <p className="chapter-label">03 / MECHANISM</p>
+          <p className="chapter-label">03 / 机械结构</p>
           <span className="display-number">↓</span>
           <h2>
-            The feedback
+            反馈由
             <br />
-            is built in.
+            结构产生。
           </h2>
           <p>
             独立细节模型缩短结构与触感的验证周期；锁定、释放与完成状态通过同一机械语言被感知。
@@ -97,7 +97,7 @@ export default function BambinoPage() {
       </section>
 
       <section className="bambino-resolution chapter shell">
-        <p className="chapter-label">04 / RESOLUTION</p>
+        <p className="chapter-label">04 / 最终方案</p>
         <figure className="bambino-resolution__profile">
           <img
             src="/portfolio/bambino-profile.webp"
@@ -117,9 +117,9 @@ export default function BambinoPage() {
           />
         </figure>
         <h2>
-          One machine.
+          一台机器。
           <br />
-          One coherent action.
+          一套连贯动作。
         </h2>
       </section>
 

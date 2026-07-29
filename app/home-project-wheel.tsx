@@ -14,7 +14,7 @@ const wheelProjects = [
   {
     index: "01",
     title: "SANGRE",
-    meta: "MEDICAL PRODUCT / 2024",
+    meta: "医疗产品 / 2024",
     href: "/work/sangre",
     image: "/portfolio/sangre-hero.webp",
     imageClass: "home-project-wheel__image--scene",
@@ -22,7 +22,7 @@ const wheelProjects = [
   {
     index: "02",
     title: "BAMBINO V2",
-    meta: "PRODUCT REDESIGN / 2024",
+    meta: "产品再设计 / 2024",
     href: "/work/bambino",
     image: "/portfolio/bambino-cutout.png",
     imageClass: "home-project-wheel__image--cutout",
@@ -30,7 +30,7 @@ const wheelProjects = [
   {
     index: "03",
     title: "SIMPLE UNI LIFE",
-    meta: "DIGITAL PRODUCT / 2024",
+    meta: "数字产品 / 2024",
     href: "/work/simple-uni-life",
     image: "/portfolio/unilife-hero.webp",
     imageClass: "home-project-wheel__image--interface",
@@ -132,7 +132,7 @@ export default function HomeProjectWheel() {
           />
         ))}
         <span className="home-project-wheel__caption" aria-live="polite">
-          FEATURED PROJECT / {current.index}
+          精选项目 / {current.index}
           <strong>{current.meta}</strong>
         </span>
       </Link>

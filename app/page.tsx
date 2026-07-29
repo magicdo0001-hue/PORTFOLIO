@@ -16,12 +16,12 @@ export default function Home() {
                 <img src="/portfolio/bambino-hero.jpg" alt="" />
                 <img src="/portfolio/unilife-hero.webp" alt="" />
               </span>
-              <p>3 SELECTED PROJECTS · PRODUCT / UIUX / ENGINEERING</p>
+              <p>3 个精选项目 · 产品 / UIUX / 工程</p>
             </div>
             <h1>
-              Research into
+              把研究推进为
               <br />
-              <em>working products.</em>
+              <em>可用的产品。</em>
             </h1>
             <p className="home-hero__statement">
               在工业设计、交互与工程之间，
@@ -30,7 +30,7 @@ export default function Home() {
             </p>
             <Link className="home-hero__cta" href="/work">
               <span aria-hidden="true">↘</span>
-              VIEW SELECTED WORK
+              查看精选项目
             </Link>
           </div>
 
@@ -39,22 +39,22 @@ export default function Home() {
           <ol className="home-hero__process" aria-label="设计工作流程">
             <li>
               <i aria-hidden="true">◇</i>
-              <span>RESEARCH</span>
+              <span>研究</span>
               <small>01</small>
             </li>
             <li>
               <i aria-hidden="true">⌁</i>
-              <span>FRAME</span>
+              <span>定义</span>
               <small>02</small>
             </li>
             <li>
               <i aria-hidden="true">◎</i>
-              <span>PROTOTYPE</span>
+              <span>原型</span>
               <small>03</small>
             </li>
             <li>
               <i aria-hidden="true">↗</i>
-              <span>DELIVER</span>
+              <span>落地</span>
               <small>04</small>
             </li>
           </ol>
@@ -76,13 +76,13 @@ export default function Home() {
       <section className="profile-statement" id="profile">
         <div className="profile-statement__shapes" aria-hidden="true" />
         <div className="shell">
-          <p>PROFILE / 2026</p>
+          <p>关于我 / 2026</p>
           <h2>
-            Research with <span>purpose.</span>
+            研究围绕 <span>目标。</span>
             <br />
-            Engineering with <span>evidence.</span>
+            工程依靠 <span>证据。</span>
             <br />
-            Design with <span>clarity.</span>
+            设计追求 <span>清晰。</span>
           </h2>
           <img src="/portfolio/wenhou-yan.jpg" alt="严文厚个人照片" />
         </div>
@@ -111,7 +111,7 @@ export default function Home() {
             UNSW 工业设计学士
           </p>
           <a href="/wenhou-yan-resume.pdf" download>
-            DOWNLOAD RESUME ↗
+            下载简历 ↗
           </a>
         </aside>
       </section>

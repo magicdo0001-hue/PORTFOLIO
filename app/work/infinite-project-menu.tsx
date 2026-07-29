@@ -14,7 +14,7 @@ const projects = [
   {
     index: "01",
     title: "SANGRE",
-    type: "MEDICAL PRODUCT",
+    type: "医疗产品",
     year: "2024",
     href: "/work/sangre",
     image: "/portfolio/sangre-hero.webp",
@@ -22,7 +22,7 @@ const projects = [
   {
     index: "02",
     title: "BAMBINO V2",
-    type: "PRODUCT REDESIGN",
+    type: "产品再设计",
     year: "2024",
     href: "/work/bambino",
     image: "/portfolio/bambino-cutout.png",
@@ -30,7 +30,7 @@ const projects = [
   {
     index: "03",
     title: "SIMPLE UNI LIFE",
-    type: "DIGITAL PRODUCT",
+    type: "数字产品",
     year: "2024",
     href: "/work/simple-uni-life",
     image: "/portfolio/unilife-hero.webp",
@@ -168,7 +168,7 @@ export default function InfiniteProjectMenu() {
       </div>
 
       <p className="infinite-project-menu__hint">
-        DRAG / SCROLL / ARROW KEYS
+        拖动 / 滚动 / 方向键
       </p>
     </div>
   );

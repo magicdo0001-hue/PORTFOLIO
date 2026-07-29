@@ -15,7 +15,7 @@ const projects = [
   {
     index: "01",
     title: "SANGRE",
-    type: "MEDICAL PRODUCT",
+    type: "医疗产品",
     year: "2024",
     href: "/work/sangre",
     images: [
@@ -29,7 +29,7 @@ const projects = [
   {
     index: "02",
     title: "BAMBINO V2",
-    type: "PRODUCT REDESIGN",
+    type: "产品再设计",
     year: "2024",
     href: "/work/bambino",
     images: [
@@ -43,7 +43,7 @@ const projects = [
   {
     index: "03",
     title: "SIMPLE UNI LIFE",
-    type: "DIGITAL PRODUCT",
+    type: "数字产品",
     year: "2024",
     href: "/work/simple-uni-life",
     images: [
@@ -367,13 +367,13 @@ export default function SphereProjectMenu() {
         href={current.href}
         onPointerDown={(event) => event.stopPropagation()}
       >
-        <span>OPEN</span>
-        <strong>PROJECT</strong>
+        <span>查看</span>
+        <strong>项目</strong>
         <i aria-hidden="true">↗</i>
       </Link>
 
       <p className="sphere-project-menu__hint">
-        DRAG TO ROTATE · CLICK A TILE OR OPEN PROJECT
+        拖动旋转 · 点击图片或“查看项目”进入
       </p>
     </div>
   );

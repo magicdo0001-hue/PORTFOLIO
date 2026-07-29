@@ -26,8 +26,8 @@ test("renders the portfolio index and three distinct case studies", async () => 
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-  assert.match(html, /严文厚 Wenhou Yan/);
-  assert.match(html, /Research into/);
+  assert.match(html, /严文厚/);
+  assert.match(html, /把研究推进为/);
   assert.match(html, /把复杂问题推进到/);
   assert.match(html, /SANGRE/);
   assert.match(html, /BAMBINO V2/);
@@ -41,7 +41,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
     "navigation follows 关于 → 项目 → 下载简历",
   );
   assert.ok(
-    html.indexOf("PROFILE / 2026") < html.indexOf("可旋转项目球面"),
+    html.indexOf("关于我 / 2026") < html.indexOf("可旋转项目球面"),
     "profile content appears before the embedded project index",
   );
   assert.doesNotMatch(html, /PROJECT INDEX \/ 03 CASES/);
@@ -53,8 +53,8 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(workHtml, /SANGRE/);
   assert.match(workHtml, /BAMBINO V2/);
   assert.match(workHtml, /SIMPLE UNI LIFE/);
-  assert.match(workHtml, /OPEN/);
-  assert.match(workHtml, /PROJECT/);
+  assert.match(workHtml, /查看/);
+  assert.match(workHtml, /项目/);
   assert.match(workHtml, /\/work\/sangre/);
   assert.match(workHtml, /\/work\/bambino/);
   assert.match(workHtml, /\/work\/simple-uni-life/);
@@ -110,13 +110,44 @@ test("renders the portfolio index and three distinct case studies", async () => 
     ],
   ];
 
+  const localizedPages = [html, workHtml];
+
   for (const [path, expected, expectedAssets] of cases) {
     const caseResponse = await render(path);
     assert.equal(caseResponse.status, 200);
     const caseHtml = await caseResponse.text();
+    localizedPages.push(caseHtml);
     assert.match(caseHtml, expected);
     assert.doesNotMatch(caseHtml, /IMAGE PENDING/);
     for (const asset of expectedAssets) assert.match(caseHtml, new RegExp(asset));
+  }
+
+  const obsoleteEnglishCopy = [
+    "Research into",
+    "VIEW SELECTED WORK",
+    "PROFILE / 2026",
+    "SELECTED CASE STUDY",
+    "EXPLORE",
+    "NEXT CASE",
+    "AVAILABLE FOR PRODUCT DESIGN OPPORTUNITIES",
+    "BACK HOME",
+    "DRAG TO ROTATE",
+    "THE BRIEF",
+    "DISCOVERY",
+    "ENGINEERING PROOF",
+    "THE TENSION",
+    "USER MOTION",
+    "MECHANISM",
+    "RESOLUTION",
+    "THE CONTEXT",
+    "PRODUCT LOGIC",
+    "INTERFACE SYSTEM",
+    "OUTCOME",
+  ];
+  for (const pageHtml of localizedPages) {
+    for (const phrase of obsoleteEnglishCopy) {
+      assert.doesNotMatch(pageHtml, new RegExp(phrase));
+    }
   }
 
   const uniLifeSource = await readFile(

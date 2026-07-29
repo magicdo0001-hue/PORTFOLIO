@@ -5,7 +5,7 @@ import {
 } from "../../project-shell";
 
 export const metadata = {
-  title: "SANGRE — Wenhou Yan",
+  title: "SANGRE — 严文厚",
   description: "家庭心血管监测设备：从研究、结构到一比一功能原型。",
 };
 
@@ -15,9 +15,9 @@ export default function SangrePage() {
       <ProjectHero
         index="01"
         title="SANGRE"
-        category="MEDICAL PRODUCT"
-        period="14 WEEKS"
-        role="LEAD DESIGNER"
+        category="医疗产品"
+        period="14 周"
+        role="主导设计"
         lede="把复杂血检收进一台愿意长期使用的家庭设备。"
         image="/portfolio/sangre-hero.webp"
         tone="sangre"
@@ -25,7 +25,7 @@ export default function SangrePage() {
 
       <section className="project-brief" id="story">
         <div className="shell">
-          <p className="chapter-label">01 / THE BRIEF</p>
+          <p className="chapter-label">01 / 项目概要</p>
           <h2>
             慢性病管理需要的，
             <br />
@@ -58,7 +58,7 @@ export default function SangrePage() {
 
       <section className="sangre-discovery chapter">
         <aside>
-          <p className="chapter-label">02 / DISCOVERY</p>
+          <p className="chapter-label">02 / 研究发现</p>
           <h2>把研究转化成产品结构。</h2>
           <p>
             从慢性病管理与反射光度法出发，设计不只回答外观，还要同时处理试纸路径、采血动作、耗材收纳和清洁维护。
@@ -71,7 +71,7 @@ export default function SangrePage() {
               alt="SANGRE 外观形态与功能分区研究"
               loading="lazy"
             />
-            <figcaption>FORM STUDIES · PRODUCT ARCHITECTURE</figcaption>
+            <figcaption>形态研究 · 产品架构</figcaption>
           </figure>
           <figure>
             <img
@@ -79,7 +79,7 @@ export default function SangrePage() {
               alt="SANGRE 机身体量与耗材区域迭代"
               loading="lazy"
             />
-            <figcaption>VOLUME ITERATION · DETAIL STUDY</figcaption>
+            <figcaption>体量迭代 · 细节研究</figcaption>
           </figure>
           <figure>
             <img
@@ -87,7 +87,7 @@ export default function SangrePage() {
               alt="SANGRE 实体模型制作与体量验证"
               loading="lazy"
             />
-            <figcaption>PHYSICAL BUILD · VOLUME VALIDATION</figcaption>
+            <figcaption>实体制作 · 体量验证</figcaption>
           </figure>
         </div>
       </section>
@@ -100,7 +100,7 @@ export default function SangrePage() {
           />
         </div>
         <div className="sangre-prototype__copy">
-          <p className="chapter-label">03 / PROTOTYPE</p>
+          <p className="chapter-label">03 / 原型验证</p>
           <span className="display-number">1:1</span>
           <h2>从体量模型，到可完整操作的功能原型。</h2>
           <p>
@@ -112,14 +112,14 @@ export default function SangrePage() {
               alt="用户操作 SANGRE 原型进行交互测试"
               loading="lazy"
             />
-            <figcaption>INTERACTION TEST · WORKFLOW VALIDATION</figcaption>
+            <figcaption>交互测试 · 流程验证</figcaption>
           </figure>
         </div>
       </section>
 
       <section className="technical-proof">
         <div className="shell">
-          <p className="chapter-label">04 / ENGINEERING PROOF</p>
+          <p className="chapter-label">04 / 工程验证</p>
           <figure className="technical-proof__drawing">
             <img
               src="/portfolio/sangre-drawing.webp"
@@ -133,9 +133,9 @@ export default function SangrePage() {
             />
           </figure>
           <h2>
-            Form follows
+            形态服从
             <br />
-            <span>the workflow.</span>
+            <span>使用流程。</span>
           </h2>
         </div>
       </section>
