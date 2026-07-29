@@ -129,27 +129,6 @@ export function ContactFooter() {
   );
 }
 
-export function AssetPlaceholder({
-  label,
-  spec,
-  className = "",
-}: {
-  label: string;
-  spec: string;
-  className?: string;
-}) {
-  return (
-    <figure
-      className={`asset-placeholder${className ? ` ${className}` : ""}`}
-      aria-label={`${label} image pending replacement`}
-    >
-      <span>IMAGE PENDING</span>
-      <strong>{label}</strong>
-      <small>{spec}</small>
-    </figure>
-  );
-}
-
 export function FactRail({
   children,
 }: {

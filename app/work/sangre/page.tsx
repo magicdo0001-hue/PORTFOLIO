@@ -1,5 +1,4 @@
 import {
-  AssetPlaceholder,
   FactRail,
   ProjectEnd,
   ProjectHero,
@@ -66,18 +65,30 @@ export default function SangrePage() {
           </p>
         </aside>
         <div className="sangre-discovery__media">
-          <AssetPlaceholder
-            label="SANGRE / FORM STUDIES"
-            spec="MIN 1800 × 1160 PX · LANDSCAPE"
-          />
-          <AssetPlaceholder
-            label="SANGRE / VOLUME ITERATION"
-            spec="MIN 1400 × 900 PX · LANDSCAPE"
-          />
-          <AssetPlaceholder
-            label="SANGRE / VACUUM FORMING"
-            spec="MIN 1400 × 900 PX · LANDSCAPE"
-          />
+          <figure>
+            <img
+              src="/portfolio/sangre-form-studies.png"
+              alt="SANGRE 外观形态与功能分区研究"
+              loading="lazy"
+            />
+            <figcaption>FORM STUDIES · PRODUCT ARCHITECTURE</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="/portfolio/sangre-volume-iteration.jpg"
+              alt="SANGRE 机身体量与耗材区域迭代"
+              loading="lazy"
+            />
+            <figcaption>VOLUME ITERATION · DETAIL STUDY</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="/portfolio/sangre-vacuum-forming.jpg"
+              alt="SANGRE 实体模型制作与体量验证"
+              loading="lazy"
+            />
+            <figcaption>PHYSICAL BUILD · VOLUME VALIDATION</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -95,10 +106,14 @@ export default function SangrePage() {
           <p>
             多轮实体模型用于验证屏幕角度、耗材接近性、试纸操作和收纳逻辑。每一次制造，都直接改变下一轮设计决策。
           </p>
-          <AssetPlaceholder
-            label="SANGRE / INTERACTION TEST"
-            spec="MIN 1400 × 1040 PX · LANDSCAPE"
-          />
+          <figure>
+            <img
+              src="/portfolio/sangre-interaction-test.jpg"
+              alt="用户操作 SANGRE 原型进行交互测试"
+              loading="lazy"
+            />
+            <figcaption>INTERACTION TEST · WORKFLOW VALIDATION</figcaption>
+          </figure>
         </div>
       </section>
 

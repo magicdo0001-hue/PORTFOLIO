@@ -1,5 +1,4 @@
 import {
-  AssetPlaceholder,
   FactRail,
   ProjectEnd,
   ProjectHero,
@@ -68,10 +67,14 @@ export default function SimpleUniLifePage() {
             访谈与情境研究显示，学生必须跨越课程官网、社交平台和零散评价，才能拼出一个勉强可用的判断。
           </p>
         </div>
-        <AssetPlaceholder
-          label="UNI LIFE / RESEARCH CONTEXT"
-          spec="MIN 1800 × 1300 PX · PORTRAIT CROP SAFE"
-        />
+        <figure>
+          <img
+            src="/portfolio/unilife-layer-01.png"
+            alt="Simple Uni Life 留学生选课研究情境"
+            loading="lazy"
+          />
+          <figcaption>RESEARCH CONTEXT · DECISION FRICTION</figcaption>
+        </figure>
       </section>
 
       <section className="unilife-flow chapter">
@@ -96,22 +99,38 @@ export default function SimpleUniLifePage() {
           <strong>DRAG / SCROLL →</strong>
         </div>
         <div className="screen-rail__track">
-          <AssetPlaceholder
-            label="UNI LIFE / COURSE SEARCH · MOBILE"
-            spec="MIN 1000 × 1600 PX · PORTRAIT"
-          />
-          <AssetPlaceholder
-            label="UNI LIFE / STRUCTURED RESULTS"
-            spec="MIN 1800 × 1200 PX · LANDSCAPE"
-          />
-          <AssetPlaceholder
-            label="UNI LIFE / COURSE DECISION PAGE"
-            spec="MIN 1800 × 1200 PX · LANDSCAPE"
-          />
-          <AssetPlaceholder
-            label="UNI LIFE / USER DASHBOARD"
-            spec="MIN 1800 × 1200 PX · LANDSCAPE"
-          />
+          <figure>
+            <img
+              src="/portfolio/unilife-course-search.png"
+              alt="Simple Uni Life 移动端课程搜索"
+              loading="lazy"
+            />
+            <figcaption>COURSE SEARCH · MOBILE</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="/portfolio/unilife-structured-results.png"
+              alt="Simple Uni Life 结构化课程结果"
+              loading="lazy"
+            />
+            <figcaption>STRUCTURED RESULTS</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="/portfolio/unilife-layer-04.png"
+              alt="Simple Uni Life 课程决策详情页面"
+              loading="lazy"
+            />
+            <figcaption>COURSE DECISION PAGE</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="/portfolio/unilife-layer-02.png"
+              alt="Simple Uni Life 用户总览界面"
+              loading="lazy"
+            />
+            <figcaption>USER DASHBOARD</figcaption>
+          </figure>
         </div>
       </section>
 

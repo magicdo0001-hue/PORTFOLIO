@@ -84,22 +84,34 @@ test("renders the portfolio index and three distinct case studies", async () => 
     [
       "/work/sangre",
       /慢性病管理需要的/,
-      ["FORM STUDIES", "VOLUME ITERATION", "VACUUM FORMING", "INTERACTION TEST"],
+      [
+        "sangre-form-studies.png",
+        "sangre-volume-iteration.jpg",
+        "sangre-vacuum-forming.jpg",
+        "sangre-interaction-test.jpg",
+      ],
     ],
-    ["/work/bambino", /不该在锁定手柄时/, ["LOCKING MECHANISM"]],
+    ["/work/bambino", /不该在锁定手柄时/, ["bambino-layer-04.jpg"]],
     [
       "/work/simple-uni-life",
       /高风险的小决策/,
-      ["RESEARCH CONTEXT", "COURSE SEARCH", "STRUCTURED RESULTS", "COURSE DECISION PAGE", "USER DASHBOARD"],
+      [
+        "unilife-layer-01.png",
+        "unilife-course-search.png",
+        "unilife-structured-results.png",
+        "unilife-layer-04.png",
+        "unilife-layer-02.png",
+      ],
     ],
   ];
 
-  for (const [path, expected, pendingAssets] of cases) {
+  for (const [path, expected, expectedAssets] of cases) {
     const caseResponse = await render(path);
     assert.equal(caseResponse.status, 200);
     const caseHtml = await caseResponse.text();
     assert.match(caseHtml, expected);
-    for (const label of pendingAssets) assert.match(caseHtml, new RegExp(label));
+    assert.doesNotMatch(caseHtml, /IMAGE PENDING/);
+    for (const asset of expectedAssets) assert.match(caseHtml, new RegExp(asset));
   }
 
   const sources = await Promise.all(

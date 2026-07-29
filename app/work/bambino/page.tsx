@@ -1,5 +1,4 @@
 import {
-  AssetPlaceholder,
   FactRail,
   ProjectEnd,
   ProjectHero,
@@ -76,11 +75,13 @@ export default function BambinoPage() {
       </section>
 
       <section className="bambino-lock">
-        <AssetPlaceholder
-          className="bambino-lock__visual"
-          label="BAMBINO / LOCKING MECHANISM"
-          spec="MIN 2000 × 1400 PX · PORTRAIT CROP SAFE"
-        />
+        <figure className="bambino-lock__visual">
+          <img
+            src="/portfolio/bambino-layer-04.jpg"
+            alt="Bambino 冲煮头锁定结构细节"
+            loading="lazy"
+          />
+        </figure>
         <div className="bambino-lock__copy">
           <p className="chapter-label">03 / MECHANISM</p>
           <span className="display-number">↓</span>
