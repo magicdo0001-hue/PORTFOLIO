@@ -209,3 +209,31 @@ test("renders the portfolio index and three distinct case studies", async () => 
     new URL("../public/wenhou-yan-portfolio-cn.pdf", import.meta.url),
   );
 });
+
+test("renders the standalone React Bits Infinite Menu design lab", async () => {
+  const response = await render("/infinite-menu-lab");
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /Infinite Menu 设计验证/);
+  assert.match(html, /sangre-menu-01\.jpg/);
+  assert.match(html, /bambino-menu-03\.jpg/);
+  assert.match(html, /unilife-menu-01\.png/);
+
+  const componentSource = await readFile(
+    new URL("../app/infinite-menu-lab/InfiniteMenu.jsx", import.meta.url),
+    "utf8",
+  );
+  const componentStyles = await readFile(
+    new URL("../app/infinite-menu-lab/InfiniteMenu.css", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(componentSource, /from 'gl-matrix'/);
+  assert.match(componentSource, /class ArcballControl/);
+  assert.match(componentSource, /class InfiniteGridMenu/);
+  assert.match(componentSource, /#version 300 es/);
+  assert.match(componentSource, /window\.location\.assign\(activeItem\.link\)/);
+  assert.match(componentStyles, /#infinite-grid-menu-canvas/);
+  assert.match(componentStyles, /\.action-button\.active/);
+});
