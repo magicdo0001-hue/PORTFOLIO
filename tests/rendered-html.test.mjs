@@ -75,6 +75,10 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(globalStyles, /\.site-nav[\s\S]*backdrop-filter: blur\(28px\)/);
   assert.match(globalStyles, /\.site-nav__glass[\s\S]*border-radius: 999px/);
   assert.match(globalStyles, /\.site-nav__glass:active/);
+  assert.match(
+    globalStyles,
+    /\.work-index__hero\s*{[\s\S]*?color: var\(--white\);/,
+  );
 
   const cases = [
     [
