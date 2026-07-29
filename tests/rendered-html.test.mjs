@@ -96,11 +96,16 @@ test("renders the portfolio index and three distinct case studies", async () => 
       "/work/simple-uni-life",
       /高风险的小决策/,
       [
-        "unilife-layer-01.png",
+        "unilife-friction-search.png",
+        "unilife-friction-paths.png",
+        "unilife-friction-social.png",
+        "unilife-friction-reviews.png",
+        "unilife-product-story.mp4",
+        "unilife-video-poster.png",
         "unilife-course-search.png",
         "unilife-structured-results.png",
         "unilife-layer-04.png",
-        "unilife-layer-02.png",
+        "unilife-course-structure.png",
       ],
     ],
   ];
@@ -113,6 +118,20 @@ test("renders the portfolio index and three distinct case studies", async () => 
     assert.doesNotMatch(caseHtml, /IMAGE PENDING/);
     for (const asset of expectedAssets) assert.match(caseHtml, new RegExp(asset));
   }
+
+  const uniLifeSource = await readFile(
+    new URL("../app/work/simple-uni-life/page.tsx", import.meta.url),
+    "utf8",
+  );
+  const uniLifeMedia = [
+    ...uniLifeSource.matchAll(/["'](\/portfolio\/[^"']+)["']/g),
+  ].map(([, path]) => path);
+  assert.equal(
+    new Set(uniLifeMedia).size,
+    uniLifeMedia.length,
+    "UniLife page does not repeat media files",
+  );
+  assert.match(uniLifeSource, /autoPlay[\s\S]*muted[\s\S]*loop[\s\S]*playsInline/);
 
   const sources = await Promise.all(
     [

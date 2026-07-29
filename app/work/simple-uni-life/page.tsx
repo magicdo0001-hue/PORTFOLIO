@@ -19,7 +19,7 @@ export default function SimpleUniLifePage() {
         period="14 WEEKS"
         role="PRODUCT / UIUX / FRONTEND"
         lede="把散落的学生经验，变成可以比较和判断的信息。"
-        image="/portfolio/unilife-hero.webp"
+        image="/portfolio/unilife-layer-02.png"
         tone="unilife"
       />
 
@@ -69,11 +69,41 @@ export default function SimpleUniLifePage() {
         </div>
         <figure>
           <img
-            src="/portfolio/unilife-layer-01.png"
-            alt="Simple Uni Life 留学生选课研究情境"
+            src="/portfolio/unilife-friction-search.png"
+            alt="留学生在多个课程网站和评价平台之间搜索信息"
             loading="lazy"
           />
           <figcaption>RESEARCH CONTEXT · DECISION FRICTION</figcaption>
+        </figure>
+      </section>
+
+      <section
+        className="unilife-friction-gallery"
+        aria-label="Simple Uni Life 用户研究场景"
+      >
+        <figure>
+          <img
+            src="/portfolio/unilife-friction-paths.png"
+            alt="学生面对课程难度、时间冲突和评分信息做选择"
+            loading="lazy"
+          />
+          <figcaption>CONFLICTING SIGNALS</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="/portfolio/unilife-friction-social.png"
+            alt="学生被社交平台和群聊中的零散课程信息包围"
+            loading="lazy"
+          />
+          <figcaption>FRAGMENTED SOCIAL PROOF</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="/portfolio/unilife-friction-reviews.png"
+            alt="学生比较互相矛盾的匿名课程评价"
+            loading="lazy"
+          />
+          <figcaption>UNRELIABLE REVIEWS</figcaption>
         </figure>
       </section>
 
@@ -86,10 +116,18 @@ export default function SimpleUniLifePage() {
           </p>
         </div>
         <figure>
-          <img
-            src="/portfolio/unilife-context.webp"
-            alt="Simple Uni Life 产品场景"
+          <video
+            src="/portfolio/unilife-product-story.mp4"
+            poster="/portfolio/unilife-video-poster.png"
+            aria-label="Simple Uni Life 用户问题情境动画"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
           />
+          <figcaption>15 SEC PRODUCT CONTEXT · PLAY / PAUSE</figcaption>
         </figure>
       </section>
 
@@ -125,11 +163,11 @@ export default function SimpleUniLifePage() {
           </figure>
           <figure>
             <img
-              src="/portfolio/unilife-layer-02.png"
-              alt="Simple Uni Life 用户总览界面"
+              src="/portfolio/unilife-course-structure.png"
+              alt="Simple Uni Life 课程结构详情界面"
               loading="lazy"
             />
-            <figcaption>USER DASHBOARD</figcaption>
+            <figcaption>COURSE STRUCTURE</figcaption>
           </figure>
         </div>
       </section>

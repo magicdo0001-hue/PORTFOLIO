@@ -945,11 +945,39 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
 .unilife-problem h2 { margin: 28px 0 36px; }
 .unilife-problem p:not(.chapter-label) { color: rgba(255,255,255,.55); }
 .unilife-problem figure img { min-height: 650px; object-fit: cover; }
+.unilife-friction-gallery {
+  padding: 22px max(40px, calc((100vw - 1640px) / 2)) 120px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  background: #101926;
+}
+.unilife-friction-gallery figure {
+  overflow: hidden;
+  background: #182437;
+}
+.unilife-friction-gallery img {
+  aspect-ratio: 4 / 3;
+  height: 100%;
+  object-fit: cover;
+}
+.unilife-friction-gallery figcaption {
+  padding: 14px 16px 18px;
+  color: rgba(255,255,255,.5);
+}
 .unilife-flow { display: grid; grid-template-columns: .62fr 1.38fr; gap: 6vw; background: #f3e8db; }
 .unilife-flow__copy { align-self: center; }
 .unilife-flow__copy h2 { margin: 28px 0 35px; }
 .unilife-flow figure { background: var(--white); box-shadow: 0 22px 60px rgba(50,35,20,.12); }
-.unilife-flow figure img { aspect-ratio: 1.75; object-fit: cover; }
+.unilife-flow figure img,
+.unilife-flow figure video {
+  width: 100%;
+  aspect-ratio: 1.75;
+  display: block;
+  object-fit: cover;
+  background: #101926;
+}
+.unilife-flow figcaption { padding: 14px 18px 18px; }
 .screen-rail { padding: 38px 0 100px; overflow: hidden; background: var(--ink); color: var(--white); }
 .screen-rail__intro { width: var(--shell); margin: 0 auto 38px; display: flex; justify-content: space-between; color: rgba(255,255,255,.55); }
 .screen-rail__track {
@@ -1073,6 +1101,7 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
   .bambino-balance,
   .unilife-problem,
   .unilife-flow { grid-template-columns: 1fr; }
+  .unilife-friction-gallery { grid-template-columns: 1fr; }
   .sangre-discovery aside { position: static; }
   .sangre-prototype__image img { min-height: auto; max-height: 70svh; }
   .bambino-balance__interaction img,
