@@ -673,11 +673,6 @@ figcaption {
   object-fit: cover;
   pointer-events: none;
 }
-.sphere-project-menu__tile[data-project="1"] img {
-  padding: 8%;
-  object-fit: contain;
-  background: #0d223e;
-}
 .sphere-project-menu__tile span {
   position: absolute;
   right: 7px;

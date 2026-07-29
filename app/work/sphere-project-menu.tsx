@@ -18,7 +18,12 @@ const projects = [
     type: "MEDICAL PRODUCT",
     year: "2024",
     href: "/work/sangre",
-    image: "/portfolio/sangre-sphere.jpg",
+    images: [
+      "/portfolio/sangre-sphere.jpg",
+      "/portfolio/sangre-layer-02.jpg",
+      "/portfolio/sangre-layer-03.jpg",
+      "/portfolio/sangre-layer-04.jpg",
+    ],
     description: "家庭慢病检测系统，从研究、交互到可验证原型。",
   },
   {
@@ -27,7 +32,12 @@ const projects = [
     type: "PRODUCT REDESIGN",
     year: "2024",
     href: "/work/bambino",
-    image: "/portfolio/bambino-cutout.png",
+    images: [
+      "/portfolio/bambino-layer-01.jpg",
+      "/portfolio/bambino-layer-02.png",
+      "/portfolio/bambino-layer-03.jpg",
+      "/portfolio/bambino-layer-04.jpg",
+    ],
     description: "重新设计机械锁定与动态反馈，让操作更稳、更清楚。",
   },
   {
@@ -36,7 +46,12 @@ const projects = [
     type: "DIGITAL PRODUCT",
     year: "2024",
     href: "/work/simple-uni-life",
-    image: "/portfolio/unilife-hero.webp",
+    images: [
+      "/portfolio/unilife-layer-01.png",
+      "/portfolio/unilife-layer-02.png",
+      "/portfolio/unilife-layer-03.png",
+      "/portfolio/unilife-layer-04.png",
+    ],
     description: "把分散的课程信息转化为可比较、可行动的决策工具。",
   },
 ];
@@ -46,11 +61,12 @@ const sphereNodes = [
   { lat: -18, offset: 30, projectOffset: 1 },
   { lat: 18, offset: 0, projectOffset: 2 },
   { lat: 54, offset: 30, projectOffset: 0 },
-].flatMap((ring) =>
+].flatMap((ring, ringIndex) =>
   Array.from({ length: 6 }, (_, index) => ({
     lat: ring.lat,
     lon: ring.offset + index * 60,
     project: (index + ring.projectOffset) % projects.length,
+    imageIndex: ringIndex,
   })),
 );
 
@@ -311,7 +327,11 @@ export default function SphereProjectMenu() {
                   if (didDrag.current) event.preventDefault();
                 }}
               >
-                <img src={project.image} alt="" draggable={false} />
+                <img
+                  src={project.images[node.imageIndex]}
+                  alt=""
+                  draggable={false}
+                />
                 <span>{project.index}</span>
               </Link>
             );

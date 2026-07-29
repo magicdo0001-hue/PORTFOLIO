@@ -19,6 +19,13 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
         <Link className="site-nav__glass" href="/work">
           项目
         </Link>
+        <a
+          className="site-nav__glass"
+          href="/wenhou-yan-portfolio-cn.pdf"
+          download
+        >
+          下载PDF作品集
+        </a>
         <a className="site-nav__glass" href="/wenhou-yan-resume.pdf" download>
           下载简历
         </a>

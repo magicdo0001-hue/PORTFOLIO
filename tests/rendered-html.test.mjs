@@ -33,6 +33,8 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(html, /BAMBINO V2/);
   assert.match(html, /SIMPLE UNI LIFE/);
   assert.match(html, /wyan39702@gmail\.com/);
+  assert.match(html, /下载PDF作品集/);
+  assert.match(html, /\/wenhou-yan-portfolio-cn\.pdf/);
   assert.ok(
     html.indexOf("关于") < html.indexOf("项目") &&
       html.indexOf("项目") < html.indexOf("下载简历"),
@@ -68,6 +70,8 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(sphereSource, /snapNode\.current = frontNode/);
   assert.match(sphereSource, /--focus-scale/);
   assert.match(sphereSource, /\/portfolio\/sangre-sphere\.jpg/);
+  assert.match(sphereSource, /imageIndex: ringIndex/);
+  assert.match(sphereSource, /project\.images\[node\.imageIndex\]/);
   assert.match(globalStyles, /\.site-nav[\s\S]*backdrop-filter: blur\(28px\)/);
   assert.match(globalStyles, /\.site-nav__glass[\s\S]*border-radius: 999px/);
   assert.match(globalStyles, /\.site-nav__glass:active/);
@@ -117,4 +121,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
     ),
   );
   await access(new URL("../public/wenhou-yan-resume.pdf", import.meta.url));
+  await access(
+    new URL("../public/wenhou-yan-portfolio-cn.pdf", import.meta.url),
+  );
 });
