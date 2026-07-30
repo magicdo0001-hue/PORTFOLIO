@@ -439,6 +439,7 @@ class ArcballControl {
   rotationAxis = vec3.fromValues(1, 0, 0);
   snapDirection = vec3.fromValues(0, 0, -1);
   snapTargetDirection;
+  focusTargetOrientation;
   EPSILON = 0.1;
   IDENTITY_QUAT = quat.create();
 
@@ -454,6 +455,7 @@ class ArcballControl {
     canvas.addEventListener('pointerdown', e => {
       vec2.set(this.pointerPos, e.clientX, e.clientY);
       vec2.copy(this.previousPointerPos, this.pointerPos);
+      this.focusTargetOrientation = null;
       this.isPointerDown = true;
     });
     canvas.addEventListener('pointerup', () => {
@@ -475,6 +477,26 @@ class ArcballControl {
     const timeScale = deltaTime / targetFrameDuration + 0.00001;
     let angleFactor = timeScale;
     let snapRotation = quat.create();
+
+    if (this.focusTargetOrientation) {
+      const target = this.focusTargetOrientation;
+      const dot = Math.min(1, Math.abs(quat.dot(this.orientation, target)));
+      const remainingAngle = 2 * Math.acos(dot);
+      const focusIntensity = 1 - Math.pow(0.78, timeScale);
+
+      quat.slerp(this.orientation, this.orientation, target, focusIntensity);
+      quat.normalize(this.orientation, this.orientation);
+      this.rotationVelocity = Math.min(0.12, remainingAngle / (2 * Math.PI));
+
+      if (remainingAngle < 0.002) {
+        quat.copy(this.orientation, target);
+        this.focusTargetOrientation = null;
+        this.rotationVelocity = 0;
+      }
+
+      this.updateCallback(deltaTime);
+      return;
+    }
 
     if (this.isPointerDown) {
       const INTENSITY = 0.3 * timeScale;
@@ -537,6 +559,13 @@ class ArcballControl {
     this.rotationVelocity = this._rotationVelocity / timeScale;
 
     this.updateCallback(deltaTime);
+  }
+
+  focusTo(targetOrientation) {
+    this.isPointerDown = false;
+    quat.identity(this.pointerRotation);
+    this.snapTargetDirection = null;
+    this.focusTargetOrientation = quat.clone(targetOrientation);
   }
 
   quatFromVectors(a, b, out, angleFactor = 1) {
@@ -914,6 +943,44 @@ class InfiniteGridMenu {
     const nearestVertexPos = this.instancePositions[index];
     return vec3.transformQuat(vec3.create(), nearestVertexPos, this.control.orientation);
   }
+
+  focusItem(itemIndex) {
+    const itemCount = Math.max(1, this.items.length);
+    let targetVertexIndex = -1;
+    let bestAlignment = -Infinity;
+
+    for (let i = 0; i < this.instancePositions.length; i += 1) {
+      if (i % itemCount !== itemIndex) continue;
+      const worldDirection = vec3.normalize(
+        vec3.create(),
+        this.#getVertexWorldPosition(i)
+      );
+      const alignment = vec3.dot(worldDirection, this.control.snapDirection);
+      if (alignment > bestAlignment) {
+        bestAlignment = alignment;
+        targetVertexIndex = i;
+      }
+    }
+
+    if (targetVertexIndex < 0) return;
+
+    const worldDirection = vec3.normalize(
+      vec3.create(),
+      this.#getVertexWorldPosition(targetVertexIndex)
+    );
+    const deltaRotation = quat.rotationTo(
+      quat.create(),
+      worldDirection,
+      this.control.snapDirection
+    );
+    const targetOrientation = quat.multiply(
+      quat.create(),
+      deltaRotation,
+      this.control.orientation
+    );
+    quat.normalize(targetOrientation, targetOrientation);
+    this.control.focusTo(targetOrientation);
+  }
 }
 
 const defaultItems = [
@@ -927,6 +994,7 @@ const defaultItems = [
 
 export default function InfiniteMenu({ items = [], scale = 1.0 }) {
   const canvasRef = useRef(null);
+  const sketchRef = useRef(null);
   const [activeItem, setActiveItem] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
 
@@ -948,6 +1016,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
         sk => sk.run(),
         scale
       );
+      sketchRef.current = sketch;
     }
 
     const handleResize = () => {
@@ -961,6 +1030,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (sketchRef.current === sketch) sketchRef.current = null;
     };
   }, [items, scale]);
 
@@ -982,6 +1052,12 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
   const projectNumbers = [
     ...new Set(items.map(item => item.index).filter(Boolean))
   ];
+  const handleProjectNumberClick = index => {
+    const targetItemIndex = items.findIndex(item => item.index === index);
+    if (targetItemIndex >= 0) {
+      sketchRef.current?.focusItem(targetItemIndex);
+    }
+  };
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -1017,14 +1093,18 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
             aria-label={`当前项目 ${activeItem.index} / ${projectNumbers.length}`}
           >
             {projectNumbers.map(index => (
-              <span
+              <button
+                type="button"
                 key={index}
+                aria-label={`展示项目 ${index}`}
+                aria-current={index === activeItem.index ? 'true' : undefined}
+                onClick={() => handleProjectNumberClick(index)}
                 className={`project-pagination__item ${
                   index === activeItem.index ? 'active' : ''
                 }`}
               >
                 {index}
-              </span>
+              </button>
             ))}
           </div>
         </>
