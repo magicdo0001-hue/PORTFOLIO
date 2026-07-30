@@ -54,6 +54,7 @@ const projects = [
       "/portfolio/battery-museum-04.jpeg",
       "/portfolio/battery-museum-05.jpeg",
     ],
+    focusImage: "/portfolio/battery-museum-02.jpeg",
     link: "/work/battery-packaging",
     title: "ENERGIZER PACKAGING",
     index: "04",
@@ -74,8 +75,12 @@ const projects = [
   },
 ];
 
-const items = projects.flatMap(({ images, ...project }) =>
-  images.map((image) => ({ ...project, image })),
+const items = projects.flatMap(({ images, focusImage, ...project }) =>
+  images.map((image) => ({
+    ...project,
+    image,
+    isProjectCover: image === (focusImage ?? images[0]),
+  })),
 );
 
 export default function InfiniteMenuLabPage() {

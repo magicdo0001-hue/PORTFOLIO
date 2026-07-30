@@ -1053,7 +1053,13 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
     ...new Set(items.map(item => item.index).filter(Boolean))
   ];
   const handleProjectNumberClick = index => {
-    const targetItemIndex = items.findIndex(item => item.index === index);
+    const preferredItemIndex = items.findIndex(
+      item => item.index === index && item.isProjectCover
+    );
+    const targetItemIndex =
+      preferredItemIndex >= 0
+        ? preferredItemIndex
+        : items.findIndex(item => item.index === index);
     if (targetItemIndex >= 0) {
       sketchRef.current?.focusItem(targetItemIndex);
     }

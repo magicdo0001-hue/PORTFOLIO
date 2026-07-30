@@ -267,6 +267,7 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(componentSource, /focusItem\(itemIndex\)/);
   assert.match(componentSource, /focusTo\(targetOrientation\)/);
   assert.match(componentSource, /handleProjectNumberClick/);
+  assert.match(componentSource, /item\.isProjectCover/);
   assert.match(componentSource, /查看/);
   assert.match(componentStyles, /#infinite-grid-menu-canvas/);
   assert.match(componentStyles, /\.action-button\.active/);
