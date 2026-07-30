@@ -16,6 +16,7 @@ const projects = [
     ],
     link: "/work/sangre",
     title: "SANGRE",
+    meta: "01 / 医疗产品 / 2024",
     description: "家庭慢病检测系统 · 研究、结构与功能原型",
   },
   {
@@ -27,6 +28,7 @@ const projects = [
     ],
     link: "/work/bambino",
     title: "BAMBINO V2",
+    meta: "02 / 产品再设计 / 2024",
     description: "机械锁定与动态反馈 · 产品再设计",
   },
   {
@@ -38,6 +40,7 @@ const projects = [
     ],
     link: "/work/simple-uni-life",
     title: "SIMPLE UNI LIFE",
+    meta: "03 / 数字产品 / 2025",
     description: "课程信息与决策体验 · 数字产品",
   },
   {
@@ -50,6 +53,7 @@ const projects = [
     ],
     link: "/work/battery-packaging",
     title: "ENERGIZER PACKAGING",
+    meta: "04 / 包装设计 / 2025",
     description: "电池包装与开启体验 · 项目资料待补充",
   },
   {
@@ -60,6 +64,7 @@ const projects = [
     ],
     link: "/work/vertical-car-park",
     title: "VERTICAL CAR PARK",
+    meta: "05 / 工业设计 / 2025",
     description: "模块化车架与空间系统 · 项目资料待补充",
   },
 ];

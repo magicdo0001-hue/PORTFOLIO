@@ -973,19 +973,36 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
     }
   };
 
+  const titleSize =
+    activeItem?.title.length <= 8
+      ? 'short'
+      : activeItem?.title.length <= 12
+        ? 'medium'
+        : 'long';
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <canvas id="infinite-grid-menu-canvas" ref={canvasRef} />
 
       {activeItem && (
         <>
-          <h2 className={`face-title ${isMoving ? 'inactive' : 'active'}`}>{activeItem.title}</h2>
-
-          <p className={`face-description ${isMoving ? 'inactive' : 'active'}`}> {activeItem.description}</p>
-
-          <div onClick={handleButtonClick} className={`action-button ${isMoving ? 'inactive' : 'active'}`}>
-            <p className="action-button-icon">&#x2197;</p>
+          <div className={`project-copy ${isMoving ? 'inactive' : 'active'}`}>
+            <p className="face-meta">{activeItem.meta}</p>
+            <h2 className={`face-title face-title--${titleSize}`}>
+              {activeItem.title}
+            </h2>
+            <p className="face-description">{activeItem.description}</p>
+            <p className="face-hint">拖动旋转 · 点击绿色按钮进入项目</p>
           </div>
+
+          <button
+            type="button"
+            aria-label={`进入 ${activeItem.title} 项目`}
+            onClick={handleButtonClick}
+            className={`action-button ${isMoving ? 'inactive' : 'active'}`}
+          >
+            <p className="action-button-icon">&#x2197;</p>
+          </button>
         </>
       )}
     </div>

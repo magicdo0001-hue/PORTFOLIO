@@ -260,7 +260,11 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(componentSource, /window\.location\.assign\(activeItem\.link\)/);
   assert.match(componentSource, /Math\.min\(img\.naturalWidth, img\.naturalHeight\)/);
   assert.match(componentSource, /768/);
+  assert.match(componentSource, /className={`project-copy/);
+  assert.match(componentSource, /face-meta/);
   assert.match(componentStyles, /#infinite-grid-menu-canvas/);
   assert.match(componentStyles, /\.action-button\.active/);
   assert.match(componentStyles, /var\(--acid, #a4ff00\)/);
+  assert.match(componentStyles, /\.project-copy::before/);
+  assert.match(componentStyles, /@media \(max-width: 1100px\)/);
 });
