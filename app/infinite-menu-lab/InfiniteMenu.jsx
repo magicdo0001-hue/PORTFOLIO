@@ -979,6 +979,9 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
       : activeItem?.title.length <= 12
         ? 'medium'
         : 'long';
+  const projectNumbers = [
+    ...new Set(items.map(item => item.index).filter(Boolean))
+  ];
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -1001,8 +1004,29 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
             onClick={handleButtonClick}
             className={`action-button ${isMoving ? 'inactive' : 'active'}`}
           >
-            <p className="action-button-icon">&#x2197;</p>
+            <span className="action-button-label">
+              查看
+              <br />
+              项目
+            </span>
+            <span className="action-button-icon">&#x2197;</span>
           </button>
+
+          <div
+            className={`project-pagination ${isMoving ? 'inactive' : 'active'}`}
+            aria-label={`当前项目 ${activeItem.index} / ${projectNumbers.length}`}
+          >
+            {projectNumbers.map(index => (
+              <span
+                key={index}
+                className={`project-pagination__item ${
+                  index === activeItem.index ? 'active' : ''
+                }`}
+              >
+                {index}
+              </span>
+            ))}
+          </div>
         </>
       )}
     </div>

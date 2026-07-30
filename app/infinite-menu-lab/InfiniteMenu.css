@@ -15,17 +15,19 @@
 
 .action-button {
   position: absolute;
-  left: 50%;
+  right: clamp(32px, 4vw, 80px);
+  bottom: clamp(48px, 8vh, 96px);
   z-index: 10;
-  width: 60px;
-  height: 60px;
-  display: grid;
-  place-items: center;
+  width: clamp(154px, 9vw, 184px);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--acid, #a4ff00);
-  border: none;
   border-radius: 50%;
   cursor: pointer;
-  border: 5px solid #000;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  color: #07110d;
 }
 
 .project-copy {
@@ -105,10 +107,20 @@
 
 .action-button-icon {
   user-select: none;
-  position: relative;
+  position: absolute;
+  top: 22px;
+  right: 24px;
   color: #07110d;
-  top: 2px;
-  font-size: 26px;
+  font-size: clamp(28px, 1.8vw, 36px);
+  line-height: 1;
+}
+
+.action-button-label {
+  font-size: clamp(17px, 1vw, 21px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-align: left;
 }
 
 .face-description {
@@ -126,25 +138,56 @@
   letter-spacing: 0.12em;
 }
 
-.action-button {
-  position: absolute;
-  left: 50%;
-}
-
 .action-button.active {
-  bottom: 3.8em;
-  transform: translateX(-50%) scale(1);
+  transform: scale(1);
   opacity: 1;
   pointer-events: auto;
-  transition: 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .action-button.inactive {
-  bottom: -80px;
-  transform: translateX(-50%) scale(0);
+  transform: scale(0.72);
   opacity: 0;
   pointer-events: none;
-  transition: 0.1s ease;
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
+}
+
+.project-pagination {
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: clamp(18px, 2.8vh, 30px);
+  display: flex;
+  gap: 8px;
+  transform: translateX(-50%);
+  transition: opacity 0.2s ease;
+}
+
+.project-pagination.inactive {
+  opacity: 0.42;
+}
+
+.project-pagination__item {
+  width: 42px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.project-pagination__item.active {
+  border-color: var(--acid, #a4ff00);
+  color: #07110d;
+  background: var(--acid, #a4ff00);
 }
 
 @media (max-width: 1100px) {
@@ -181,15 +224,34 @@
   .action-button {
     left: auto;
     right: 24px;
+    bottom: 24px;
+    width: 60px;
+    height: 60px;
+    aspect-ratio: auto;
+    border: 5px solid #000;
   }
 
   .action-button.active {
-    bottom: 24px;
     transform: scale(0.86);
   }
 
   .action-button.inactive {
     transform: scale(0);
+  }
+
+  .action-button-label {
+    display: none;
+  }
+
+  .action-button-icon {
+    position: relative;
+    top: 2px;
+    right: auto;
+    font-size: 26px;
+  }
+
+  .project-pagination {
+    bottom: 24px;
   }
 }
 
@@ -220,5 +282,16 @@
 
   .action-button.active {
     bottom: 18px;
+  }
+
+  .project-pagination {
+    bottom: 20px;
+    gap: 5px;
+  }
+
+  .project-pagination__item {
+    width: 30px;
+    height: 22px;
+    font-size: 7px;
   }
 }
