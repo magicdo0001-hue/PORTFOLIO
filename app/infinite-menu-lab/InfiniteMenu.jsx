@@ -702,7 +702,7 @@ class InfiniteGridMenu {
     this.atlasSize = Math.ceil(Math.sqrt(itemCount));
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const cellSize = 512;
+    const cellSize = 768;
 
     canvas.width = this.atlasSize * cellSize;
     canvas.height = this.atlasSize * cellSize;
@@ -721,7 +721,20 @@ class InfiniteGridMenu {
       images.forEach((img, i) => {
         const x = (i % this.atlasSize) * cellSize;
         const y = Math.floor(i / this.atlasSize) * cellSize;
-        ctx.drawImage(img, x, y, cellSize, cellSize);
+        const sourceSize = Math.min(img.naturalWidth, img.naturalHeight);
+        const sourceX = (img.naturalWidth - sourceSize) * 0.5;
+        const sourceY = (img.naturalHeight - sourceSize) * 0.5;
+        ctx.drawImage(
+          img,
+          sourceX,
+          sourceY,
+          sourceSize,
+          sourceSize,
+          x,
+          y,
+          cellSize,
+          cellSize
+        );
       });
 
       gl.bindTexture(gl.TEXTURE_2D, this.tex);

@@ -6,44 +6,67 @@ export const metadata: Metadata = {
   description: "基于 React Bits Infinite Menu 的项目主页交互验证。",
 };
 
-const items = [
+const projects = [
   {
-    image: "/portfolio/sangre-menu-01.jpg",
+    images: [
+      "/portfolio/sangre-menu-01.jpg",
+      "/portfolio/sangre-menu-02.jpg",
+      "/portfolio/sangre-menu-03.png",
+      "/portfolio/sangre-menu-04.jpg",
+    ],
     link: "/work/sangre",
     title: "SANGRE",
-    description: "家庭慢病检测系统",
+    description: "家庭慢病检测系统 · 研究、结构与功能原型",
   },
   {
-    image: "/portfolio/sangre-menu-02.jpg",
-    link: "/work/sangre",
-    title: "SANGRE",
-    description: "研究、结构与功能原型",
-  },
-  {
-    image: "/portfolio/bambino-menu-03.jpg",
+    images: [
+      "/portfolio/bambino-menu-01.jpg",
+      "/portfolio/bambino-menu-02.jpg",
+      "/portfolio/bambino-menu-03.jpg",
+      "/portfolio/bambino-menu-04.jpg",
+    ],
     link: "/work/bambino",
     title: "BAMBINO V2",
-    description: "机械锁定与动态反馈",
+    description: "机械锁定与动态反馈 · 产品再设计",
   },
   {
-    image: "/portfolio/bambino-menu-04.jpg",
-    link: "/work/bambino",
-    title: "BAMBINO V2",
-    description: "产品再设计与实体验证",
-  },
-  {
-    image: "/portfolio/unilife-menu-01.png",
+    images: [
+      "/portfolio/unilife-menu-01.png",
+      "/portfolio/unilife-menu-02.png",
+      "/portfolio/unilife-menu-03.png",
+      "/portfolio/unilife-menu-04.png",
+    ],
     link: "/work/simple-uni-life",
     title: "SIMPLE UNI LIFE",
-    description: "课程信息与决策体验",
+    description: "课程信息与决策体验 · 数字产品",
   },
   {
-    image: "/portfolio/unilife-menu-04.png",
-    link: "/work/simple-uni-life",
-    title: "SIMPLE UNI LIFE",
-    description: "数字产品与界面系统",
+    images: [
+      "/portfolio/battery-museum-01.jpeg",
+      "/portfolio/battery-museum-02.jpeg",
+      "/portfolio/battery-museum-03.jpeg",
+      "/portfolio/battery-museum-04.jpeg",
+      "/portfolio/battery-museum-05.jpeg",
+    ],
+    link: "/work/battery-packaging",
+    title: "ENERGIZER PACKAGING",
+    description: "电池包装与开启体验 · 项目资料待补充",
+  },
+  {
+    images: [
+      "/portfolio/frame-museum-01.jpg",
+      "/portfolio/frame-museum-02.jpg",
+      "/portfolio/frame-museum-03.jpg",
+    ],
+    link: "/work/vertical-car-park",
+    title: "VERTICAL CAR PARK",
+    description: "模块化车架与空间系统 · 项目资料待补充",
   },
 ];
+
+const items = projects.flatMap(({ images, ...project }) =>
+  images.map((image) => ({ ...project, image })),
+);
 
 export default function InfiniteMenuLabPage() {
   return (

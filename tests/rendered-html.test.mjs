@@ -126,6 +126,24 @@ test("renders the portfolio index and three distinct case studies", async () => 
         "unilife-course-structure.png",
       ],
     ],
+    [
+      "/work/battery-packaging",
+      /ENERGIZER PACKAGING/,
+      [
+        "battery-museum-02.jpeg",
+        "battery-museum-01.jpeg",
+        "battery-museum-04.jpeg",
+      ],
+    ],
+    [
+      "/work/vertical-car-park",
+      /VERTICAL CAR PARK/,
+      [
+        "frame-museum-02.jpg",
+        "frame-museum-01.jpg",
+        "frame-museum-03.jpg",
+      ],
+    ],
   ];
 
   const localizedPages = [html, workHtml];
@@ -190,6 +208,8 @@ test("renders the portfolio index and three distinct case studies", async () => 
       "../app/work/sangre/page.tsx",
       "../app/work/bambino/page.tsx",
       "../app/work/simple-uni-life/page.tsx",
+      "../app/work/battery-packaging/page.tsx",
+      "../app/work/vertical-car-park/page.tsx",
     ].map((path) => readFile(new URL(path, import.meta.url), "utf8")),
   );
   const assets = sources.flatMap((source) =>
@@ -219,6 +239,10 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(html, /sangre-menu-01\.jpg/);
   assert.match(html, /bambino-menu-03\.jpg/);
   assert.match(html, /unilife-menu-01\.png/);
+  assert.match(html, /battery-museum-01\.jpeg/);
+  assert.match(html, /frame-museum-01\.jpg/);
+  assert.match(html, /\/work\/battery-packaging/);
+  assert.match(html, /\/work\/vertical-car-park/);
 
   const componentSource = await readFile(
     new URL("../app/infinite-menu-lab/InfiniteMenu.jsx", import.meta.url),
@@ -234,6 +258,9 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(componentSource, /class InfiniteGridMenu/);
   assert.match(componentSource, /#version 300 es/);
   assert.match(componentSource, /window\.location\.assign\(activeItem\.link\)/);
+  assert.match(componentSource, /Math\.min\(img\.naturalWidth, img\.naturalHeight\)/);
+  assert.match(componentSource, /768/);
   assert.match(componentStyles, /#infinite-grid-menu-canvas/);
   assert.match(componentStyles, /\.action-button\.active/);
+  assert.match(componentStyles, /var\(--acid, #a4ff00\)/);
 });

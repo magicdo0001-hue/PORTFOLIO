@@ -57,7 +57,7 @@ export function ProjectHero({
   role: string;
   lede: string;
   image: string;
-  tone: "sangre" | "bambino" | "unilife";
+  tone: "sangre" | "bambino" | "unilife" | "battery" | "frame";
 }) {
   return (
     <section className={`project-hero project-hero--${tone}`}>
@@ -66,7 +66,7 @@ export function ProjectHero({
       <div className="project-hero__veil" />
       <div className="project-hero__content shell">
         <div className="project-hero__meta">
-          <span>{index} / 03</span>
+          <span>{index} / 05</span>
           <span>{category}</span>
           <span>{period}</span>
           <span>{role}</span>

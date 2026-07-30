@@ -21,7 +21,7 @@
   height: 60px;
   display: grid;
   place-items: center;
-  background: #5227ff;
+  background: var(--acid, #a4ff00);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -40,7 +40,7 @@
 .action-button-icon {
   user-select: none;
   position: relative;
-  color: #fff;
+  color: #07110d;
   top: 2px;
   font-size: 26px;
 }

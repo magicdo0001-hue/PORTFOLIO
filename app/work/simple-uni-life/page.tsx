@@ -187,9 +187,9 @@ export default function SimpleUniLifePage() {
       </section>
 
       <ProjectEnd
-        nextHref="/work/sangre"
-        nextIndex="01"
-        nextTitle="SANGRE"
+        nextHref="/work/battery-packaging"
+        nextIndex="04"
+        nextTitle="ENERGIZER PACKAGING"
       />
     </main>
   );
