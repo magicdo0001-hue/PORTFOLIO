@@ -464,13 +464,16 @@ class ArcballControl {
     canvas.addEventListener('pointerleave', () => {
       this.isPointerDown = false;
     });
+    canvas.addEventListener('pointercancel', () => {
+      this.isPointerDown = false;
+    });
     canvas.addEventListener('pointermove', e => {
       if (this.isPointerDown) {
         vec2.set(this.pointerPos, e.clientX, e.clientY);
       }
     });
 
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
   }
 
   update(deltaTime, targetFrameDuration = 16) {
@@ -992,6 +995,20 @@ const defaultItems = [
   }
 ];
 
+/**
+ * @param {{
+ *   items?: Array<{
+ *     image: string;
+ *     link: string;
+ *     title: string;
+ *     index?: string;
+ *     meta?: string;
+ *     description?: string;
+ *     isProjectCover?: boolean;
+ *   }>;
+ *   scale?: number;
+ * }} props
+ */
 export default function InfiniteMenu({ items = [], scale = 1.0 }) {
   const canvasRef = useRef(null);
   const sketchRef = useRef(null);

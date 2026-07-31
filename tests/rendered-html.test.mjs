@@ -230,12 +230,14 @@ test("renders the portfolio index and three distinct case studies", async () => 
   );
 });
 
-test("renders the standalone React Bits Infinite Menu design lab", async () => {
-  const response = await render("/infinite-menu-lab");
+test("integrates the Infinite Menu museum into the work page", async () => {
+  const response = await render("/work");
   const html = await response.text();
 
   assert.equal(response.status, 200);
-  assert.match(html, /Infinite Menu 设计验证/);
+  assert.match(html, /id="museum"/);
+  assert.match(html, /work-museum__transition/);
+  assert.match(html, /work-museum__stage/);
   assert.match(html, /sangre-menu-01\.jpg/);
   assert.match(html, /bambino-menu-03\.jpg/);
   assert.match(html, /unilife-menu-01\.png/);
@@ -243,6 +245,23 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(html, /frame-museum-01\.jpg/);
   assert.match(html, /\/work\/battery-packaging/);
   assert.match(html, /\/work\/vertical-car-park/);
+  assert.equal(
+    (html.match(/class="site-nav shell"/g) ?? []).length,
+    1,
+    "the combined page renders one global navigation",
+  );
+  assert.equal(
+    (html.match(/class="site-footer"/g) ?? []).length,
+    1,
+    "the combined page renders one global footer",
+  );
+
+  const legacyResponse = await render("/infinite-menu-lab");
+  assert.ok(
+    [307, 308].includes(legacyResponse.status),
+    "the old museum route redirects to the integrated chapter",
+  );
+  assert.match(legacyResponse.headers.get("location") ?? "", /\/work#museum$/);
 
   const componentSource = await readFile(
     new URL("../app/infinite-menu-lab/InfiniteMenu.jsx", import.meta.url),
@@ -268,6 +287,7 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(componentSource, /focusTo\(targetOrientation\)/);
   assert.match(componentSource, /handleProjectNumberClick/);
   assert.match(componentSource, /item\.isProjectCover/);
+  assert.match(componentSource, /touchAction = 'pan-y'/);
   assert.match(componentSource, /查看/);
   assert.match(componentStyles, /#infinite-grid-menu-canvas/);
   assert.match(componentStyles, /\.action-button\.active/);
@@ -278,4 +298,15 @@ test("renders the standalone React Bits Infinite Menu design lab", async () => {
   assert.match(componentStyles, /action-button-enter/);
   assert.match(componentStyles, /\.action-button\.active:hover/);
   assert.match(componentStyles, /@media \(max-width: 1100px\)/);
+
+  const globalStyles = await readFile(
+    new URL("../app/globals.css", import.meta.url),
+    "utf8",
+  );
+  assert.match(globalStyles, /\.work-museum__transition/);
+  assert.match(globalStyles, /\.work-museum__stage/);
+  assert.match(
+    globalStyles,
+    /\.sphere-project-menu__viewport\s*{[\s\S]*?touch-action: pan-y;/,
+  );
 });

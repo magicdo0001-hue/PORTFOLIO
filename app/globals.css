@@ -595,6 +595,88 @@ figcaption {
   pointer-events: none;
 }
 .work-index__hero::after { width: min(48vw,640px); }
+.work-museum {
+  position: relative;
+  z-index: 4;
+  overflow: clip;
+  background: #000;
+  color: var(--white);
+}
+.work-museum__transition {
+  position: relative;
+  min-height: clamp(480px, 64svh, 760px);
+  padding-block: clamp(130px, 18vh, 230px) clamp(110px, 15vh, 190px);
+  display: grid;
+  grid-template-columns: minmax(110px, .34fr) minmax(0, 1.5fr) minmax(240px, .52fr);
+  gap: clamp(28px, 4vw, 76px);
+  align-items: end;
+  border-top: 1px solid rgba(255,255,255,.18);
+  isolation: isolate;
+}
+.work-museum__transition::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 51%;
+  bottom: -44%;
+  width: min(68vw, 980px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(173,255,31,.11), transparent 63%);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.work-museum__chapter {
+  align-self: start;
+  display: grid;
+  gap: 8px;
+  color: rgba(255,255,255,.55);
+  font-size: 10px;
+  letter-spacing: .16em;
+}
+.work-museum__chapter span:last-child { color: var(--acid); }
+.work-museum__transition h2 {
+  max-width: 12ch;
+  font-size: clamp(54px, 7vw, 126px);
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: -.075em;
+}
+.work-museum__transition h2 em {
+  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-weight: 400;
+}
+.work-museum__intro {
+  display: grid;
+  gap: 42px;
+  color: rgba(255,255,255,.62);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.work-museum__intro a {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.36);
+  color: var(--white);
+  font-size: 11px;
+  letter-spacing: .14em;
+}
+.work-museum__intro a span { color: var(--acid); font-size: 17px; }
+.work-museum__stage {
+  position: relative;
+  height: max(760px, 100svh);
+  min-height: 760px;
+  overflow: hidden;
+  scroll-margin-top: 100px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(173,255,31,.035), transparent 34%),
+    #000;
+}
 .sphere-project-menu {
   --sphere-radius: clamp(280px,31vw,520px);
   position: absolute;
@@ -607,7 +689,7 @@ figcaption {
   inset: 0;
   perspective: 1000px;
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
   overscroll-behavior: contain;
   user-select: none;
 }
@@ -1144,6 +1226,13 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
   .home-project-wheel__options { right: 1%; }
   .home-hero__process { position: relative; z-index: 3; width: min(620px, 74vw); }
   .profile-detail { grid-template-columns: 1fr 1fr; }
+  .work-museum__transition {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+  .work-museum__intro {
+    grid-column: 2;
+    max-width: 480px;
+  }
   .sphere-project-menu { --sphere-radius: clamp(270px,35vw,360px); }
   .sphere-project-menu__tile { width: clamp(105px,13vw,145px); }
   .sphere-project-menu__info h1 { font-size: clamp(58px,11vw,100px); }
@@ -1226,6 +1315,31 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
   .profile-statement img { left: auto; right: 3%; width: 36vw; opacity: .55; }
   .profile-detail { grid-template-columns: 1fr; padding-block: 60px; }
   .profile-detail > div, .profile-detail aside { min-height: 220px; border-right: 1px solid var(--line); }
+  .work-museum__transition {
+    min-height: 620px;
+    padding-block: 120px 100px;
+    grid-template-columns: 1fr;
+    gap: 34px;
+    align-content: center;
+  }
+  .work-museum__chapter {
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: 12px;
+  }
+  .work-museum__transition h2 {
+    max-width: 11ch;
+    font-size: clamp(48px, 14vw, 70px);
+  }
+  .work-museum__intro {
+    grid-column: 1;
+    max-width: 36ch;
+    gap: 30px;
+  }
+  .work-museum__stage {
+    height: 100svh;
+    min-height: 680px;
+  }
   .sphere-project-menu { --sphere-radius: 220px; }
   .sphere-project-menu__globe { top: 42%; }
   .sphere-project-menu__tile { width: 98px; }
