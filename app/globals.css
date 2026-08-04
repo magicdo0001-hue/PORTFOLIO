@@ -737,6 +737,19 @@ figcaption {
     radial-gradient(circle at 50% 50%, rgba(173,255,31,.035), transparent 34%),
     #000;
 }
+.work-museum__stage::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 30% 66% at -8% 50%, rgba(164,255,0,.18), transparent 68%),
+    radial-gradient(ellipse 30% 66% at 108% 50%, rgba(164,255,0,.18), transparent 68%),
+    radial-gradient(ellipse 54% 24% at 50% -10%, rgba(164,255,0,.1), transparent 72%);
+  opacity: .72;
+  mix-blend-mode: screen;
+}
 @media (min-width: 641px) {
   .work-museum__stage {
     scroll-margin-top: 0;
