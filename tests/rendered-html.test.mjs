@@ -140,11 +140,11 @@ test("renders the portfolio index and three distinct case studies", async () => 
     ],
     [
       "/work/vertical-car-park",
-      /VERTICAL CAR PARK/,
+      /ARTI64/,
       [
-        "frame-museum-02.jpg",
-        "frame-museum-01.jpg",
-        "frame-museum-03.jpg",
+        "arti64-collection.jpg",
+        "arti64-printing.jpg",
+        "arti64-market-table.jpg",
       ],
     ],
   ];
@@ -245,7 +245,7 @@ test("integrates the Infinite Menu museum into the work page", async () => {
   assert.match(html, /bambino-menu-03\.jpg/);
   assert.match(html, /unilife-menu-01\.png/);
   assert.match(html, /battery-museum-01\.jpeg/);
-  assert.match(html, /frame-museum-01\.jpg/);
+  assert.match(html, /arti64-display-wall\.jpg/);
   assert.match(html, /\/work\/battery-packaging/);
   assert.match(html, /\/work\/vertical-car-park/);
   assert.equal(
