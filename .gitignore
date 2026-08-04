@@ -48,3 +48,4 @@ next-env.d.ts
 *.log
 /tmp/
 /app/_sites-preview/
+/design-qa.md
