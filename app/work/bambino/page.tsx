@@ -5,7 +5,7 @@ import {
 } from "../../project-shell";
 
 export const metadata = {
-  title: "BAMBINO V2 — 严文厚",
+  title: "BAMBINO V2 | 严文厚",
   description: "围绕机械锁定和动态反馈的家用意式咖啡机再设计。",
 };
 

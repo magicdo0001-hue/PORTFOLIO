@@ -5,13 +5,13 @@ import {
 } from "../../project-shell";
 
 export const metadata = {
-  title: "VERTICAL CAR PARK — 严文厚",
+  title: "VERTICAL CAR PARK | 严文厚",
   description: "模块化车架与空间系统项目，详细内容待补充。",
 };
 
 export default function VerticalCarParkPage() {
   return (
-    <main className="project project--placeholder">
+    <main className="project project--placeholder project--frame">
       <ProjectHero
         index="05"
         title="VERTICAL CAR PARK"

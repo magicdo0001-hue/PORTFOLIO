@@ -27,7 +27,7 @@ export const museumProjects = [
   },
   {
     images: [
-      "/portfolio/unilife-menu-01.png",
+      "/portfolio/unilife-menu-search.png",
       "/portfolio/unilife-menu-02.png",
       "/portfolio/unilife-menu-03.png",
       "/portfolio/unilife-menu-04.png",

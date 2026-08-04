@@ -5,13 +5,13 @@ import {
 } from "../../project-shell";
 
 export const metadata = {
-  title: "ENERGIZER PACKAGING — 严文厚",
+  title: "ENERGIZER PACKAGING | 严文厚",
   description: "电池包装与开启体验项目，详细内容待补充。",
 };
 
 export default function BatteryPackagingPage() {
   return (
-    <main className="project project--placeholder">
+    <main className="project project--placeholder project--battery">
       <ProjectHero
         index="04"
         title="ENERGIZER PACKAGING"

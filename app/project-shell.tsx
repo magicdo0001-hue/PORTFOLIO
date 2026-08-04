@@ -1,9 +1,27 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import GlassSurface from "./glass-surface";
 
 export function SiteHeader({ light = false }: { light?: boolean }) {
   return (
     <header className={`site-nav shell${light ? " site-nav--light" : ""}`}>
+      <GlassSurface
+        className="site-nav__surface"
+        width="100%"
+        height="100%"
+        borderRadius={999}
+        borderWidth={0.07}
+        brightness={50}
+        opacity={0.93}
+        blur={11}
+        displace={0.5}
+        backgroundOpacity={0.1}
+        saturation={1}
+        distortionScale={-180}
+        redOffset={0}
+        greenOffset={10}
+        blueOffset={20}
+      >
       <Link
         className="site-nav__brand site-nav__glass"
         href="/"
@@ -36,6 +54,7 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
       >
         联系我 <span aria-hidden="true">↗</span>
       </a>
+      </GlassSurface>
     </header>
   );
 }
@@ -62,7 +81,14 @@ export function ProjectHero({
   return (
     <section className={`project-hero project-hero--${tone}`}>
       <SiteHeader light={tone !== "bambino"} />
-      <img className="project-hero__image" src={image} alt={`${title} 项目主视觉`} />
+      <img
+        className="project-hero__image"
+        src={image}
+        alt={`${title} 项目主视觉`}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
+      />
       <div className="project-hero__veil" />
       <div className="project-hero__content shell">
         <div className="project-hero__meta">

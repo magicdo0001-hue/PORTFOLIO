@@ -5,7 +5,7 @@ import {
 } from "../../project-shell";
 
 export const metadata = {
-  title: "SANGRE — 严文厚",
+  title: "SANGRE | 严文厚",
   description: "家庭心血管监测设备：从研究、结构到一比一功能原型。",
 };
 

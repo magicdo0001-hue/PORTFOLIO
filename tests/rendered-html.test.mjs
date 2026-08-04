@@ -90,7 +90,10 @@ test("renders the portfolio index and three distinct case studies", async () => 
     assert.match(sphereSource, new RegExp(asset.replace(".", "\\.")));
     await access(new URL(`../public/portfolio/${asset}`, import.meta.url));
   }
-  assert.match(globalStyles, /\.site-nav[\s\S]*backdrop-filter: blur\(28px\)/);
+  assert.match(
+    globalStyles,
+    /\.glass-surface--svg[\s\S]*backdrop-filter: var\(--filter-id\) saturate\(var\(--glass-saturation, 1\)\)/,
+  );
   assert.match(globalStyles, /\.site-nav__glass[\s\S]*border-radius: 999px/);
   assert.match(globalStyles, /\.site-nav__glass:active/);
   assert.match(
@@ -305,6 +308,10 @@ test("integrates the Infinite Menu museum into the work page", async () => {
   );
   assert.match(globalStyles, /\.work-museum__transition/);
   assert.match(globalStyles, /\.work-museum__stage/);
+  assert.match(
+    globalStyles,
+    /\.work-museum__stage\s*{[\s\S]*?scroll-snap-align: start;/,
+  );
   assert.match(
     globalStyles,
     /\.sphere-project-menu__viewport\s*{[\s\S]*?touch-action: pan-y;/,

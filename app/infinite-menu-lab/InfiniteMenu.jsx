@@ -1099,14 +1099,14 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
 
           <button
             type="button"
-            aria-label={`进入 ${activeItem.title} 项目`}
+            aria-label={`点击查看 ${activeItem.title}`}
             onClick={handleButtonClick}
             className={`action-button ${isMoving ? 'inactive' : 'active'}`}
           >
             <span className="action-button-label">
-              查看
+              点击
               <br />
-              项目
+              查看
             </span>
             <span className="action-button-icon">&#x2197;</span>
           </button>

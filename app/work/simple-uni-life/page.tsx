@@ -3,9 +3,10 @@ import {
   ProjectEnd,
   ProjectHero,
 } from "../../project-shell";
+import { SimpleUniLifeLiveDemo } from "./live-demo";
 
 export const metadata = {
-  title: "SIMPLE UNI LIFE — 严文厚",
+  title: "SIMPLE UNI LIFE | 严文厚",
   description: "帮助留学生比较课程信息并建立决策信心的数字产品。",
 };
 
@@ -172,9 +173,11 @@ export default function SimpleUniLifePage() {
         </div>
       </section>
 
+      <SimpleUniLifeLiveDemo />
+
       <section className="unilife-outcome">
         <div className="shell">
-          <p className="chapter-label">05 / 项目结果</p>
+          <p className="chapter-label">06 / 项目结果</p>
           <h2>
             数字产品真正完成，
             <br />
