@@ -55,15 +55,15 @@ export const museumProjects = [
   },
   {
     images: [
-      "/portfolio/frame-museum-01.jpg",
-      "/portfolio/frame-museum-02.jpg",
-      "/portfolio/frame-museum-03.jpg",
+      "/portfolio/arti64-display-wall.jpg",
+      "/portfolio/arti64-printing.jpg",
+      "/portfolio/arti64-market-table.jpg",
     ],
     link: "/work/vertical-car-park",
-    title: "VERTICAL CAR PARK",
+    title: "ARTI64 模型车架",
     index: "05",
     meta: "05 / 工业设计 / 2025",
-    description: "模块化车架与空间系统 · 项目资料待补充",
+    description: "一比六十四模型车的模块化展示系统",
   },
 ];
 
