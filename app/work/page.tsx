@@ -1,6 +1,6 @@
 import SphereProjectMenu from "./sphere-project-menu";
 import MuseumSection from "./museum-section";
-import { ContactFooter, SiteHeader } from "../project-shell";
+import { SiteHeader } from "../project-shell";
 
 export default function WorkIndex() {
   return (
@@ -10,7 +10,6 @@ export default function WorkIndex() {
         <SphereProjectMenu />
       </section>
       <MuseumSection />
-      <ContactFooter />
     </main>
   );
 }
