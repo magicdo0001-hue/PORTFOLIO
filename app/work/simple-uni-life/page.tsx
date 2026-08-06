@@ -57,7 +57,7 @@ export default function SimpleUniLifePage() {
       </FactRail>
 
       <section className="unilife-problem chapter">
-        <div>
+        <aside className="unilife-problem__copy">
           <p className="chapter-label">02 / 用户研究</p>
           <h2>
             信息无处不在。
@@ -67,45 +67,46 @@ export default function SimpleUniLifePage() {
           <p>
             访谈与情境研究显示，学生必须跨越课程官网、社交平台和零散评价，才能拼出一个勉强可用的判断。
           </p>
+        </aside>
+        <div
+          className="unilife-problem__media"
+          aria-label="Simple Uni Life 用户研究场景"
+        >
+          <figure className="unilife-problem__lead">
+            <img
+              src="/portfolio/unilife-friction-search.png"
+              alt="留学生在多个课程网站和评价平台之间搜索信息"
+              loading="lazy"
+            />
+            <figcaption>研究情境 · 决策阻力</figcaption>
+          </figure>
+          <div className="unilife-friction-gallery">
+            <figure>
+              <img
+                src="/portfolio/unilife-friction-paths.png"
+                alt="学生面对课程难度、时间冲突和评分信息做选择"
+                loading="lazy"
+              />
+              <figcaption>相互冲突的信息</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="/portfolio/unilife-friction-social.png"
+                alt="学生被社交平台和群聊中的零散课程信息包围"
+                loading="lazy"
+              />
+              <figcaption>碎片化的社交证据</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="/portfolio/unilife-friction-reviews.png"
+                alt="学生比较互相矛盾的匿名课程评价"
+                loading="lazy"
+              />
+              <figcaption>不可靠的评价</figcaption>
+            </figure>
+          </div>
         </div>
-        <figure>
-          <img
-            src="/portfolio/unilife-friction-search.png"
-            alt="留学生在多个课程网站和评价平台之间搜索信息"
-            loading="lazy"
-          />
-          <figcaption>研究情境 · 决策阻力</figcaption>
-        </figure>
-      </section>
-
-      <section
-        className="unilife-friction-gallery"
-        aria-label="Simple Uni Life 用户研究场景"
-      >
-        <figure>
-          <img
-            src="/portfolio/unilife-friction-paths.png"
-            alt="学生面对课程难度、时间冲突和评分信息做选择"
-            loading="lazy"
-          />
-          <figcaption>相互冲突的信息</figcaption>
-        </figure>
-        <figure>
-          <img
-            src="/portfolio/unilife-friction-social.png"
-            alt="学生被社交平台和群聊中的零散课程信息包围"
-            loading="lazy"
-          />
-          <figcaption>碎片化的社交证据</figcaption>
-        </figure>
-        <figure>
-          <img
-            src="/portfolio/unilife-friction-reviews.png"
-            alt="学生比较互相矛盾的匿名课程评价"
-            loading="lazy"
-          />
-          <figcaption>不可靠的评价</figcaption>
-        </figure>
       </section>
 
       <section className="unilife-flow chapter">

@@ -72,14 +72,6 @@ export default function VerticalCarParkPage() {
           />
           <figcaption>收藏环境观察：包装、展示盒与开放式车架并存</figcaption>
         </figure>
-        <figure className="arti64-context__portrait">
-          <img
-            src="/portfolio/arti64-collection.jpg"
-            alt="Arti64 模块化车架组成的模型车展示墙"
-            loading="lazy"
-          />
-          <figcaption>模块组合后形成连续、清晰的收藏界面</figcaption>
-        </figure>
       </section>
 
       <section className="arti64-process">
@@ -134,7 +126,7 @@ export default function VerticalCarParkPage() {
           <dl>
             <div>
               <dt>合作伙伴</dt>
-              <dd>Tomic Yan、Fengyuan Liu</dd>
+              <dd>陈子骞、Fengyuan Liu</dd>
             </div>
             <div>
               <dt>我的工作</dt>
@@ -160,13 +152,23 @@ export default function VerticalCarParkPage() {
       </section>
 
       <section className="arti64-outcome chapter shell">
-        <figure>
-          <img
-            src="/portfolio/arti64-display-wall.jpg"
-            alt="装满一比六十四模型车的 Arti64 模块化展示架"
-            loading="lazy"
-          />
-        </figure>
+        <div className="arti64-outcome__media">
+          <figure>
+            <img
+              src="/portfolio/arti64-display-wall.jpg"
+              alt="装满一比六十四模型车的 Arti64 模块化展示架"
+              loading="lazy"
+            />
+          </figure>
+          <figure>
+            <img
+              src="/portfolio/arti64-collection.jpg"
+              alt="Arti64 模块化车架组成的模型车展示墙"
+              loading="lazy"
+            />
+            <figcaption>模块组合后形成连续、清晰的收藏界面</figcaption>
+          </figure>
+        </div>
         <div>
           <p className="chapter-label">项目结果</p>
           <h2>让一个想法离开电脑，进入收藏者的真实世界。</h2>

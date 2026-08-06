@@ -25,10 +25,10 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
       <Link
         className="site-nav__brand site-nav__glass"
         href="/"
-        aria-label="严文厚作品集首页"
+        aria-label="作品集首页"
       >
         <span>WY</span>
-        <strong>严文厚</strong>
+        <strong>首页</strong>
       </Link>
       <nav aria-label="主导航">
         <Link className="site-nav__glass" href="/#profile">
@@ -43,9 +43,6 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
           download
         >
           下载PDF作品集
-        </a>
-        <a className="site-nav__glass" href="/wenhou-yan-resume.pdf" download>
-          下载简历
         </a>
       </nav>
       <a

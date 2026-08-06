@@ -56,22 +56,34 @@ export default function BambinoPage() {
       </FactRail>
 
       <section className="bambino-balance chapter">
-        <div className="bambino-balance__copy">
+        <aside className="bambino-balance__copy">
           <p className="chapter-label">02 / 用户动作</p>
           <h2>先观察动作，再改变机器。</h2>
           <p>
             研究暴露出三个紧密相连的问题：旋转扭矩、操作视角和状态反馈。设计将锁定动作重新分配给结构，并为用户保留清晰的触觉与视觉回应。
           </p>
+        </aside>
+        <div className="bambino-balance__media">
+          <figure className="bambino-balance__interaction">
+            <img
+              src="/portfolio/bambino-interaction.webp"
+              alt="Bambino 泡沫模型操作测试"
+            />
+            <figcaption>动作观察 · 操作视角</figcaption>
+          </figure>
+          <figure className="bambino-balance__build">
+            <img src="/portfolio/bambino-build.webp" alt="Bambino 原型制作" />
+            <figcaption>原型制作 · 结构验证</figcaption>
+          </figure>
+          <figure className="bambino-balance__detail">
+            <img
+              src="/portfolio/bambino-detail.webp"
+              alt="Bambino 操作界面与机身角度设计"
+              loading="lazy"
+            />
+            <figcaption>界面角度 · 视觉反馈</figcaption>
+          </figure>
         </div>
-        <figure className="bambino-balance__interaction">
-          <img
-            src="/portfolio/bambino-interaction.webp"
-            alt="Bambino 泡沫模型操作测试"
-          />
-        </figure>
-        <figure className="bambino-balance__build">
-          <img src="/portfolio/bambino-build.webp" alt="Bambino 原型制作" />
-        </figure>
       </section>
 
       <section className="bambino-lock">

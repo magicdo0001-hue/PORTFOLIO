@@ -12,6 +12,7 @@ import {
 
 const wheelProjects = [
   {
+    id: "sangre",
     index: "01",
     title: "SANGRE",
     meta: "医疗产品 / 2024",
@@ -20,6 +21,7 @@ const wheelProjects = [
     imageClass: "home-project-wheel__image--scene",
   },
   {
+    id: "bambino",
     index: "02",
     title: "BAMBINO V2",
     meta: "产品再设计 / 2024",
@@ -28,6 +30,7 @@ const wheelProjects = [
     imageClass: "home-project-wheel__image--cutout",
   },
   {
+    id: "unilife",
     index: "03",
     title: "SIMPLE UNI LIFE",
     meta: "数字产品 / 2024",
@@ -107,6 +110,7 @@ export default function HomeProjectWheel() {
   return (
     <div
       className="home-hero__visual home-project-wheel"
+      data-project={current.id}
       tabIndex={0}
       aria-label="精选项目转轮，使用滚轮、拖拽或方向键切换"
       onKeyDown={handleKeyDown}

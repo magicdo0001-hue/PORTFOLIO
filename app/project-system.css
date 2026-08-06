@@ -315,10 +315,9 @@
 .project--arti64 .arti64-context {
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  grid-template-areas:
-    "copy wide"
-    "portrait wide";
+  grid-template-areas: "copy wide";
   gap: var(--project-space-md);
+  align-items: center;
   background: var(--project-paper);
 }
 
@@ -339,26 +338,15 @@
 
 .project--arti64 .arti64-context__wide {
   grid-area: wide;
-  align-self: stretch;
+  align-self: start;
 }
 
 .project--arti64 .arti64-context__wide img {
-  height: calc(100% - 38px);
-  min-height: 720px;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   object-position: 52% center;
-}
-
-.project--arti64 .arti64-context__portrait {
-  grid-area: portrait;
-  width: min(72%, 520px);
-  margin: var(--project-space-md) 0 0 auto;
-}
-
-.project--arti64 .arti64-context__portrait img {
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center 35%;
 }
 
 .project--arti64 .arti64-process {
@@ -488,9 +476,13 @@
 }
 
 .project--arti64 .arti64-system__poster img {
-  height: 100%;
-  min-height: 760px;
-  object-fit: cover;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  display: block;
+  margin-inline: auto;
+  object-fit: contain;
 }
 
 .project--arti64 .arti64-system__market {
@@ -511,9 +503,18 @@
   background: var(--project-paper);
 }
 
-.project--arti64 .arti64-outcome figure img {
+.project--arti64 .arti64-outcome__media {
+  display: grid;
+  gap: var(--project-space-xs);
+}
+
+.project--arti64 .arti64-outcome__media figure img {
   aspect-ratio: 3 / 2;
   object-fit: cover;
+}
+
+.project--arti64 .arti64-outcome__media figure:last-child img {
+  object-position: center bottom;
 }
 
 .project--arti64 .arti64-outcome h2 {
@@ -598,6 +599,57 @@
       animation-timeline: view();
       animation-range: entry 4% cover 28%;
     }
+  }
+}
+
+/* Wide, short desktop windows: keep each story beat inside a readable viewport.
+   Fixed pixel minima previously made media outlive its copy and slide under the nav. */
+@media (min-width: 981px) and (max-height: 1080px) and (min-aspect-ratio: 16 / 9) {
+  .project :where(.project-brief, .placeholder-copy) {
+    padding-block: clamp(86px, 12vh, 126px);
+  }
+
+  .project .chapter {
+    padding-block: clamp(86px, 12vh, 126px);
+  }
+
+  .project :where(.sangre-discovery aside, .bambino-balance__copy, .unilife-problem__copy) {
+    top: clamp(104px, 11vh, 128px);
+  }
+
+  .project .sangre-prototype__image img {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .project .technical-proof .shell {
+    min-height: clamp(620px, 78dvh, 820px);
+  }
+
+  .project .bambino-lock {
+    min-height: max(680px, 90dvh);
+  }
+
+  .project .bambino-resolution {
+    min-height: clamp(780px, 92dvh, 980px);
+  }
+
+  .project .unilife-problem__lead img {
+    min-height: clamp(460px, 62dvh, 600px);
+  }
+
+  .project--arti64 .arti64-process,
+  .project--arti64 .arti64-system {
+    padding-block: clamp(86px, 12vh, 126px);
+  }
+
+  .project--arti64 .arti64-outcome__media {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project--arti64 .arti64-system__poster img {
+    max-height: 76dvh;
   }
 }
 
@@ -696,8 +748,7 @@
   .project--arti64 .arti64-context {
     grid-template-areas:
       "copy"
-      "wide"
-      "portrait";
+      "wide";
     padding-inline: 14px;
   }
 
@@ -707,11 +758,6 @@
     height: auto;
     min-height: 0;
     aspect-ratio: 4 / 3;
-  }
-
-  .project--arti64 .arti64-context__portrait {
-    width: 82%;
-    margin: 0 0 0 auto;
   }
 
   .project--arti64 .arti64-process,
