@@ -255,8 +255,8 @@ test("integrates the Infinite Menu museum into the work page", async () => {
   );
   assert.equal(
     (html.match(/class="site-footer"/g) ?? []).length,
-    1,
-    "the combined page renders one global footer",
+    0,
+    "the combined page does not repeat the profile contact footer",
   );
 
   const legacyResponse = await render("/infinite-menu-lab");

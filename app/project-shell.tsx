@@ -117,38 +117,13 @@ export function ProjectEnd({
   nextTitle: string;
 }) {
   return (
-    <>
-      <section className="next-project">
-        <Link href={nextHref}>
-          <span>下一个项目 / {nextIndex}</span>
-          <strong>{nextTitle}</strong>
-          <i aria-hidden="true">↗</i>
-        </Link>
-      </section>
-      <ContactFooter />
-    </>
-  );
-}
-
-export function ContactFooter() {
-  return (
-    <footer className="site-footer">
-      <div className="shell">
-        <p>寻找产品设计机会</p>
-        <a href="mailto:wyan39702@gmail.com">wyan39702@gmail.com ↗</a>
-        <div>
-          <span>© 2026 严文厚</span>
-          <a
-            href="https://www.linkedin.com/in/wenhou-yan-3546653b8"
-            target="_blank"
-            rel="noreferrer"
-          >
-            领英
-          </a>
-          <Link href="/">返回首页 ↑</Link>
-        </div>
-      </div>
-    </footer>
+    <section className="next-project">
+      <Link href={nextHref}>
+        <span>下一个项目 / {nextIndex}</span>
+        <strong>{nextTitle}</strong>
+        <i aria-hidden="true">↗</i>
+      </Link>
+    </section>
   );
 }
 

@@ -56,9 +56,9 @@ export default function SimpleUniLifePage() {
         </div>
       </FactRail>
 
-      <section className="unilife-problem chapter">
+      <section id="research" className="unilife-problem unilife-research-flow chapter">
         <aside className="unilife-problem__copy">
-          <p className="chapter-label">02 / 用户研究</p>
+          <p className="chapter-label">02 / 用户研究与产品逻辑</p>
           <h2>
             信息无处不在。
             <br />
@@ -67,20 +67,40 @@ export default function SimpleUniLifePage() {
           <p>
             访谈与情境研究显示，学生必须跨越课程官网、社交平台和零散评价，才能拼出一个勉强可用的判断。
           </p>
+          <div className="unilife-problem__logic">
+            <h3>从“找到信息”推进到“完成判断”。</h3>
+            <p>
+              信息架构围绕学生真实决策顺序展开：输入课程、理解结构、比较体验，最终建立足够的行动信心。
+            </p>
+          </div>
         </aside>
         <div
           className="unilife-problem__media"
-          aria-label="Simple Uni Life 用户研究场景"
+          aria-label="Simple Uni Life 用户研究与产品逻辑"
         >
-          <figure className="unilife-problem__lead">
-            <img
-              src="/portfolio/unilife-friction-search.png"
-              alt="留学生在多个课程网站和评价平台之间搜索信息"
-              loading="lazy"
+          <figure className="unilife-problem__video">
+            <video
+              src="/portfolio/unilife-product-story.mp4"
+              poster="/portfolio/unilife-video-poster.png"
+              aria-label="Simple Uni Life 用户问题情境动画"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+              preload="metadata"
             />
-            <figcaption>研究情境 · 决策阻力</figcaption>
+            <figcaption>产品逻辑 · 从信息碎片到决策路径</figcaption>
           </figure>
-          <div className="unilife-friction-gallery">
+          <div className="unilife-friction-gallery" aria-label="用户研究场景">
+            <figure>
+              <img
+                src="/portfolio/unilife-friction-search.png"
+                alt="留学生在多个课程网站和评价平台之间搜索信息"
+                loading="lazy"
+              />
+              <figcaption>决策阻力</figcaption>
+            </figure>
             <figure>
               <img
                 src="/portfolio/unilife-friction-paths.png"
@@ -109,29 +129,7 @@ export default function SimpleUniLifePage() {
         </div>
       </section>
 
-      <section className="unilife-flow chapter">
-        <div className="unilife-flow__copy">
-          <p className="chapter-label">03 / 产品逻辑</p>
-          <h2>从“找到信息”推进到“完成判断”。</h2>
-          <p>
-            信息架构围绕学生真实决策顺序展开：输入课程、理解结构、比较体验，最终建立足够的行动信心。
-          </p>
-        </div>
-        <figure>
-          <video
-            src="/portfolio/unilife-product-story.mp4"
-            poster="/portfolio/unilife-video-poster.png"
-            aria-label="Simple Uni Life 用户问题情境动画"
-            autoPlay
-            muted
-            loop
-            playsInline
-            controls
-            preload="metadata"
-          />
-          <figcaption>15 秒产品情境 · 播放 / 暂停</figcaption>
-        </figure>
-      </section>
+      <SimpleUniLifeLiveDemo />
 
       <section className="screen-rail" aria-label="Simple Uni Life 界面展示">
         <div className="screen-rail__intro">
@@ -174,11 +172,9 @@ export default function SimpleUniLifePage() {
         </div>
       </section>
 
-      <SimpleUniLifeLiveDemo />
-
       <section className="unilife-outcome">
         <div className="shell">
-          <p className="chapter-label">06 / 项目结果</p>
+          <p className="chapter-label">05 / 项目结果</p>
           <h2>
             数字产品真正完成，
             <br />

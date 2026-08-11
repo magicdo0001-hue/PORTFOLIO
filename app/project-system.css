@@ -245,7 +245,6 @@
 }
 
 .project--unilife .unilife-problem { background: var(--project-dark); }
-.project--unilife .unilife-flow { background: var(--project-paper); }
 
 .project .fact-rail {
   grid-template-columns: 1.35fr 0.9fr 0.9fr;
@@ -542,9 +541,6 @@
   letter-spacing: 0.09em;
 }
 
-.project .site-footer { background: var(--project-dark); }
-.project .site-footer .shell > p { color: var(--project-accent); }
-
 @keyframes project-hero-media-in {
   from { opacity: 0; transform: translate3d(0, 22px, 0) scale(0.985); }
   to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
@@ -633,10 +629,6 @@
 
   .project .bambino-resolution {
     min-height: clamp(780px, 92dvh, 980px);
-  }
-
-  .project .unilife-problem__lead img {
-    min-height: clamp(460px, 62dvh, 600px);
   }
 
   .project--arti64 .arti64-process,

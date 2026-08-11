@@ -53,8 +53,7 @@
   font-synthesis: none;
 }
 
-.site-nav,
-.site-footer {
+.site-nav {
   font-family: var(--site-font-body);
 }
 
@@ -414,6 +413,7 @@
   font-size: clamp(27px, 3.1vw, 50px);
   line-height: 0.95;
   letter-spacing: -0.045em;
+  transition: color var(--site-duration-fast) ease;
 }
 
 .profile-about__contact > a span:first-child {
@@ -431,7 +431,17 @@
   line-height: 1.5;
 }
 
-.profile-about__contact > div a { color: rgb(248 250 245 / 78%); }
+.profile-about__contact > div a {
+  color: rgb(248 250 245 / 78%);
+  transition: color var(--site-duration-fast) ease;
+}
+
+.profile-about__contact > a:hover,
+.profile-about__contact > a:focus-visible,
+.profile-about__contact > div a:hover,
+.profile-about__contact > div a:focus-visible {
+  color: var(--site-accent);
+}
 
 .profile-capabilities {
   padding: var(--site-space-lg) 0 var(--site-space-xl);
