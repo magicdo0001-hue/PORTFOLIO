@@ -11,6 +11,8 @@ import {
   useState,
 } from "react";
 
+const sphereAsset = (path: string) => `${path}?v=20260804-clarity`;
+
 const projects = [
   {
     index: "01",
@@ -19,10 +21,10 @@ const projects = [
     year: "2024",
     href: "/work/sangre",
     images: [
-      "/portfolio/sangre-menu-01.jpg",
-      "/portfolio/sangre-menu-02.jpg",
-      "/portfolio/sangre-menu-03.png",
-      "/portfolio/sangre-menu-04.jpg",
+      sphereAsset("/portfolio/sangre-menu-01.jpg"),
+      sphereAsset("/portfolio/sangre-menu-02.jpg"),
+      sphereAsset("/portfolio/sangre-menu-03.png"),
+      sphereAsset("/portfolio/sangre-menu-04.jpg"),
     ],
     description: "家庭慢病检测系统，从研究、交互到可验证原型。",
   },
@@ -33,10 +35,10 @@ const projects = [
     year: "2024",
     href: "/work/bambino",
     images: [
-      "/portfolio/bambino-menu-01.jpg",
-      "/portfolio/bambino-menu-02.jpg",
-      "/portfolio/bambino-menu-03.jpg",
-      "/portfolio/bambino-menu-04.jpg",
+      sphereAsset("/portfolio/bambino-menu-01.jpg"),
+      sphereAsset("/portfolio/bambino-menu-02.jpg"),
+      sphereAsset("/portfolio/bambino-menu-03.jpg"),
+      sphereAsset("/portfolio/bambino-menu-04.jpg"),
     ],
     description: "重新设计机械锁定与动态反馈，让操作更稳、更清楚。",
   },
@@ -47,10 +49,10 @@ const projects = [
     year: "2024",
     href: "/work/simple-uni-life",
     images: [
-      "/portfolio/unilife-menu-01.png",
-      "/portfolio/unilife-menu-02.png",
-      "/portfolio/unilife-menu-03.png",
-      "/portfolio/unilife-menu-04.png",
+      sphereAsset("/portfolio/unilife-menu-01.png"),
+      sphereAsset("/portfolio/unilife-menu-02.png"),
+      sphereAsset("/portfolio/unilife-menu-03.png"),
+      sphereAsset("/portfolio/unilife-menu-04.png"),
     ],
     description: "把分散的课程信息转化为可比较、可行动的决策工具。",
   },
@@ -173,15 +175,15 @@ export default function SphereProjectMenu() {
         const emphasis = proximity * proximity * proximity;
         tile.style.setProperty(
           "--focus-scale",
-          (1 + emphasis * 0.64).toFixed(3),
+          (0.61 + emphasis * 0.39).toFixed(3),
         );
         tile.style.setProperty(
           "--focus-opacity",
           (0.18 + proximity * 0.82).toFixed(3),
         );
         tile.style.setProperty(
-          "--focus-brightness",
-          (0.44 + proximity * 0.56).toFixed(3),
+          "--focus-dim",
+          (0.56 - proximity * 0.56).toFixed(3),
         );
         tile.style.setProperty("--focus-glow", emphasis.toFixed(3));
       });

@@ -19,6 +19,9 @@ export function SimpleUniLifeLiveDemo() {
 
   return (
     <section id="online-product" className="unilife-live" aria-label="Simple Uni Life 在线产品体验">
+      <div className="unilife-live__intro shell">
+        <p className="chapter-label">03 / 真实线上产品</p>
+      </div>
       <div className={`unilife-live__browser${isActive ? " is-active" : ""}`}>
         <div className="unilife-live__toolbar">
           <div className="unilife-live__traffic" aria-hidden="true">

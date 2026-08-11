@@ -25,10 +25,10 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
       <Link
         className="site-nav__brand site-nav__glass"
         href="/"
-        aria-label="严文厚作品集首页"
+        aria-label="作品集首页"
       >
         <span>WY</span>
-        <strong>严文厚</strong>
+        <strong>首页</strong>
       </Link>
       <nav aria-label="主导航">
         <Link className="site-nav__glass" href="/#profile">
@@ -43,9 +43,6 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
           download
         >
           下载PDF作品集
-        </a>
-        <a className="site-nav__glass" href="/wenhou-yan-resume.pdf" download>
-          下载简历
         </a>
       </nav>
       <a
@@ -120,38 +117,13 @@ export function ProjectEnd({
   nextTitle: string;
 }) {
   return (
-    <>
-      <section className="next-project">
-        <Link href={nextHref}>
-          <span>下一个项目 / {nextIndex}</span>
-          <strong>{nextTitle}</strong>
-          <i aria-hidden="true">↗</i>
-        </Link>
-      </section>
-      <ContactFooter />
-    </>
-  );
-}
-
-export function ContactFooter() {
-  return (
-    <footer className="site-footer">
-      <div className="shell">
-        <p>寻找产品设计机会</p>
-        <a href="mailto:wyan39702@gmail.com">wyan39702@gmail.com ↗</a>
-        <div>
-          <span>© 2026 严文厚</span>
-          <a
-            href="https://www.linkedin.com/in/wenhou-yan-3546653b8"
-            target="_blank"
-            rel="noreferrer"
-          >
-            领英
-          </a>
-          <Link href="/">返回首页 ↑</Link>
-        </div>
-      </div>
-    </footer>
+    <section className="next-project">
+      <Link href={nextHref}>
+        <span>下一个项目 / {nextIndex}</span>
+        <strong>{nextTitle}</strong>
+        <i aria-hidden="true">↗</i>
+      </Link>
+    </section>
   );
 }
 

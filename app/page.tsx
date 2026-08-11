@@ -1,6 +1,6 @@
 import Link from "next/link";
 import HomeProjectWheel from "./home-project-wheel";
-import { ContactFooter, SiteHeader } from "./project-shell";
+import { SiteHeader } from "./project-shell";
 import SphereProjectMenu from "./work/sphere-project-menu";
 
 export default function Home() {
@@ -167,6 +167,24 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <div className="profile-about__contact shell">
+          <p>寻找产品设计机会</p>
+          <a href="mailto:wyan39702@gmail.com">
+            <span>wyan39702@gmail.com</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <div>
+            <span>© 2026 严文厚</span>
+            <a
+              href="https://www.linkedin.com/in/wenhou-yan-3546653b8"
+              target="_blank"
+              rel="noreferrer"
+            >
+              领英 ↗
+            </a>
+          </div>
+        </div>
       </section>
 
       <section className="profile-capabilities" aria-labelledby="profile-capabilities-title">
@@ -216,8 +234,6 @@ export default function Home() {
       >
         <SphereProjectMenu />
       </section>
-
-      <ContactFooter />
     </main>
   );
 }
