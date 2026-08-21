@@ -158,10 +158,6 @@
   height: min(65dvh, 700px);
 }
 
-.home-project-wheel__image--scene {
-  clip-path: inset(7% 2% 5% 10% round var(--site-radius-media));
-}
-
 .home-project-wheel__options button {
   border-radius: var(--site-radius-ui);
   transition:

@@ -406,8 +406,8 @@ figcaption {
   content: "";
   position: absolute;
   z-index: 0;
-  inset: auto 5% 4% 10%;
-  height: 12%;
+  inset: auto 8% 7% 12%;
+  height: 8%;
   border-radius: 50%;
   background: rgba(0,0,0,.38);
   filter: blur(28px);
@@ -423,36 +423,121 @@ figcaption {
   height: 100%;
   display: block;
 }
-.home-project-wheel__image {
+.home-project-wheel__object {
   position: absolute;
   inset: 0;
-  height: 100%;
-  object-fit: contain;
+  margin: 0;
+  display: grid;
+  place-items: center;
   opacity: 0;
-  transform: translateX(4%) scale(.93);
+  transform: translate3d(5%, 1.5%, 0) scale(.92) rotate(1.5deg);
   transition:
-    opacity .6s ease,
-    transform .85s cubic-bezier(.2,.8,.2,1);
+    opacity .42s ease,
+    transform .85s cubic-bezier(.2,.8,.2,1),
+    filter .65s ease;
+  filter: blur(7px);
   pointer-events: none;
 }
-.home-project-wheel__image.is-active {
+.home-project-wheel__object.is-active {
   opacity: 1;
   transform: none;
+  filter: none;
 }
-.home-project-wheel__image--scene {
+.home-project-wheel__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.home-project-wheel__image--sangre {
+  padding: 11% 20% 14% 6%;
+}
+.home-project-wheel__image--sangre .home-project-wheel__image {
+  filter: drop-shadow(0 24px 28px rgba(0,0,0,.38)) contrast(1.035);
+}
+.home-project-wheel__image--bambino {
+  padding: 5% 16% 8% 0;
+}
+.home-project-wheel__image--bambino .home-project-wheel__image {
+  filter: drop-shadow(0 30px 34px rgba(0,0,0,.42)) contrast(1.02) saturate(.84);
+}
+.home-project-wheel__image--unilife {
+  padding: 9% 13% 12% 2%;
+  perspective: 1400px;
+}
+.home-project-wheel__laptop {
+  position: relative;
+  width: min(94%, 820px);
+  aspect-ratio: 1.42;
+  display: block;
+  transform: rotateX(3deg) rotateY(-7deg) rotateZ(1deg);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 34px 34px rgba(0,0,0,.42));
+}
+.home-project-wheel__laptop-screen {
+  position: absolute;
+  inset: 0 3.5% 21%;
+  overflow: hidden;
+  display: block;
+  padding: 2.2%;
+  border: 1px solid rgba(255,255,255,.56);
+  border-radius: 18px 18px 8px 8px;
+  background: linear-gradient(145deg,#50565a 0%,#15191c 35%,#353a3e 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.44),
+    0 0 0 1px rgba(0,0,0,.5);
+}
+.home-project-wheel__laptop-screen::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 4px;
+  height: 4px;
+  left: 50%;
+  top: 1.1%;
+  border-radius: 50%;
+  background: #07090a;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.08);
+}
+.home-project-wheel__laptop-screen img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 7px 7px 3px 3px;
   object-fit: cover;
-  object-position: 54% 58%;
-  clip-path: inset(7% 2% 5% 10% round 24px);
-  filter: saturate(.9) contrast(1.02);
+  object-position: center;
 }
-.home-project-wheel__image--cutout {
-  padding: 1% 8% 1% 0;
-  filter: contrast(1.02) saturate(.84);
+.home-project-wheel__laptop-base {
+  position: absolute;
+  z-index: 3;
+  inset: 75% 0 5%;
+  display: block;
+  border-radius: 5px 5px 22px 22px;
+  background: linear-gradient(180deg,#d9dcda 0%,#8e9697 58%,#c7cbca 100%);
+  clip-path: polygon(4% 0,96% 0,100% 100%,0 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 -2px 1px rgba(31,38,39,.35);
+  transform: rotateX(64deg);
+  transform-origin: top center;
 }
-.home-project-wheel__image--interface {
-  padding: 7% 10% 7% 2%;
-  mix-blend-mode: normal;
-  filter: saturate(.92) contrast(1.02);
+.home-project-wheel__laptop-keyboard {
+  position: absolute;
+  inset: 14% 14% 35%;
+  border-radius: 4px;
+  opacity: .7;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 5%,rgba(30,35,36,.85) 5.6% 10%),
+    repeating-linear-gradient(180deg,rgba(35,40,41,.86) 0 19%,transparent 20% 28%);
+}
+.home-project-wheel__laptop-trackpad {
+  position: absolute;
+  width: 27%;
+  height: 28%;
+  left: 36.5%;
+  bottom: 5%;
+  border: 1px solid rgba(49,55,56,.32);
+  border-radius: 4px;
 }
 .home-project-wheel__caption {
   position: absolute;
@@ -1609,6 +1694,9 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
     margin: -18px -6% -4px;
   }
   .home-project-wheel__caption { right: 9%; bottom: 5%; }
+  .home-project-wheel__image--sangre { padding: 8% 22% 12% 3%; }
+  .home-project-wheel__image--bambino { padding: 4% 18% 7% 0; }
+  .home-project-wheel__image--unilife { padding: 8% 17% 11% 1%; }
   .home-project-wheel__options {
     width: 130px;
     height: 180px;
