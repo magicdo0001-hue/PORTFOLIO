@@ -17,8 +17,8 @@ const wheelProjects = [
     title: "SANGRE",
     meta: "医疗产品 / 2024",
     href: "/work/sangre",
-    image: "/portfolio/sangre-hero.webp",
-    imageClass: "home-project-wheel__image--scene",
+    image: "/portfolio/sangre-cutout.png",
+    imageClass: "home-project-wheel__image--sangre",
   },
   {
     id: "bambino",
@@ -27,7 +27,7 @@ const wheelProjects = [
     meta: "产品再设计 / 2024",
     href: "/work/bambino",
     image: "/portfolio/bambino-cutout.png",
-    imageClass: "home-project-wheel__image--cutout",
+    imageClass: "home-project-wheel__image--bambino",
   },
   {
     id: "unilife",
@@ -36,7 +36,7 @@ const wheelProjects = [
     meta: "数字产品 / 2024",
     href: "/work/simple-uni-life",
     image: "/portfolio/unilife-hero.webp",
-    imageClass: "home-project-wheel__image--interface",
+    imageClass: "home-project-wheel__image--unilife",
   },
 ];
 
@@ -125,15 +125,31 @@ export default function HomeProjectWheel() {
         aria-label={`查看 ${current.title} 项目`}
       >
         {wheelProjects.map((project, index) => (
-          <img
+          <figure
             key={project.href}
-            className={`home-project-wheel__image ${project.imageClass}${
+            className={`home-project-wheel__object ${project.imageClass}${
               index === active ? " is-active" : ""
             }`}
-            src={project.image}
-            alt={index === active ? `${project.title} 项目主视觉` : ""}
             aria-hidden={index !== active}
-          />
+          >
+            {project.id === "unilife" ? (
+              <span className="home-project-wheel__laptop" aria-hidden="true">
+                <span className="home-project-wheel__laptop-screen">
+                  <img src={project.image} alt="" />
+                </span>
+                <span className="home-project-wheel__laptop-base">
+                  <span className="home-project-wheel__laptop-keyboard" />
+                  <span className="home-project-wheel__laptop-trackpad" />
+                </span>
+              </span>
+            ) : (
+              <img
+                className="home-project-wheel__image"
+                src={project.image}
+                alt={index === active ? `${project.title} 项目主视觉` : ""}
+              />
+            )}
+          </figure>
         ))}
         <span className="home-project-wheel__caption" aria-live="polite">
           精选项目 / {current.index}
