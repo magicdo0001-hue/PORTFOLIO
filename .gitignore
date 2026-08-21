@@ -47,5 +47,4 @@ next-env.d.ts
 *.previous.txt
 *.log
 /tmp/
-/app/_sites-preview/
 /design-qa.md
