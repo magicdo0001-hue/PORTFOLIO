@@ -32,7 +32,9 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(html, /SANGRE/);
   assert.match(html, /BAMBINO V2/);
   assert.match(html, /SIMPLE UNI LIFE/);
-  assert.match(html, /wyan39702@gmail\.com/);
+  assert.match(html, /18705188117@163\.com/);
+  assert.match(html, /tel:\+8618705188117/);
+  assert.match(html, /tel:\+61449923613/);
   assert.match(html, /下载PDF作品集/);
   assert.match(html, /\/wenhou-yan-portfolio-cn\.pdf/);
   assert.ok(

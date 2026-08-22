@@ -62,17 +62,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="manifesto">
-        <div className="shell">
-          <p>
-            从问题、证据到可验证的原型。我的工作跨越工业设计、交互与工程，
-            关注产品如何真正被理解、制造和使用。
-          </p>
-          <span className="manifesto__mark" aria-hidden="true">
-            WY
-          </span>
-        </div>
-      </section>
 
       <FadeContent>
       <section className="profile-about" id="profile" aria-labelledby="profile-about-title">
@@ -170,23 +159,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="profile-about__contact shell">
-          <p>寻找产品设计机会</p>
-          <a href="mailto:wyan39702@gmail.com">
-            <span>wyan39702@gmail.com</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <div>
-            <span>© 2026 严文厚</span>
-            <a
-              href="https://www.linkedin.com/in/wenhou-yan-3546653b8"
-              target="_blank"
-              rel="noreferrer"
-            >
-              领英 ↗
-            </a>
-          </div>
-        </div>
       </section>
       </FadeContent>
 
@@ -239,6 +211,60 @@ export default function Home() {
         aria-label="精选项目"
       >
         <SphereProjectMenu />
+      </section>
+      </FadeContent>
+
+      <FadeContent distance={36}>
+      <section className="profile-contact" id="contact" aria-labelledby="profile-contact-title">
+        <div className="profile-contact__inner shell">
+          <header className="profile-contact__header">
+            <p>联系方式 / CONTACT</p>
+            <h2 id="profile-contact-title">
+              有新的产品问题，
+              <br />
+              欢迎与我联系。
+            </h2>
+          </header>
+
+          <dl className="profile-contact__list">
+            <div>
+              <dt>邮箱</dt>
+              <dd>
+                <a href="mailto:18705188117@163.com">
+                  18705188117@163.com <span aria-hidden="true">↗</span>
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt>手机</dt>
+              <dd className="profile-contact__phones">
+                <a href="tel:+8618705188117">+86 18705188117</a>
+                <a href="tel:+61449923613">+61 449923613</a>
+              </dd>
+            </div>
+            <div>
+              <dt>微信</dt>
+              <dd><span className="profile-contact__empty" aria-label="待补充">—</span></dd>
+            </div>
+            <div>
+              <dt>LinkedIn</dt>
+              <dd>
+                <a
+                  href="https://www.linkedin.com/in/wenhou-yan-3546653b8"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  查看个人主页 <span aria-hidden="true">↗</span>
+                </a>
+              </dd>
+            </div>
+          </dl>
+
+          <footer className="profile-contact__footer">
+            <span>© 2026 严文厚</span>
+            <a href="#profile">返回关于 <span aria-hidden="true">↑</span></a>
+          </footer>
+        </div>
       </section>
       </FadeContent>
     </main>

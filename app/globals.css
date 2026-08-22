@@ -26,6 +26,10 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
+main > section,
+.home > .fade-content {
+  scroll-snap-align: start;
+}
 a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; }
 figure, h1, h2, h3, p { margin: 0; }
@@ -1585,7 +1589,6 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
 
 @media (max-width: 640px) {
   :root { --shell: calc(100vw - 28px); }
-  html { scroll-snap-type: none; }
   .site-nav {
     inset: 10px 0 auto;
     width: calc(100vw - 20px);

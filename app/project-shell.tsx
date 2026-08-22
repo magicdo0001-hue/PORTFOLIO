@@ -45,12 +45,12 @@ export function SiteHeader({ light = false }: { light?: boolean }) {
           下载PDF作品集
         </a>
       </nav>
-      <a
+      <Link
         className="site-nav__contact site-nav__glass"
-        href="mailto:wyan39702@gmail.com"
+        href="/#contact"
       >
         联系我 <span aria-hidden="true">↗</span>
-      </a>
+      </Link>
       </GlassSurface>
     </header>
   );
