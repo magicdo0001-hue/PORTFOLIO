@@ -197,6 +197,15 @@ export default function SphereProjectMenu() {
     };
 
     const onWheel = (event: globalThis.WheelEvent) => {
+      const bounds = viewport.getBoundingClientRect();
+      const isInsideCentralArea =
+        event.clientX >= bounds.left + bounds.width * 0.25 &&
+        event.clientX <= bounds.right - bounds.width * 0.25 &&
+        event.clientY >= bounds.top + bounds.height * 0.25 &&
+        event.clientY <= bounds.bottom - bounds.height * 0.25;
+
+      if (!isInsideCentralArea) return;
+
       event.preventDefault();
       event.stopPropagation();
       snapNode.current = null;
