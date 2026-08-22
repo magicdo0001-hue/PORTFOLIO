@@ -35,7 +35,7 @@ const wheelProjects = [
     title: "SIMPLE UNI LIFE",
     meta: "数字产品 / 2024",
     href: "/work/simple-uni-life",
-    image: "/portfolio/unilife-hero.webp",
+    image: "/portfolio/unilife-laptop-cutout-v2.png",
     imageClass: "home-project-wheel__image--unilife",
   },
 ];
@@ -132,23 +132,11 @@ export default function HomeProjectWheel() {
             }`}
             aria-hidden={index !== active}
           >
-            {project.id === "unilife" ? (
-              <span className="home-project-wheel__laptop" aria-hidden="true">
-                <span className="home-project-wheel__laptop-screen">
-                  <img src={project.image} alt="" />
-                </span>
-                <span className="home-project-wheel__laptop-base">
-                  <span className="home-project-wheel__laptop-keyboard" />
-                  <span className="home-project-wheel__laptop-trackpad" />
-                </span>
-              </span>
-            ) : (
-              <img
-                className="home-project-wheel__image"
-                src={project.image}
-                alt={index === active ? `${project.title} 项目主视觉` : ""}
-              />
-            )}
+            <img
+              className="home-project-wheel__image"
+              src={project.image}
+              alt={index === active ? `${project.title} 项目主视觉` : ""}
+            />
           </figure>
         ))}
         <span className="home-project-wheel__caption" aria-live="polite">

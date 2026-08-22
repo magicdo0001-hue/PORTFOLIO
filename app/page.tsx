@@ -2,6 +2,7 @@ import Link from "next/link";
 import HomeProjectWheel from "./home-project-wheel";
 import { SiteHeader } from "./project-shell";
 import SphereProjectMenu from "./work/sphere-project-menu";
+import FadeContent from "./fade-content";
 
 export default function Home() {
   return (
@@ -73,6 +74,7 @@ export default function Home() {
         </div>
       </section>
 
+      <FadeContent>
       <section className="profile-about" id="profile" aria-labelledby="profile-about-title">
         <div className="profile-about__layout shell">
           <figure className="profile-about__portrait">
@@ -186,7 +188,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </FadeContent>
 
+      <FadeContent delay={80}>
       <section className="profile-capabilities" aria-labelledby="profile-capabilities-title">
         <header className="profile-capabilities__header shell">
           <p>能力范围</p>
@@ -226,7 +230,9 @@ export default function Home() {
           </article>
         </div>
       </section>
+      </FadeContent>
 
+      <FadeContent distance={52}>
       <section
         className="work-index__hero home-work-index"
         id="work"
@@ -234,6 +240,7 @@ export default function Home() {
       >
         <SphereProjectMenu />
       </section>
+      </FadeContent>
     </main>
   );
 }

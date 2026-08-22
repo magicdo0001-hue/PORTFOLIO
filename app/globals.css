@@ -462,82 +462,10 @@ figcaption {
   filter: drop-shadow(0 30px 34px rgba(0,0,0,.42)) contrast(1.02) saturate(.84);
 }
 .home-project-wheel__image--unilife {
-  padding: 9% 13% 12% 2%;
-  perspective: 1400px;
+  padding: 5% 10% 8% 0;
 }
-.home-project-wheel__laptop {
-  position: relative;
-  width: min(94%, 820px);
-  aspect-ratio: 1.42;
-  display: block;
-  transform: rotateX(3deg) rotateY(-7deg) rotateZ(1deg);
-  transform-style: preserve-3d;
-  filter: drop-shadow(0 34px 34px rgba(0,0,0,.42));
-}
-.home-project-wheel__laptop-screen {
-  position: absolute;
-  inset: 0 3.5% 21%;
-  overflow: hidden;
-  display: block;
-  padding: 2.2%;
-  border: 1px solid rgba(255,255,255,.56);
-  border-radius: 18px 18px 8px 8px;
-  background: linear-gradient(145deg,#50565a 0%,#15191c 35%,#353a3e 100%);
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.44),
-    0 0 0 1px rgba(0,0,0,.5);
-}
-.home-project-wheel__laptop-screen::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  width: 4px;
-  height: 4px;
-  left: 50%;
-  top: 1.1%;
-  border-radius: 50%;
-  background: #07090a;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.08);
-}
-.home-project-wheel__laptop-screen img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: 7px 7px 3px 3px;
-  object-fit: cover;
-  object-position: center;
-}
-.home-project-wheel__laptop-base {
-  position: absolute;
-  z-index: 3;
-  inset: 75% 0 5%;
-  display: block;
-  border-radius: 5px 5px 22px 22px;
-  background: linear-gradient(180deg,#d9dcda 0%,#8e9697 58%,#c7cbca 100%);
-  clip-path: polygon(4% 0,96% 0,100% 100%,0 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.9),
-    inset 0 -2px 1px rgba(31,38,39,.35);
-  transform: rotateX(64deg);
-  transform-origin: top center;
-}
-.home-project-wheel__laptop-keyboard {
-  position: absolute;
-  inset: 14% 14% 35%;
-  border-radius: 4px;
-  opacity: .7;
-  background:
-    repeating-linear-gradient(90deg,transparent 0 5%,rgba(30,35,36,.85) 5.6% 10%),
-    repeating-linear-gradient(180deg,rgba(35,40,41,.86) 0 19%,transparent 20% 28%);
-}
-.home-project-wheel__laptop-trackpad {
-  position: absolute;
-  width: 27%;
-  height: 28%;
-  left: 36.5%;
-  bottom: 5%;
-  border: 1px solid rgba(49,55,56,.32);
-  border-radius: 4px;
+.home-project-wheel__image--unilife .home-project-wheel__image {
+  filter: drop-shadow(0 32px 34px rgba(0,0,0,.46)) contrast(1.025);
 }
 .home-project-wheel__caption {
   position: absolute;
@@ -1696,7 +1624,7 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
   .home-project-wheel__caption { right: 9%; bottom: 5%; }
   .home-project-wheel__image--sangre { padding: 8% 22% 12% 3%; }
   .home-project-wheel__image--bambino { padding: 4% 18% 7% 0; }
-  .home-project-wheel__image--unilife { padding: 8% 17% 11% 1%; }
+  .home-project-wheel__image--unilife { padding: 4% 8% 7% 0; }
   .home-project-wheel__options {
     width: 130px;
     height: 180px;
