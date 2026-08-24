@@ -18,6 +18,7 @@ const projects = [
     index: "01",
     title: "SANGRE",
     type: "医疗产品",
+    typeEn: "Healthcare product",
     year: "2024",
     href: "/work/sangre",
     images: [
@@ -27,11 +28,13 @@ const projects = [
       sphereAsset("/portfolio/sangre-menu-04.jpg"),
     ],
     description: "家庭慢病检测系统，从研究、交互到可验证原型。",
+    descriptionEn: "A home chronic-care system shaped through research, interaction design, and a testable prototype.",
   },
   {
     index: "02",
     title: "BAMBINO V2",
     type: "产品再设计",
+    typeEn: "Product redesign",
     year: "2024",
     href: "/work/bambino",
     images: [
@@ -41,11 +44,13 @@ const projects = [
       sphereAsset("/portfolio/bambino-menu-04.jpg"),
     ],
     description: "重新设计机械锁定与动态反馈，让操作更稳、更清楚。",
+    descriptionEn: "A clearer mechanical lock and feedback system for safer, more confident operation.",
   },
   {
     index: "03",
     title: "SIMPLE UNI LIFE",
     type: "数字产品",
+    typeEn: "Digital product",
     year: "2024",
     href: "/work/simple-uni-life",
     images: [
@@ -55,6 +60,7 @@ const projects = [
       sphereAsset("/portfolio/unilife-menu-04.png"),
     ],
     description: "把分散的课程信息转化为可比较、可行动的决策工具。",
+    descriptionEn: "Turning fragmented course information into a comparable, actionable decision tool.",
   },
 ];
 
@@ -102,7 +108,8 @@ function frontNode(rotation: { x: number; y: number }) {
 const closestRotation = (current: number, target: number) =>
   target + Math.round((current - target) / 360) * 360;
 
-export default function SphereProjectMenu() {
+export default function SphereProjectMenu({ locale = "zh" }: { locale?: "zh" | "en" }) {
+  const isEnglish = locale === "en";
   const router = useRouter();
   const [active, setActive] = useState(0);
   const activeRef = useRef(0);
@@ -258,7 +265,7 @@ export default function SphereProjectMenu() {
     dragging.current = false;
     event.currentTarget.releasePointerCapture(event.pointerId);
     if (!didDrag.current && pressedProject.current !== null) {
-      router.push(projects[pressedProject.current].href);
+      router.push(isEnglish ? `/en${projects[pressedProject.current].href}` : projects[pressedProject.current].href);
     }
     const predicted = {
       x: rotation.current.x + velocity.current.x * 8,
@@ -282,7 +289,7 @@ export default function SphereProjectMenu() {
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const amount = 46;
     if (event.key === "Enter") {
-      router.push(projects[activeRef.current].href);
+      router.push(isEnglish ? `/en${projects[activeRef.current].href}` : projects[activeRef.current].href);
       return;
     }
     if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
@@ -305,7 +312,11 @@ export default function SphereProjectMenu() {
         ref={viewportRef}
         className="sphere-project-menu__viewport"
         role="application"
-        aria-label="可旋转项目球面，拖动或使用方向键选择，按回车进入项目"
+        aria-label={
+          isEnglish
+            ? "Rotating project sphere. Drag or use arrow keys to choose a project, then press Enter."
+            : "可旋转项目球面，拖动或使用方向键选择，按回车进入项目"
+        }
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
@@ -329,7 +340,7 @@ export default function SphereProjectMenu() {
               <Link
                 key={`${node.lat}-${node.lon}`}
                 className="sphere-project-menu__tile"
-                href={project.href}
+                href={isEnglish ? `/en${project.href}` : project.href}
                 style={style}
                 data-project={node.project}
                 tabIndex={-1}
@@ -352,20 +363,20 @@ export default function SphereProjectMenu() {
 
       <div className="sphere-project-menu__info" aria-live="polite">
         <span>
-          {current.index} / {current.type} / {current.year}
+          {current.index} / {isEnglish ? current.typeEn : current.type} / {current.year}
         </span>
         <h1>{current.title}</h1>
-        <p>{current.description}</p>
+        <p>{isEnglish ? current.descriptionEn : current.description}</p>
       </div>
 
-      <div className="sphere-project-menu__selectors" aria-label="选择项目">
+      <div className="sphere-project-menu__selectors" aria-label={isEnglish ? "Choose project" : "选择项目"}>
         {projects.map((project, index) => (
           <button
             key={project.href}
             type="button"
             className={index === active ? "is-active" : ""}
             onClick={() => selectProject(index)}
-            aria-label={`选择 ${project.title}`}
+            aria-label={isEnglish ? `Choose ${project.title}` : `选择 ${project.title}`}
             aria-pressed={index === active}
           >
             {project.index}
@@ -375,16 +386,16 @@ export default function SphereProjectMenu() {
 
       <Link
         className="sphere-project-menu__open"
-        href={current.href}
+        href={isEnglish ? `/en${current.href}` : current.href}
         onPointerDown={(event) => event.stopPropagation()}
       >
-        <span>查看</span>
-        <strong>项目</strong>
+        <span>{isEnglish ? "View" : "查看"}</span>
+        <strong>{isEnglish ? "project" : "项目"}</strong>
         <i aria-hidden="true">↗</i>
       </Link>
 
       <p className="sphere-project-menu__hint">
-        拖动旋转 · 点击图片或“查看项目”进入
+        {isEnglish ? "Drag to rotate · Select an image or “View project” to enter" : "拖动旋转 · 点击图片或“查看项目”进入"}
       </p>
     </div>
   );

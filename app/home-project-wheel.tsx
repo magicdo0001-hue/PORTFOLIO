@@ -16,6 +16,7 @@ const wheelProjects = [
     index: "01",
     title: "SANGRE",
     meta: "医疗产品 / 2024",
+    metaEn: "Healthcare product / 2024",
     href: "/work/sangre",
     image: "/portfolio/sangre-cutout.png",
     imageClass: "home-project-wheel__image--sangre",
@@ -25,6 +26,7 @@ const wheelProjects = [
     index: "02",
     title: "BAMBINO V2",
     meta: "产品再设计 / 2024",
+    metaEn: "Product redesign / 2024",
     href: "/work/bambino",
     image: "/portfolio/bambino-cutout.png",
     imageClass: "home-project-wheel__image--bambino",
@@ -34,13 +36,15 @@ const wheelProjects = [
     index: "03",
     title: "SIMPLE UNI LIFE",
     meta: "数字产品 / 2024",
+    metaEn: "Digital product / 2024",
     href: "/work/simple-uni-life",
-    image: "/portfolio/unilife-laptop-cutout-v2.png",
+    image: "/portfolio/unilife-laptop-cutout-v4.png",
     imageClass: "home-project-wheel__image--unilife",
   },
 ];
 
-export default function HomeProjectWheel() {
+export default function HomeProjectWheel({ locale = "zh" }: { locale?: "zh" | "en" }) {
+  const isEnglish = locale === "en";
   const [active, setActive] = useState(1);
   const [paused, setPaused] = useState(false);
   const dragStart = useRef<number | null>(null);
@@ -112,7 +116,11 @@ export default function HomeProjectWheel() {
       className="home-hero__visual home-project-wheel"
       data-project={current.id}
       tabIndex={0}
-      aria-label="精选项目转轮，使用滚轮、拖拽或方向键切换"
+      aria-label={
+        isEnglish
+          ? "Featured project wheel. Use the mouse wheel, drag, or arrow keys to browse."
+          : "精选项目转轮，使用滚轮、拖拽或方向键切换"
+      }
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -121,8 +129,8 @@ export default function HomeProjectWheel() {
     >
       <Link
         className="home-project-wheel__stage"
-        href={current.href}
-        aria-label={`查看 ${current.title} 项目`}
+        href={isEnglish ? `/en${current.href}` : current.href}
+        aria-label={isEnglish ? `View ${current.title} project` : `查看 ${current.title} 项目`}
       >
         {wheelProjects.map((project, index) => (
           <figure
@@ -135,13 +143,13 @@ export default function HomeProjectWheel() {
             <img
               className="home-project-wheel__image"
               src={project.image}
-              alt={index === active ? `${project.title} 项目主视觉` : ""}
+              alt={index === active ? (isEnglish ? `${project.title} project visual` : `${project.title} 项目主视觉`) : ""}
             />
           </figure>
         ))}
         <span className="home-project-wheel__caption" aria-live="polite">
-          精选项目 / {current.index}
-          <strong>{current.meta}</strong>
+          {isEnglish ? "Featured project" : "精选项目"} / {current.index}
+          <strong>{isEnglish ? current.metaEn : current.meta}</strong>
         </span>
       </Link>
 
@@ -149,7 +157,7 @@ export default function HomeProjectWheel() {
         ref={optionsRef}
         className="home-project-wheel__options"
         role="listbox"
-        aria-label="选择首页主视觉项目"
+        aria-label={isEnglish ? "Choose a featured project" : "选择首页主视觉项目"}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => {
