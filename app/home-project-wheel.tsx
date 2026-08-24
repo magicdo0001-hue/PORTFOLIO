@@ -68,6 +68,7 @@ export default function HomeProjectWheel({ locale = "zh" }: { locale?: "zh" | "e
     if (!options) return;
 
     const handleWheel = (event: globalThis.WheelEvent) => {
+      if (window.matchMedia("(max-aspect-ratio: 4/3)").matches) return;
       event.preventDefault();
       event.stopPropagation();
       if (wheelLocked.current || Math.abs(event.deltaY) < 4) return;
@@ -88,12 +89,14 @@ export default function HomeProjectWheel({ locale = "zh" }: { locale?: "zh" | "e
   }, []);
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(max-aspect-ratio: 4/3)").matches) return;
     dragStart.current = event.clientY;
     event.currentTarget.setPointerCapture(event.pointerId);
     setPaused(true);
   };
 
   const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (window.matchMedia("(max-aspect-ratio: 4/3)").matches) return;
     if (dragStart.current !== null) {
       const distance = event.clientY - dragStart.current;
       if (Math.abs(distance) > 24) select(active + (distance < 0 ? 1 : -1));
