@@ -133,11 +133,13 @@ test("renders the portfolio index and three distinct case studies", async () => 
     ],
     [
       "/work/battery-packaging",
-      /ENERGIZER PACKAGING/,
+      /CR2032 纽扣电池可回收包装/,
       [
         "battery-museum-02.jpeg",
         "battery-museum-01.jpeg",
+        "battery-museum-03.jpeg",
         "battery-museum-04.jpeg",
+        "battery-museum-05.jpeg",
       ],
     ],
     [

@@ -7,7 +7,7 @@ export default function WorkIndex() {
   return (
     <main className="work-index">
       <section className="work-index__hero">
-        <SiteHeader />
+        <SiteHeader showLanguage languageHref="/en/work" />
         <FadeContent
           className="fade-content--hero"
           duration={1050}

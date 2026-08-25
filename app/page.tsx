@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <main className="home">
       <section className="home-hero" id="top">
-        <SiteHeader />
+        <SiteHeader showLanguage />
         <div className="home-hero__layout shell">
           <div className="home-hero__intro">
             <div className="home-hero__proof">

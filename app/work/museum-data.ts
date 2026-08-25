@@ -51,7 +51,7 @@ export const museumProjects = [
     title: "ENERGIZER PACKAGING",
     index: "04",
     meta: "04 / 包装设计 / 2025",
-    description: "电池包装与开启体验 · 项目资料待补充",
+    description: "儿童安全、单颗取用与纸塑分离回收包装",
   },
   {
     images: [

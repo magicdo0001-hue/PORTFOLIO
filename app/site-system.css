@@ -994,3 +994,124 @@
     gap: 12px;
   }
 }
+/* In portrait, keep all three project tags visible above the hero image. */
+@media (max-aspect-ratio: 4/3) {
+  .home-hero {
+    min-height: auto;
+  }
+
+  .home-hero__layout {
+    min-height: 100svh;
+    padding: clamp(104px, 10vh, 136px) 0 20px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    align-items: start;
+    gap: clamp(18px, 3vh, 34px);
+  }
+
+  .home-hero__intro {
+    width: 100%;
+    align-self: start;
+    padding: 0;
+  }
+
+  .home-hero__visual {
+    position: relative;
+    width: 100%;
+    height: clamp(420px, 52vh, 680px);
+    min-height: 0;
+    right: auto;
+    top: auto;
+    margin: 0;
+  }
+
+  .home-hero__process {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin: 0;
+  }
+
+  .home-project-wheel__stage {
+    padding-top: 58px;
+  }
+
+  .home-project-wheel__options {
+    width: min(calc(100% - 28px), 620px);
+    height: auto;
+    top: 0;
+    right: auto;
+    left: 50%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    transform: translateX(-50%);
+    cursor: default;
+    touch-action: pan-y;
+  }
+
+  .home-project-wheel__options:active {
+    cursor: default;
+  }
+
+  .home-project-wheel__options button {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    top: auto;
+    right: auto;
+    padding: 7px 8px;
+    opacity: 0.5;
+    transform: none !important;
+    transform-origin: center;
+  }
+
+  .home-project-wheel__options button.is-active {
+    opacity: 1;
+    border-color: rgb(157 221 42 / 58%);
+  }
+}
+/* Portrait screens need reading width more than a desktop-style split layout. */
+@media (max-aspect-ratio: 4/3) {
+  .profile-about {
+    display: block;
+    min-height: auto;
+    padding: clamp(96px, 10vh, 128px) 0 clamp(48px, 8vh, 88px);
+  }
+
+  .profile-about__layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(28px, 4vh, 52px);
+  }
+
+  .profile-about__portrait {
+    width: min(100%, 820px);
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+    justify-self: center;
+  }
+
+  .profile-about__portrait img {
+    object-position: center 48%;
+  }
+
+  .profile-about__content {
+    width: 100%;
+    padding-block: 0;
+  }
+
+  .profile-about h2 {
+    max-width: 15ch;
+    font-size: clamp(40px, 8vw, 68px);
+  }
+
+  .profile-about__bio {
+    max-width: 68ch;
+  }
+
+  .profile-about__disciplines {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
