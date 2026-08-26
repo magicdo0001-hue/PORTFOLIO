@@ -4,9 +4,39 @@ import { useState } from "react";
 
 const PRODUCT_URL = "https://simpleunilife.com/";
 
-export function SimpleUniLifeLiveDemo() {
+const copy = {
+  zh: {
+    aria: "Simple Uni Life 在线产品体验",
+    chapter: "03 / 真实线上产品",
+    open: "新标签页打开 ↗",
+    exit: "退出体验",
+    posterAlt: "Simple Uni Life 线上产品首页预览",
+    frameTitle: "Simple Uni Life 在线产品体验",
+    real: "真实线上产品",
+    start: "开始在线体验",
+    hint: "点击后，滚轮与键盘将用于操作产品",
+    ready: "体验已启用 · 使用上方按钮退出",
+    loading: "正在载入线上产品…",
+  },
+  en: {
+    aria: "Simple Uni Life live product experience",
+    chapter: "03 / LIVE PRODUCT",
+    open: "Open in new tab ↗",
+    exit: "Exit experience",
+    posterAlt: "Preview of the Simple Uni Life live product",
+    frameTitle: "Simple Uni Life live product experience",
+    real: "Live product",
+    start: "Launch interactive demo",
+    hint: "Once launched, the mouse wheel and keyboard control the product",
+    ready: "Experience active · use the button above to exit",
+    loading: "Loading the live product…",
+  },
+} as const;
+
+export function SimpleUniLifeLiveDemo({ locale = "zh" }: { locale?: "zh" | "en" }) {
   const [isActive, setIsActive] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const text = copy[locale];
 
   const enterDemo = () => {
     setIsLoaded(false);
@@ -18,9 +48,9 @@ export function SimpleUniLifeLiveDemo() {
   };
 
   return (
-    <section id="online-product" className="unilife-live" aria-label="Simple Uni Life 在线产品体验">
+    <section id="online-product" className="unilife-live" aria-label={text.aria}>
       <div className="unilife-live__intro shell">
-        <p className="chapter-label">03 / 真实线上产品</p>
+        <p className="chapter-label">{text.chapter}</p>
       </div>
       <div className={`unilife-live__browser${isActive ? " is-active" : ""}`}>
         <div className="unilife-live__toolbar">
@@ -35,11 +65,11 @@ export function SimpleUniLifeLiveDemo() {
           </div>
           <div className="unilife-live__actions">
             <a href={PRODUCT_URL} target="_blank" rel="noreferrer">
-              新标签页打开 ↗
+              {text.open}
             </a>
             {isActive && (
               <button type="button" onClick={leaveDemo}>
-                退出体验
+                {text.exit}
               </button>
             )}
           </div>
@@ -50,7 +80,7 @@ export function SimpleUniLifeLiveDemo() {
             <img
               className="unilife-live__poster"
               src="/portfolio/unilife-menu-search.png"
-              alt="Simple Uni Life 线上产品首页预览"
+              alt={text.posterAlt}
             />
           )}
 
@@ -58,7 +88,7 @@ export function SimpleUniLifeLiveDemo() {
             <iframe
               className={isLoaded ? "is-loaded" : ""}
               src={PRODUCT_URL}
-              title="Simple Uni Life 在线产品体验"
+              title={text.frameTitle}
               onLoad={() => setIsLoaded(true)}
               sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -68,16 +98,16 @@ export function SimpleUniLifeLiveDemo() {
 
           {!isActive ? (
             <div className="unilife-live__gate">
-              <p>真实线上产品</p>
+              <p>{text.real}</p>
               <button type="button" onClick={enterDemo} aria-pressed="false">
-                <span>开始在线体验</span>
+                <span>{text.start}</span>
                 <b aria-hidden="true">↗</b>
               </button>
-              <small>点击后，滚轮与键盘将用于操作产品</small>
+              <small>{text.hint}</small>
             </div>
           ) : (
             <div className="unilife-live__active-note" aria-live="polite">
-              {isLoaded ? "体验已启用 · 使用上方按钮退出" : "正在载入线上产品…"}
+              {isLoaded ? text.ready : text.loading}
             </div>
           )}
         </div>
