@@ -5,12 +5,6 @@
   "compatibility_date": "2026-05-22",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
-  "routes": [
-    {
-      "pattern": "yanwenhou.tianyuhan.top",
-      "custom_domain": true
-    }
-  ],
   "assets": {
     "binding": "ASSETS"
   },
