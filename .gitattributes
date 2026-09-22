@@ -1,0 +1,5 @@
+# Preserve document and 3D asset bytes across Windows/Linux checkouts.
+*.pdf binary
+*.glb binary
+*.blend binary
+*.woff2 binary

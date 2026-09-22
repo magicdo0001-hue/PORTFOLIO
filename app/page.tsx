@@ -3,10 +3,12 @@ import HomeProjectWheel from "./home-project-wheel";
 import { SiteHeader } from "./project-shell";
 import SphereProjectMenu from "./work/sphere-project-menu";
 import FadeContent from "./fade-content";
+import RhineLabExperience from "./rhine-lab-experience";
 
 export default function Home() {
   return (
     <main className="home">
+      <RhineLabExperience />
       <section className="home-hero" id="top">
         <SiteHeader showLanguage />
         <div className="home-hero__layout shell">
@@ -220,9 +222,9 @@ export default function Home() {
           <header className="profile-contact__header">
             <p>联系方式 / CONTACT</p>
             <h2 id="profile-contact-title">
-              有新的产品问题，
+              若您有合作兴趣，欢迎进一步沟通，
               <br />
-              欢迎与我联系。
+              期待我们更深度的交流。
             </h2>
           </header>
 
