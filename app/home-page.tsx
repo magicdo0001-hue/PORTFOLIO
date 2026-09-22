@@ -3,6 +3,7 @@ import HomeProjectWheel from "./home-project-wheel";
 import { SiteHeader } from "./project-shell";
 import SphereProjectMenu from "./work/sphere-project-menu";
 import FadeContent from "./fade-content";
+import RhineLabExperience from "./rhine-lab-experience";
 
 export type HomeLocale = "zh" | "en";
 
@@ -38,7 +39,7 @@ const copy = {
     ],
     workLabel: "精选项目",
     contactEyebrow: "联系方式 / CONTACT",
-    contactTitle: ["有新的产品问题，", "欢迎与我联系。"],
+    contactTitle: ["若您有合作兴趣，欢迎进一步沟通，", "期待我们更深度的交流。"],
     email: "邮箱",
     phone: "手机",
     wechat: "微信",
@@ -109,6 +110,7 @@ export function HomePage({ locale = "zh" }: { locale?: HomeLocale }) {
 
   return (
     <main className={`home home--${locale}`} lang={isEnglish ? "en" : "zh-CN"}>
+      <RhineLabExperience locale={locale} />
       <section className="home-hero" id="top">
         <SiteHeader locale={locale} showLanguage />
         <div className="home-hero__layout shell">

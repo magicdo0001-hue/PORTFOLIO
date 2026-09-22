@@ -32,11 +32,52 @@ test("renders the portfolio index and three distinct case studies", async () => 
   assert.match(html, /SANGRE/);
   assert.match(html, /BAMBINO V2/);
   assert.match(html, /SIMPLE UNI LIFE/);
+  assert.match(html, /若您有合作兴趣，欢迎进一步沟通/);
+  assert.match(html, /期待我们更深度的交流/);
   assert.match(html, /18705188117@163\.com/);
   assert.match(html, /tel:\+8618705188117/);
   assert.match(html, /tel:\+61449923613/);
-  assert.match(html, /下载PDF作品集/);
+  assert.match(html, /下载 PDF 文档/);
+  assert.match(html, /下载简历/);
+  assert.match(html, /下载作品集文档/);
+  assert.match(html, /\/wenhou-yan-resume\.pdf/);
   assert.match(html, /\/wenhou-yan-portfolio-cn\.pdf/);
+
+  const englishResponse = await render("/en");
+  assert.equal(englishResponse.status, 200);
+  const englishHtml = await englishResponse.text();
+  assert.match(englishHtml, /Download PDFs/);
+  assert.match(englishHtml, /Download resume/);
+  assert.match(englishHtml, /Download portfolio/);
+  assert.match(englishHtml, /\/wenhou-yan-resume-en\.pdf/);
+  assert.match(englishHtml, /\/wenhou-yan-portfolio-en\.pdf/);
+
+  const englishWorkResponse = await render("/en/work");
+  assert.equal(englishWorkResponse.status, 200);
+  const englishWorkHtml = await englishWorkResponse.text();
+  assert.match(englishWorkHtml, /\/en\/work\/battery-packaging/);
+  assert.match(englishWorkHtml, /\/en\/work\/vertical-car-park/);
+
+  const englishCases = [
+    [
+      "/en/work/battery-packaging",
+      /CR2032 CIRCULAR SAFETY PACKAGING/,
+      /PIDA Student finalist/,
+    ],
+    [
+      "/en/work/vertical-car-park",
+      /ARTI64/,
+      /FROM PRODUCT TO SYSTEM/,
+    ],
+  ];
+  for (const [path, expectedTitle, expectedCopy] of englishCases) {
+    const caseResponse = await render(path);
+    assert.equal(caseResponse.status, 200);
+    const caseHtml = await caseResponse.text();
+    assert.match(caseHtml, expectedTitle);
+    assert.match(caseHtml, expectedCopy);
+    assert.match(caseHtml, /切换至中文/);
+  }
   assert.ok(
     html.indexOf("关于") < html.indexOf("项目") &&
       html.indexOf("项目") < html.indexOf("下载简历"),
@@ -234,6 +275,10 @@ test("renders the portfolio index and three distinct case studies", async () => 
   await access(new URL("../public/wenhou-yan-resume.pdf", import.meta.url));
   await access(
     new URL("../public/wenhou-yan-portfolio-cn.pdf", import.meta.url),
+  );
+  await access(new URL("../public/wenhou-yan-resume-en.pdf", import.meta.url));
+  await access(
+    new URL("../public/wenhou-yan-portfolio-en.pdf", import.meta.url),
   );
 });
 

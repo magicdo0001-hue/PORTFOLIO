@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import GlassSurface from "./glass-surface";
@@ -10,8 +9,8 @@ const projectShortcuts = [
   { index: "01", title: "SANGRE", href: "/work/sangre", enHref: "/en/work/sangre" },
   { index: "02", title: "BAMBINO V2", href: "/work/bambino", enHref: "/en/work/bambino" },
   { index: "03", title: "SIMPLE UNI LIFE", href: "/work/simple-uni-life", enHref: "/en/work/simple-uni-life" },
-  { index: "04", title: "ENERGIZER", href: "/work/battery-packaging" },
-  { index: "05", title: "ARTI64", href: "/work/vertical-car-park" },
+  { index: "04", title: "ENERGIZER", href: "/work/battery-packaging", enHref: "/en/work/battery-packaging" },
+  { index: "05", title: "ARTI64", href: "/work/vertical-car-park", enHref: "/en/work/vertical-car-park" },
 ] as const;
 
 export function SiteHeader({
@@ -27,23 +26,23 @@ export function SiteHeader({
 }) {
   const isEnglish = locale === "en";
   const homeHref = isEnglish ? "/en" : "/";
-  const pathname = usePathname();
   const [projectsOpen, setProjectsOpen] = useState(false);
+  const [downloadsOpen, setDownloadsOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setProjectsOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!projectsOpen) return;
+    if (!projectsOpen && !downloadsOpen) return;
     const closeOnOutsideClick = (event: PointerEvent) => {
       if (!headerRef.current?.contains(event.target as Node)) {
         setProjectsOpen(false);
+        setDownloadsOpen(false);
       }
     };
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setProjectsOpen(false);
+      if (event.key === "Escape") {
+        setProjectsOpen(false);
+        setDownloadsOpen(false);
+      }
     };
     document.addEventListener("pointerdown", closeOnOutsideClick);
     document.addEventListener("keydown", closeOnEscape);
@@ -51,9 +50,12 @@ export function SiteHeader({
       document.removeEventListener("pointerdown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [projectsOpen]);
+  }, [downloadsOpen, projectsOpen]);
 
-  const closeProjects = () => setProjectsOpen(false);
+  const closeMenus = () => {
+    setProjectsOpen(false);
+    setDownloadsOpen(false);
+  };
 
   return (
     <header
@@ -81,20 +83,20 @@ export function SiteHeader({
           className="site-nav__brand site-nav__glass"
           href={homeHref}
           aria-label={isEnglish ? "Portfolio home" : "作品集首页"}
-          onClick={closeProjects}
+          onClick={closeMenus}
         >
           <span>WY</span>
           <strong>{isEnglish ? "Home" : "首页"}</strong>
         </Link>
         <nav aria-label={isEnglish ? "Main navigation" : "主导航"}>
-          <Link className="site-nav__glass" href={`${homeHref}#profile`} onClick={closeProjects}>
+          <Link className="site-nav__glass" href={`${homeHref}#profile`} onClick={closeMenus}>
             {isEnglish ? "About" : "关于"}
           </Link>
           <div className="site-nav__projects">
             <Link
               className="site-nav__glass site-nav__projects-link"
               href={isEnglish ? "/en/work" : "/work"}
-              onClick={closeProjects}
+              onClick={closeMenus}
             >
               {isEnglish ? "Projects" : "项目"}
             </Link>
@@ -104,7 +106,10 @@ export function SiteHeader({
               aria-label={isEnglish ? "Show project shortcuts" : "展开项目快捷入口"}
               aria-expanded={projectsOpen}
               aria-controls="site-project-shortcuts"
-              onClick={() => setProjectsOpen((open) => !open)}
+              onClick={() => {
+                setDownloadsOpen(false);
+                setProjectsOpen((open) => !open);
+              }}
             >
               <span aria-hidden="true">›</span>
             </button>
@@ -124,7 +129,7 @@ export function SiteHeader({
                       ? `Open ${project.title} project`
                       : `打开 ${project.title} 项目`
                   }
-                  onClick={closeProjects}
+                  onClick={closeMenus}
                 >
                   <span>{project.index}</span>
                   <strong>{project.title}</strong>
@@ -141,27 +146,61 @@ export function SiteHeader({
               hrefLang={isEnglish ? "zh-CN" : "en"}
               lang={isEnglish ? "zh-CN" : "en"}
               aria-label={isEnglish ? "切换至中文" : "Switch to English"}
-              onClick={closeProjects}
+              onClick={closeMenus}
             >
               {isEnglish ? "中" : "EN"}
             </Link>
           )}
-          <a
-            className="site-nav__download site-nav__glass"
-            href="/wenhou-yan-portfolio-cn.pdf"
-            download
-            aria-label={isEnglish ? "Download portfolio PDF" : "下载PDF作品集"}
-            onClick={closeProjects}
-          >
-            <span className="site-nav__action-label">
-              {isEnglish ? "Portfolio PDF" : "下载PDF作品集"}
-            </span>
-            <span aria-hidden="true">↓</span>
-          </a>
+          <div className="site-nav__downloads">
+            <button
+              className="site-nav__download site-nav__glass"
+              type="button"
+              aria-label={isEnglish ? "Open PDF downloads" : "打开 PDF 下载选项"}
+              aria-expanded={downloadsOpen}
+              aria-controls="site-pdf-downloads"
+              aria-haspopup="menu"
+              onClick={() => {
+                setProjectsOpen(false);
+                setDownloadsOpen((open) => !open);
+              }}
+            >
+              <span className="site-nav__action-label">
+                {isEnglish ? "Download PDFs" : "下载 PDF 文档"}
+              </span>
+              <span aria-hidden="true">{downloadsOpen ? "↑" : "↓"}</span>
+            </button>
+            <div
+              id="site-pdf-downloads"
+              className={`site-nav__download-menu${downloadsOpen ? " is-open" : ""}`}
+              role="menu"
+              aria-hidden={!downloadsOpen}
+            >
+              <a
+                href={isEnglish ? "/wenhou-yan-resume-en.pdf" : "/wenhou-yan-resume.pdf"}
+                download={isEnglish ? "Wenhou_Yan_Product_Designer_Resume_Australia.pdf" : "严文厚_产品设计师_简历.pdf"}
+                role="menuitem"
+                tabIndex={downloadsOpen ? 0 : -1}
+                onClick={closeMenus}
+              >
+                <span>{isEnglish ? "Download resume" : "下载简历"}</span>
+                <span aria-hidden="true">↓</span>
+              </a>
+              <a
+                href={isEnglish ? "/wenhou-yan-portfolio-en.pdf" : "/wenhou-yan-portfolio-cn.pdf"}
+                download={isEnglish ? "Wenhou_Yan_Product_Design_Portfolio.pdf" : "严文厚_产品设计_作品集.pdf"}
+                role="menuitem"
+                tabIndex={downloadsOpen ? 0 : -1}
+                onClick={closeMenus}
+              >
+                <span>{isEnglish ? "Download portfolio" : "下载作品集文档"}</span>
+                <span aria-hidden="true">↓</span>
+              </a>
+            </div>
+          </div>
           <Link
             className="site-nav__contact site-nav__glass"
             href={`${homeHref}#contact`}
-            onClick={closeProjects}
+            onClick={closeMenus}
           >
             <span className="site-nav__action-label">
               {isEnglish ? "Contact" : "联系我"}
@@ -200,6 +239,8 @@ export function ProjectHero({
     sangre: "/work/sangre",
     bambino: "/work/bambino",
     unilife: "/work/simple-uni-life",
+    battery: "/work/battery-packaging",
+    frame: "/work/vertical-car-park",
   } as const;
   const bilingualPath = tone in bilingualPaths
     ? bilingualPaths[tone as keyof typeof bilingualPaths]

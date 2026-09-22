@@ -48,3 +48,8 @@ next-env.d.ts
 *.log
 /tmp/
 /design-qa.md
+
+# Generated standalone RhineLab build and its isolated dependencies
+/public/rhine-lab/
+/RhineLabUI/node_modules/
+/RhineLabUI/dist/

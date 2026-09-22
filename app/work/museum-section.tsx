@@ -19,7 +19,7 @@ const englishProjects: Record<
   },
   "04": {
     meta: "04 / PACKAGING DESIGN / 2025",
-    description: "Battery packaging and opening experience · Documentation in progress",
+    description: "Child-resistant single-cell access with separable paper and PET recovery",
   },
   "05": {
     title: "ARTI64 MODEL CAR DISPLAY",
@@ -33,11 +33,10 @@ export default function MuseumSection({ locale = "zh" }: { locale?: "zh" | "en" 
   const items = isEnglish
     ? museumItems.map((item) => {
         const translation = englishProjects[item.index];
-        const hasEnglishCase = ["01", "02", "03"].includes(item.index);
         return {
           ...item,
           ...translation,
-          link: hasEnglishCase ? `/en${item.link}` : item.link,
+          link: `/en${item.link}`,
         };
       })
     : museumItems;
