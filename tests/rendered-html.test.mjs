@@ -366,3 +366,29 @@ test("integrates the Infinite Menu museum into the work page", async () => {
     /\.sphere-project-menu__viewport\s*{[\s\S]*?touch-action: pan-y;/,
   );
 });
+
+test("BAMBINO workbench keeps all five chapters readable in both locales", async () => {
+  for (const path of ["/work/bambino", "/en/work/bambino"]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    for (const id of ["overview", "problem", "iterations", "locking", "structure"]) {
+      assert.ok(html.includes(`id="read-${id}"`), `${path}: ${id} content exists before WebGL`);
+    }
+    assert.match(html, /bambino-cutout\.png/);
+    assert.match(html, /data-testid="model-viewport"/);
+    assert.match(html, /type="range"/);
+    assert.doesNotMatch(html, /\.mp4/);
+  }
+});
+
+test("BAMBINO exported assets preserve transparent tank and selectable groups", async () => {
+  const data = await readFile(new URL("../public/bambino/bambino-v2.glb", import.meta.url));
+  assert.equal(data.toString("utf8", 0, 4), "glTF");
+  const json = JSON.parse(data.toString("utf8", 20, 20 + data.readUInt32LE(12)));
+  const tank = json.materials.find(material => /clear|tank/i.test(material.name));
+  assert.equal(tank.extensions.KHR_materials_transmission.transmissionFactor, 1);
+  for (const name of ["group head", "方水箱", "PCB"]) {
+    assert.ok(json.nodes.some(node => node.name?.includes(name)), `missing component ${name}`);
+  }
+});
