@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { installArchiveProjectPortal } from "./archive-project-portal";
+import "./archive-project-portal.css";
 import "./rhine-lab-experience.css";
 
 export default function RhineLabExperience({
@@ -10,6 +13,10 @@ export default function RhineLabExperience({
   standalone?: boolean;
 }) {
   const english = locale === "en";
+  const archive = useRef<HTMLIFrameElement>(null);
+  useEffect(() => {
+    if (archive.current) return installArchiveProjectPortal(archive.current);
+  }, []);
   return (
     <section className="rhine-experience" aria-label="Rhine Lab interactive experience">
       <div className="rhine-experience__bar">
@@ -32,6 +39,7 @@ export default function RhineLabExperience({
         </nav>
       </div>
       <iframe
+        ref={archive}
         className="rhine-experience__frame"
         src="/rhine-lab/index.html"
         title={english ? "Rhine Lab — original interactive 3D archive" : "Rhine Lab 原版三维档案交互"}

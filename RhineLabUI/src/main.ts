@@ -94,6 +94,12 @@ let savedArchive: { selected: string; columns: string[] } | null = null;
 let returnArchive: string | null = reviewParams.get("archive");
 try {
   returnArchive ??= new URLSearchParams(window.parent.location.search).get("archive");
+  const projectHash = window.parent.location.hash;
+  if (projectHash.startsWith("#project=")) {
+    const href = decodeURIComponent(projectHash.slice(9));
+    const lane = projectColumns.findIndex(project => href.endsWith(project.href));
+    if (lane >= 0) returnArchive ??= records[columnFiles(lane)[0]].id;
+  }
 } catch { /* Standalone embeds may have a different-origin parent. */ }
 try {
   const saved = JSON.parse(sessionStorage.getItem(ARCHIVE_SESSION_KEY) ?? "null");
@@ -209,6 +215,7 @@ audio.configure(prefs);
 let audioPreview = false, audioPreviewRequest = 0;
 let scene: ArchiveScene;
 let viewer: ModelViewer | undefined;
+let projectSuspended = false;
 const accessLog: { id: string; time: string }[] = [];
 const columnMemory = archiveColumns.map((_, lane) => columnFiles(lane)[0]);
 if (resumeArchive && savedArchive) {
@@ -693,7 +700,10 @@ document.addEventListener("click", (e) => {
     const project = projectColumns[fileLocation(selected).lane];
     const destination = window.top ?? window;
     const locale = destination.location.pathname.startsWith("/en/") || destination.location.pathname === "/en" ? "/en" : "";
-    destination.location.assign(locale + project.href);
+    const href = locale + project.href;
+    if (window.frameElement?.hasAttribute("data-project-portal")) {
+      window.parent.postMessage({ type: "rhine-open-project", href }, location.origin);
+    } else destination.location.assign(href);
   }
   if (action === "reset-search") {
     modal = "search";
@@ -856,7 +866,7 @@ function frame(ms: number) {
     mode === "boot" && ready
       ? bootFrame(frozenTime ?? time - bootStart)
       : undefined;
-  if (!viewer?.isOpen) scene?.update(time, cinema);
+  if (!viewer?.isOpen && !projectSuspended) scene?.update(time, cinema);
   viewer?.update(time);
   if (scene && mode === "detail") {
     documentDecryption.update(time, scene.decryptionFrame, prefs.reduced);
@@ -1002,6 +1012,29 @@ Object.assign(window, {
       setMode("boot");
       bootStart = performance.now() / 1000 - t;
       lastStep = "";
+    },
+    projectPortal: {
+      prepare: async (href?: string) => {
+        const lane = projectColumns.findIndex(project => href?.endsWith(project.href));
+        if (lane >= 0 && fileLocation(selected).lane !== lane) select(columnMemory[lane]);
+        if (mode !== "detail") setMode("detail");
+        await scene.prepareProjectPortal();
+      },
+      rect: () => {
+        const box = $("#stage").getBoundingClientRect();
+        const points = [[-2.18, .25], [2.18, .25], [-2.18, 3.45], [2.18, 3.45]].map(([x, y]) => scene.projectCard(x, y));
+        const xs = points.map(point => box.left + point[0] * box.width / 1920);
+        const ys = points.map(point => box.top + point[1] * box.height / 1080);
+        return { x: Math.min(...xs), y: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+      },
+      opening: (amount: number) => scene.setProjectOpening(amount),
+      suspend: (value: boolean) => { projectSuspended = value; },
+      release: (returnToArchive = true) => {
+        projectSuspended = false;
+        scene.releaseProjectPortal();
+        if (returnToArchive) setMode("archive");
+      },
+      reduced: () => prefs.reduced,
     },
     archive: () => setMode("archive"),
     detail: () => openFile(),

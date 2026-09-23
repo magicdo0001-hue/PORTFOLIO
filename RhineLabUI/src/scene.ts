@@ -357,6 +357,55 @@ export class ArchiveScene {
     this.loaded = true;
   }
 
+  private projectShell?: Awaited<ReturnType<ArchiveScene["createAssemblyModel"]>>;
+  private projectHinge?: THREE.Group;
+  private projectOpening = 0;
+  private projectShellRequest = 0;
+  async prepareProjectPortal() {
+    if (this.projectShell) return;
+    this.finishDecryption();
+    const request = ++this.projectShellRequest;
+    this.targetRotation = 0;
+    const began = performance.now();
+    const settled = new Promise<void>(resolve => {
+      const wait = () => {
+        if (request !== this.projectShellRequest || (this.detail > .98 && Math.abs(this.rotation) < .005) || performance.now() - began > 2400) resolve();
+        else requestAnimationFrame(wait);
+      };
+      wait();
+    });
+    const [source] = await Promise.all([this.createAssemblyModel(), settled]);
+    if (request !== this.projectShellRequest) { source.dispose(); return; }
+    source.setClarity(1);
+    const hinge = new THREE.Group();
+    hinge.position.set(-2.5, 0, 0.255);
+    for (const mesh of [...source.model.children]) {
+      if (!["cover", "fasteners"].includes(mesh.userData.assemblyPart)) continue;
+      source.model.remove(mesh);
+      mesh.position.sub(hinge.position);
+      hinge.add(mesh);
+    }
+    source.model.add(hinge);
+    this.projectShell = source;
+    this.projectHinge = hinge;
+    this.scene.add(source.model);
+    this.model.visible = false;
+    this.rotation = this.targetRotation = 0;
+  }
+  setProjectOpening(amount: number) {
+    this.projectOpening = THREE.MathUtils.clamp(amount, 0, 1);
+  }
+  releaseProjectPortal() {
+    this.projectShellRequest++;
+    if (this.projectShell) {
+      this.scene.remove(this.projectShell.model);
+      this.projectShell.dispose();
+    }
+    this.projectShell = undefined;
+    this.projectHinge = undefined;
+    this.projectOpening = 0;
+    this.model.visible = true;
+  }
   private assemblyTemplate?: Promise<THREE.Group>;
   async createAssemblyModel() {
     this.assemblyTemplate ??= new GLTFLoader()
@@ -1206,6 +1255,12 @@ export class ArchiveScene {
       (THREE.MathUtils.lerp(0.0003, 0.0008, detail) *
         this.quality.depthOfField) /
       100;
+    if (this.projectShell && this.projectHinge) {
+      this.projectShell.model.position.copy(this.model.position);
+      this.projectShell.model.quaternion.copy(this.model.quaternion);
+      this.projectHinge.rotation.y = -this.projectOpening * 1.32;
+      this.projectHinge.position.z = 0.255 + this.projectOpening * 0.09;
+    }
     this.renderer.info.reset();
     this.composer.render();
   }
