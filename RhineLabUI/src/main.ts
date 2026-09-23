@@ -88,6 +88,23 @@ let modal: "search" | "settings" | null = null,
   filter = "全部档案";
 let activeTab = "overview";
 const reviewParams = new URLSearchParams(location.search);
+// Resume within this tab, including same-origin iframe navigation through case studies.
+const ARCHIVE_SESSION_KEY = "rhine-archive-session-v1";
+let savedArchive: { selected: string; columns: string[] } | null = null;
+let returnArchive: string | null = reviewParams.get("archive");
+try {
+  returnArchive ??= new URLSearchParams(window.parent.location.search).get("archive");
+} catch { /* Standalone embeds may have a different-origin parent. */ }
+try {
+  const saved = JSON.parse(sessionStorage.getItem(ARCHIVE_SESSION_KEY) ?? "null");
+  if (saved && records.some(record => record.id === saved.selected) && Array.isArray(saved.columns)) savedArchive = saved;
+} catch { /* Storage is optional; an explicit return link still skips the intro. */ }
+const resumeArchive = !["time", "scene", "review", "freeze", "intro"].some(key => reviewParams.has(key)) &&
+  Boolean(savedArchive || records.some(record => record.id === returnArchive));
+if (resumeArchive) {
+  selected = records.findIndex(record => record.id === (savedArchive?.selected ?? returnArchive));
+  $("#stage").dataset.resuming = "true";
+}
 // Keep the full original intro accessible with ?intro=full; default to the scan.
 const BOOT_START = reviewParams.get("intro") === "full" ? 1.76 : 14.48;
 let frozenTime =
@@ -194,6 +211,24 @@ let scene: ArchiveScene;
 let viewer: ModelViewer | undefined;
 const accessLog: { id: string; time: string }[] = [];
 const columnMemory = archiveColumns.map((_, lane) => columnFiles(lane)[0]);
+if (resumeArchive && savedArchive) {
+  savedArchive.columns.forEach((id, lane) => {
+    if (lane >= columnMemory.length) return;
+    const index = records.findIndex(record => record.id === id);
+    if (index >= 0 && fileLocation(index).lane === lane) columnMemory[lane] = index;
+  });
+}
+columnMemory[fileLocation(selected).lane] = selected;
+function saveArchiveSession() {
+  if (!ready || mode === "boot") return;
+  try {
+    sessionStorage.setItem(ARCHIVE_SESSION_KEY, JSON.stringify({
+      selected: records[selected].id,
+      columns: columnMemory.map(index => records[index].id),
+    }));
+  } catch { /* Browsing remains available when storage is disabled. */ }
+}
+
 function recordAccess() {
   accessLog.unshift({
     id: records[selected].id,
@@ -284,6 +319,7 @@ function setMode(next: Mode) {
   $("#detail-ui").inert = next !== "detail" || Boolean(modal);
   scene?.setMode(next === "boot" ? "hidden" : next);
   if (next !== "boot") {
+    saveArchiveSession();
     bootSequence.reset();
     $(".file-title").firstChild!.textContent = "FILE NUMBER: ";
     $("#stage").dataset.boot = "done";
@@ -301,6 +337,7 @@ function select(index: number, navigation?: ArchiveNavigation) {
   activeTab = "overview";
   scene?.select(selected, navigation);
   updateSelection(navigation);
+  saveArchiveSession();
   const columnMove = navigation && "axis" in navigation && navigation.axis === "lane";
   audio.play(columnMove ? "column" : "tick", columnMove ? navigation.direction * .45 : 0);
 }
@@ -850,7 +887,7 @@ function frame(ms: number) {
   requestAnimationFrame(frame);
 }
 async function start() {
-  const scanLoading = BOOT_START === 14.48 && !reviewParams.has("time") &&
+  const scanLoading = !resumeArchive && BOOT_START === 14.48 && !reviewParams.has("time") &&
     !reviewParams.has("scene") && !prefs.reduced;
   let loadingFrame = 0;
   let loadingTime = BOOT_START;
@@ -912,8 +949,12 @@ async function start() {
     ready = true;
     bootStart = performance.now() / 1000;
     setMode("boot");
-    select(DEFAULT_ARCHIVE_INDEX);
-    if (scanLoading) $("#loading").remove();
+    select(resumeArchive ? selected : DEFAULT_ARCHIVE_INDEX);
+    if (resumeArchive) {
+      setMode("archive");
+      scene.restoreArchive();
+    }
+    if (scanLoading || resumeArchive) $("#loading").remove();
     else {
       $("#loading").classList.add("loaded");
       setTimeout(() => $("#loading").remove(), 600);
@@ -926,6 +967,7 @@ async function start() {
     if (!scanLoading && !params.has("time")) bootStart += 0.6;
     if (prefs.reduced && !params.has("time")) setMode("archive");
     requestAnimationFrame(frame);
+    if (resumeArchive) requestAnimationFrame(() => requestAnimationFrame(() => { delete $("#stage").dataset.resuming; }));
   } catch (error) {
     cancelAnimationFrame(loadingFrame);
     $("#stage").removeAttribute("aria-busy");

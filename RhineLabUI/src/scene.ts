@@ -96,6 +96,7 @@ export class ArchiveScene {
   private selectedSlot = 76;
   private detail = 0;
   private targetDetail = 0;
+  private snapCamera = false;
   private reveal = 0;
   private targetReveal = 0;
   private last = 0;
@@ -445,6 +446,22 @@ export class ArchiveScene {
       this.targetRotation = 0;
       if (this.rotation !== 0) this.returnY = this.model.position.y;
     } else this.returnY = null;
+  }
+  // Snap a newly loaded scene to the saved browsing view, without entry motion.
+  restoreArchive() {
+    this.setMode("archive");
+    this.snapCamera = true;
+    const chosen = this.cellPosition(this.selectedCell);
+    this.reveal = 1;
+    this.detail = 0;
+    this.scanBlend = 0;
+    this.lift = { value: 0.4, velocity: 0 };
+    this.rail = { value: -2.17 - chosen.z, velocity: 0 };
+    this.shoulder = { value: this.selectedCell.row, velocity: 0 };
+    this.laneFocus = { value: this.selectedCell.lane, velocity: 0 };
+    this.columnCamera = { value: chosen.x, velocity: 0 };
+    this.pulses = [];
+    this.pendingPulse = null;
   }
   setReduced(value: boolean) {
     this.reduced = value;
@@ -1127,7 +1144,8 @@ export class ArchiveScene {
       cameraPosition.x += this.pointer.x * 0.12;
       cameraPosition.y -= this.pointer.y * 0.12;
     }
-    const cameraBlend = cinematic ? 1 : 1 - Math.exp(-dt * 5);
+    const cameraBlend = cinematic || this.snapCamera ? 1 : 1 - Math.exp(-dt * 5);
+    this.snapCamera = false;
     this.camera.position.lerp(cameraPosition, cameraBlend);
     this.cameraAim.lerp(cameraAim, cameraBlend);
     this.camera.lookAt(this.cameraAim);

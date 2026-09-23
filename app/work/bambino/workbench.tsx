@@ -73,7 +73,7 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
   return <main className={`bw ${reading ? "bw--reading" : ""}`} lang={en ? "en" : "zh-CN"}>
     <a className="bw-skip" href="#bw-content">{t("跳到项目说明", "Skip to project content")}</a>
     <header className="bw-header">
-      <Link className="bw-back" href={en ? "/en" : "/"}><Arrow back /><span>{t("返回档案架", "Back to archive")}</span></Link>
+      <Link className="bw-back" href={en ? "/en?archive=X2-01" : "/?archive=X2-01"}><Arrow back /><span>{t("返回档案架", "Back to archive")}</span></Link>
       <Link className="bw-name" href={en ? "/en" : "/"}>WENHOU YAN<span> / BAMBINO V2</span></Link>
       <div className="bw-header-actions">
         <button onClick={() => { setReading(value => !value); setPlaying(false); setLockPlaying(false); }} aria-pressed={reading}>{reading ? t("返回工作台", "3D workbench") : t("阅读模式", "Reading mode")}</button>

@@ -2148,3 +2148,11 @@ button {
 .viewer-surface button[aria-pressed="true"], .viewer-actions button[aria-pressed="true"], .solid-button { background: #9bdd2a; color: #0d110e; }
 
 .solid-button span { color: inherit; }
+
+/* Show the restored archive in its final state before re-enabling transitions. */
+[data-resuming] *,
+[data-resuming] *::before,
+[data-resuming] *::after {
+  transition: none !important;
+  animation: none !important;
+}
