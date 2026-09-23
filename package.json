@@ -9,7 +9,7 @@
     "predev": "node scripts/build-rhine-lab.mjs",
     "prebuild": "node scripts/build-rhine-lab.mjs",
     "build:rhine": "node scripts/build-rhine-lab.mjs",
-    "dev": "vinext dev",
+    "dev": "vinext dev --hostname 127.0.0.1 --port 4175",
     "build": "vinext build",
     "start": "vite preview",
     "preview:cloudflare": "npm run build && vite preview",
