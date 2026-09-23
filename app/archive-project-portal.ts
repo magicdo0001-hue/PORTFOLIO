@@ -32,13 +32,13 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
   function paint(value: number) {
     progress = value;
     if (!sheet || !bridge) return;
-    bridge.opening(smooth(value / .36));
-    const expansion = smooth((value - .18) / .82);
+    bridge.opening(value);
+    const expansion = smooth((value - .63) / .37);
     const width = innerWidth, height = innerHeight;
     const startX = source.x + source.width * .12, startY = source.y + source.height * .2;
     const sx = source.width * .76 / width, sy = source.height * .6 / height;
     sheet.style.transform = `translate3d(${startX * (1 - expansion)}px,${startY * (1 - expansion)}px,0) scale(${sx + (1 - sx) * expansion},${sy + (1 - sy) * expansion})`;
-    sheet.style.opacity = String(smooth((value - .18) / .15));
+    sheet.style.opacity = String(smooth((value - .63) / .10));
     sheet.style.borderRadius = `${12 * (1 - expansion)}px`;
     sheet.style.filter = `brightness(${.78 + .22 * expansion})`;
   }
@@ -71,7 +71,7 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     if (project) project.inert = true;
     if (status) status.hidden = true;
     bridge?.suspend(false); measure(); setPhase("closing");
-    animate(0, 850 * progress, () => cleanup());
+    animate(0, 1800 * progress, () => cleanup());
   }
   function requestClose() {
     if (phase === "idle" || phase === "closing") return;
@@ -153,7 +153,7 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
       if (ticket !== generation || disposed) { if (phase === "idle") bridge.release(false); return; }
       bindProject(doc); document.title = doc.title; measure();
       status.hidden = true; setPhase("opening");
-      animate(1, 1120, () => {
+      animate(1, 2200, () => {
         setPhase("open"); bridge?.suspend(true);
         if (project) { project.inert = false; project.contentWindow?.focus(); }
       });

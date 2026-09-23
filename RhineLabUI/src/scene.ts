@@ -358,7 +358,9 @@ export class ArchiveScene {
   }
 
   private projectShell?: Awaited<ReturnType<ArchiveScene["createAssemblyModel"]>>;
-  private projectHinge?: THREE.Group;
+  private projectCover?: THREE.Group;
+  private projectFasteners: { group: THREE.Group; rest: THREE.Vector3 }[] = [];
+  private projectGeometries: THREE.BufferGeometry[] = [];
   private projectOpening = 0;
   private projectShellRequest = 0;
   async prepareProjectPortal() {
@@ -377,17 +379,54 @@ export class ArchiveScene {
     const [source] = await Promise.all([this.createAssemblyModel(), settled]);
     if (request !== this.projectShellRequest) { source.dispose(); return; }
     source.setClarity(1);
-    const hinge = new THREE.Group();
-    hinge.position.set(-2.5, 0, 0.255);
-    for (const mesh of [...source.model.children]) {
-      if (!["cover", "fasteners"].includes(mesh.userData.assemblyPart)) continue;
-      source.model.remove(mesh);
-      mesh.position.sub(hinge.position);
-      hinge.add(mesh);
+    const cover = new THREE.Group();
+    cover.name = "project-cover";
+    const fasteners = [...source.model.children].filter(
+      (mesh): mesh is THREE.Mesh => mesh instanceof THREE.Mesh && mesh.userData.assemblyPart === "fasteners",
+    );
+    // The asset batches both corner screws by material. Split their indexed
+    // triangles so each fastener turns around its own shaft, without changing the asset.
+    for (const side of [1, -1]) {
+      const group = new THREE.Group();
+      group.name = side > 0 ? "project-fastener-upper" : "project-fastener-lower";
+      const bounds = new THREE.Box3();
+      for (const mesh of fasteners) {
+        const positions = mesh.geometry.getAttribute("position");
+        const index = mesh.geometry.index;
+        const indices: number[] = [];
+        const partBounds = new THREE.Box3();
+        const point = new THREE.Vector3();
+        for (let i = 0; i < (index?.count ?? positions.count); i += 3) {
+          const triangle = [0, 1, 2].map(offset => index ? index.getX(i + offset) : i + offset);
+          if (side * triangle.reduce((sum, vertex) => sum + positions.getX(vertex), 0) <= 0) continue;
+          indices.push(...triangle);
+          for (const vertex of triangle) partBounds.expandByPoint(point.fromBufferAttribute(positions, vertex));
+        }
+        if (!indices.length) continue;
+        const geometry = mesh.geometry.clone();
+        geometry.setIndex(indices);
+        geometry.boundingBox = partBounds;
+        geometry.boundingSphere = partBounds.getBoundingSphere(new THREE.Sphere());
+        this.projectGeometries.push(geometry);
+        const part = new THREE.Mesh(geometry, mesh.material);
+        part.position.copy(mesh.position);
+        group.add(part);
+        bounds.union(partBounds.clone().translate(mesh.position));
+      }
+      if (!group.children.length) continue;
+      const rest = bounds.getCenter(new THREE.Vector3());
+      for (const part of group.children) part.position.sub(rest);
+      group.position.copy(rest);
+      this.projectFasteners.push({ group, rest });
+      source.model.add(group);
     }
-    source.model.add(hinge);
+    for (const mesh of fasteners) mesh.visible = false;
+    for (const mesh of [...source.model.children]) {
+      if (mesh.userData.assemblyPart === "cover") cover.add(mesh);
+    }
+    source.model.add(cover);
     this.projectShell = source;
-    this.projectHinge = hinge;
+    this.projectCover = cover;
     this.scene.add(source.model);
     this.model.visible = false;
     this.rotation = this.targetRotation = 0;
@@ -402,7 +441,10 @@ export class ArchiveScene {
       this.projectShell.dispose();
     }
     this.projectShell = undefined;
-    this.projectHinge = undefined;
+    this.projectCover = undefined;
+    this.projectFasteners = [];
+    this.projectGeometries.forEach(geometry => geometry.dispose());
+    this.projectGeometries = [];
     this.projectOpening = 0;
     this.model.visible = true;
   }
@@ -1255,11 +1297,23 @@ export class ArchiveScene {
       (THREE.MathUtils.lerp(0.0003, 0.0008, detail) *
         this.quality.depthOfField) /
       100;
-    if (this.projectShell && this.projectHinge) {
+    if (this.projectShell && this.projectCover) {
       this.projectShell.model.position.copy(this.model.position);
       this.projectShell.model.quaternion.copy(this.model.quaternion);
-      this.projectHinge.rotation.y = -this.projectOpening * 1.32;
-      this.projectHinge.position.z = 0.255 + this.projectOpening * 0.09;
+      const phase = (start: number, end: number) => THREE.MathUtils.smoothstep(this.projectOpening, start, end);
+      for (const [i, { group, rest }] of this.projectFasteners.entries()) {
+        const stagger = i * .025;
+        const unscrew = phase(stagger, .18 + stagger);
+        const flight = phase(.18 + stagger, .35 + stagger);
+        group.rotation.z = Math.PI * 4 * unscrew;
+        group.position.copy(rest);
+        group.position.z += .24 * unscrew;
+        group.position.y += 10 * flight * flight;
+      }
+      // Lift the transparent plate off its seat, then slide it above the viewport.
+      // All three stages share the parent's reversible progress, including interruptions.
+      const coverFlight = phase(.39, .63);
+      this.projectCover.position.set(0, 10 * coverFlight * coverFlight, .16 * phase(.375, .44));
     }
     this.renderer.info.reset();
     this.composer.render();
