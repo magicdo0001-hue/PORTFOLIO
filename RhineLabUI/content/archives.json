@@ -66,20 +66,23 @@
     },
     {
       "id": "X4-01",
-      "title": "能量转换",
-      "en": "ENERGY CONVERSION",
-      "department": "能量科",
+      "title": "纽扣电池循环包装",
+      "en": "ENERGIZER PACKAGING",
+      "department": "包装设计 · 循环设计",
       "category": "能量研究",
-      "date": "跨期资料汇编",
-      "lead": "Ferdinand Clooney",
-      "clearance": "REFERENCE AREA",
-      "abstract": "斐尔迪南与莱茵生命能量科、重大项目的资源投入关系密切。大型能源工程也因此同时是一项科研工作和一场组织协作。本卷讨论能量从实验结果走向实际应用时，效率、供给与外部利益之间的关联。",
+      "date": "开启结构与材料分离",
+      "lead": "安全取用与分类回收",
+      "clearance": "PROJECT ARCHIVE",
+      "abstract": "本项目围绕 CR2032 纽扣电池的取用与回收，探索兼顾儿童防护、成人操作和材料分离的包装方案。设计将单颗释放、开启步骤与纸塑连接方式结合，通过结构原型迭代，尝试减少电池同时暴露与散落的机会，并让使用后的纸质背板与塑料保护盖更便于分离和分类回收。",
       "findings": [
-        "记录能源来源、转换环节和最终用途之间的联系。",
-        "规模扩大后，单次实验的成功不能替代持续运行的验证。",
-        "项目的资金安排也会改变技术路线与成果使用的方向。"
+        "待补充：设计研究内容。"
       ],
-      "source": "https://prts.wiki/w/多萝西"
+      "source": "/work/battery-packaging",
+      "project": {
+        "category": "包装设计",
+        "status": "概念设计 · 结构原型",
+        "prototype": "待补充：原型迭代内容。"
+      }
     },
     {
       "id": "X2-02",
@@ -134,20 +137,25 @@
     },
     {
       "id": "X5-01",
-      "title": "边界之外",
-      "en": "BEYOND THE HORIZON",
-      "department": "总辖构件科",
+      "title": "模块化模型车展示系统",
+      "en": "ARTI64",
+      "department": "收藏展示 · 工业设计",
       "category": "特别项目",
-      "date": "跨期资料汇编",
-      "lead": "Kristen Wright",
-      "clearance": "REFERENCE AREA",
-      "abstract": "克丽斯腾把研究的方向指向泰拉天空之外。《孤星》中的探索，将关于天空的疑问变成了牵动整座特里蒙的事件。本卷收录这一主题的观察线索，也保留理想、隐瞒与代价之间难以消解的张力。",
+      "date": "模块结构与小批量制造",
+      "lead": "展示扩展与销售验证",
+      "clearance": "PROJECT ARCHIVE",
+      "abstract": "ARTI64 是面向 1:64 模型车收藏者的模块化展示系统，围绕车辆收纳分散、陈列不统一与收藏持续增加的问题，以可组合、可扩展的车架组织展示空间。项目通过结构设计、3D 打印与装配迭代，兼顾展示效果和小批量制造，并结合品牌呈现、组合定价与线下销售反馈，探索产品的实际使用与购买需求。",
       "findings": [
-        "将对未知的追求与具体项目的执行方式分别审视。",
-        "从参与者能够看到的信息出发，比较他们对同一事件的判断。",
-        "突破边界之后，留下的人仍需要面对地面上的后果。"
+        "待补充：设计研究内容。"
       ],
-      "source": "https://arknights.wiki.gg/wiki/Lone_Trail"
+      "source": "/work/vertical-car-park",
+      "project": {
+        "category": "产品设计与制造",
+        "status": "实物制作 · 销售探索",
+        "prototype": "待补充：制造迭代内容。",
+        "iterationLabel": "制造迭代",
+        "iterationHeading": "MANUFACTURING ITERATION / 制造迭代"
+      }
     },
     {
       "id": "X1-03",
