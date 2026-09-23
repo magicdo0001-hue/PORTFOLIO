@@ -2,6 +2,8 @@ type PortalBridge = {
   prepare(href?: string): Promise<void>;
   rect(): { x: number; y: number; width: number; height: number };
   opening(amount: number): void;
+  sound(type: "explode" | "assemble"): (() => void) | undefined;
+  unlockAudio(): void;
   suspend(value: boolean): void;
   release(returnToArchive?: boolean): void;
   reduced(): boolean;
@@ -21,6 +23,7 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
   let baseTitle = document.title, overflow = "";
   let siblings: { node: HTMLElement; inert: boolean }[] = [];
   let removeProjectListeners = () => {};
+  let stopSound: (() => void) | undefined;
   let source = { x: 0, y: 0, width: 1, height: 1 };
   const marker = "rhineProjectPortal";
 
@@ -45,17 +48,28 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
   function setPhase(next: typeof phase) { phase = next; if (overlay) overlay.dataset.phase = next; }
   function animate(to: number, duration: number, done: () => void) {
     cancelAnimationFrame(animation);
+    stopSound?.(); stopSound = undefined;
     const from = progress, began = performance.now();
+    let sounded = false;
     if (bridge?.reduced() || matchMedia("(prefers-reduced-motion: reduce)").matches) duration = 0;
     const tick = (now: number) => {
       const t = duration ? clamp((now - began) / duration) : 1;
-      paint(from + (to - from) * t);
+      const next = from + (to - from) * t;
+      // Reuse the viewer's original cues at release / seating, once per direction.
+      // Progress-based cues cannot leak out of cancelled loading or a reversed animation.
+      if (!sounded && from !== to && (to === 1 ? next >= .18 : next <= .3)) {
+        sounded = true;
+        const stop = bridge?.sound(to === 1 ? "explode" : "assemble");
+        if (duration) stopSound = stop;
+      }
+      paint(next);
       if (t < 1) animation = requestAnimationFrame(tick); else done();
     };
     animation = requestAnimationFrame(tick);
   }
   function cleanup(returnToArchive = true) {
     cancelAnimationFrame(animation);
+    stopSound?.(); stopSound = undefined;
     removeProjectListeners(); removeProjectListeners = () => {};
     bridge?.suspend(false); bridge?.release(returnToArchive);
     overlay?.remove(); overlay = sheet = project = status = undefined;
@@ -71,10 +85,11 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     if (project) project.inert = true;
     if (status) status.hidden = true;
     bridge?.suspend(false); measure(); setPhase("closing");
-    animate(0, 1800 * progress, () => cleanup());
+    animate(0, 1400 * progress, () => cleanup());
   }
   function requestClose() {
     if (phase === "idle" || phase === "closing") return;
+    if (navigator.userActivation.isActive) bridge?.unlockAudio();
     if (ownsHistory && history.state?.[marker]) history.back();
     else {
       const state = { ...history.state }; delete state[marker];
@@ -153,7 +168,7 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
       if (ticket !== generation || disposed) { if (phase === "idle") bridge.release(false); return; }
       bindProject(doc); document.title = doc.title; measure();
       status.hidden = true; setPhase("opening");
-      animate(1, 2200, () => {
+      animate(1, 1800, () => {
         setPhase("open"); bridge?.suspend(true);
         if (project) { project.inert = false; project.contentWindow?.focus(); }
       });

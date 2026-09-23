@@ -1028,6 +1028,8 @@ Object.assign(window, {
         return { x: Math.min(...xs), y: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
       },
       opening: (amount: number) => scene.setProjectOpening(amount),
+      sound: (type: "explode" | "assemble") => audio.play(type),
+      unlockAudio: () => { void audio.unlock(); },
       suspend: (value: boolean) => { projectSuspended = value; },
       release: (returnToArchive = true) => {
         projectSuspended = false;

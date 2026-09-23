@@ -4,8 +4,9 @@ The embedded archive now owns a reversible transition into the real project page
 
 - The selected cassette uses the existing `archive-assembly.glb`; its two fasteners rotate around their own shafts, rise clear of their seats, then fly vertically offscreen. The transparent cover lifts off and follows upward. The material-batched fastener triangles are split only in the temporary runtime assembly. No new asset or change to extraction/array geometry is introduced.
 - Before opening, the camera and dragged cassette settle into the detail pose while the page and assembly load concurrently.
-- Opening: 2200 ms. Fasteners unscrew for about 400 ms and fly out by 825 ms, with a 55 ms stagger. The cover then lifts and exits by 1386 ms; the live page appears and expands over the remaining 814 ms from the projected card interior to the viewport. A restrained green edge disappears at full size.
-- Closing: 1800 ms, proportional to the current opening progress when interrupted. The live page compresses back into the card, the cover returns, then the fasteners descend and tighten, and the archive returns to its existing overview motion.
+- Opening: 1800 ms. Fasteners unscrew for about 324 ms and fly out by 675 ms, with a 45 ms stagger. The cover then lifts and exits by 1134 ms; the live page appears and expands over the remaining 666 ms from the projected card interior to the viewport. A restrained green edge disappears at full size.
+- Closing: 1400 ms, proportional to the current opening progress when interrupted. The live page compresses back into the card, the cover returns, then the fasteners descend and tighten, and the archive returns to its existing overview motion.
+- Sound reuses the independent viewer’s unchanged `explode` and `assemble` cues (535 / 405 ms including tails). Opening plays once at 18% progress, when fasteners release; closing plays once at 30% remaining, leaving 420 ms for the seating sound. Reversing fades out the previous cue; cancelling preparation stays silent. Sound preferences and volume remain authoritative. Reduced motion plays one cue without delaying navigation.
 - Parent URL stores the overlay as `#project=%2Fwork%2Fbambino` (or the English route). This preserves the archive route's mounted scene through framework history updates. The hash supports reload/share, Back and Forward. Direct `/work/...` URLs still open normally.
 - Project Return/Home links and Escape close the layer. Other project/language links retain ordinary full-page navigation.
 - Only same-origin messages from the known archive iframe and the five existing project routes are accepted.
@@ -22,5 +23,6 @@ Chrome / Playwright on Windows, 1440 × 960 and 390 × 844:
 4. Load the English shared hash directly with reduced motion. Check full-screen mobile sizing and return to the English archive.
 5. Abort the project request, cancel while preparing, then reopen. Also press Escape during expansion. No orphaned model, blocked background, or stale animation.
 6. Open SANGRE and use its Home link: the same closing mechanism applies.
+7. Instrument the live audio bridge: three open/close cycles (including Back/Forward) produce exactly three `explode` / `assemble` pairs with a running audio context and active voices. Cancelling preparation emits none; reversing after release stops the opening voice. Muted reduced-motion opening/closing emits no audio voices.
 
 TypeScript checks for both applications, targeted ESLint, production build, and the four existing rendered-page/asset regression checks pass. Existing large-bundle build warnings remain unchanged.

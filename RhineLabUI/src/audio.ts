@@ -554,7 +554,8 @@ export class TerminalAudio {
     this.lastSound.set(type, now);
     this.voices = this.voices.filter((v) => v.end > now);
     if (this.voices.length >= 10) this.voices.shift()!.stop(now);
-    this.voices.push(synthesizeSound(c, this.effects!, type, now + 0.004, pan));
+    const voice = synthesizeSound(c, this.effects!, type, now + 0.004, pan);
+    this.voices.push(voice);
     if (type === "key") this.playedKeys++;
     if (
       ["open", "brand", "welcome", "array", "explode", "assemble"].includes(
@@ -564,6 +565,7 @@ export class TerminalAudio {
       level(this.duck!.gain, 0.65, now, 0.035);
       this.duck!.gain.linearRampToValueAtTime(1, now + 0.9);
     }
+    return () => { if (voice.end > c.currentTime) voice.stop(c.currentTime); };
   }
   updateBoot(appTime: number, frozen = false) {
     const time = appTime + 5;
