@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { createCityLens } from "./city-lens";
 import { createCityNavigation } from "./city-navigation";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
@@ -7,7 +8,7 @@ import { districts, type DistrictId } from "./city-data";
 type CityOptions = {
   host: HTMLElement;
   labels: (HTMLButtonElement | null)[];
-  onSelect: (id: DistrictId) => void;
+  onSelect: (id: DistrictId | null) => void;
   onReady: () => void;
   onError: () => void;
 };
@@ -16,16 +17,18 @@ type CityOptions = {
 // per district, so the town stays inexpensive while buildings remain pickable.
 export function createCity({ host, labels, onSelect, onReady, onError }: CityOptions) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.4));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.12;
+  renderer.toneMappingExposure = .94;
   renderer.domElement.setAttribute("aria-hidden", "true");
   host.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x8d9f9f);
+  scene.fog = new THREE.Fog(0x8d9f9f, 37, 85);
   const camera = new THREE.OrthographicCamera(-12, 12, 10, -10, .1, 100);
   const target = new THREE.Vector3(0, 1.1, 0);
   camera.position.set(13, 14, 20);
@@ -40,7 +43,7 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
   sun.shadow.bias = -.0002;
   sun.shadow.radius = 3;
   scene.add(sun);
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.ShadowMaterial({ opacity: .15 }));
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: 0x718486, roughness: 1 }));
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -.48;
   ground.receiveShadow = true;
@@ -342,7 +345,7 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
   const projected = new THREE.Vector3();
-  let selected: DistrictId = "search";
+  let selected: DistrictId | null = null;
   let hovering: DistrictId | null = null;
   let paused = true;
   let visible = true;
@@ -354,7 +357,10 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
   let width = 1;
   let height = 1;
   const invalidate = () => { dirty = true; schedule(); };
-  const navigation = createCityNavigation(camera, host, invalidate);
+  const lens = createCityLens(renderer, scene, camera);
+  const navigation = createCityNavigation(camera, host, invalidate, () => {
+    selected = null; lens.setFocus(null); onSelect(null);
+  });
   const press = new THREE.Vector2();
   let dragged = false;
   const pointerDown = (event: PointerEvent) => {
@@ -384,10 +390,11 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
     if (!width || !height) return;
     renderer.setSize(width, height);
     const aspect = width / height;
-    const half = Math.max(8.8, 11.4 / aspect);
+    const half = Math.max(7.1, 8.8 / aspect);
     camera.left = -half * aspect; camera.right = half * aspect;
     camera.top = half; camera.bottom = -half;
-    camera.updateProjectionMatrix(); dirty = true;
+    camera.updateProjectionMatrix();
+    navigation.resize(); lens.resize(width, height); dirty = true;
   };
   const resizeObserver = new ResizeObserver(resize); resizeObserver.observe(host); resize();
   const intersectionObserver = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; lastTime = 0; schedule(); });
@@ -405,10 +412,11 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
     if (disposed || !visible || document.hidden) return;
     const delta = lastTime ? Math.min((time - lastTime) / 1000, .05) : 0;
     lastTime = time;
-    navigation.update();
+    const cameraMoving = navigation.update(time);
+    const lensMoving = lens.update(delta || 1 / 60, media.matches);
     const moving = !paused;
     if (moving) elapsed += delta;
-    if (moving || dirty) {
+    if (moving || dirty || cameraMoving || lensMoving) {
       blocks.forEach((block, i) => { block.position.y = hovering === districts[i].id && moving ? .1 : 0; });
       vehicles.forEach((car, i) => {
         const distance = (elapsed * .8 + i * 16) % 53.6;
@@ -424,8 +432,9 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
         person.position.set(i % 2 ? -1.05 : 1.05, moving ? Math.sin(elapsed * 5 + i) * .015 : 0, t * 5.4);
         person.rotation.y = Math.cos(elapsed * .12 + i * 2.1) > 0 ? 0 : Math.PI;
       });
-      const active = districts.find((d) => d.id === selected)!;
-      selection.position.set(active.position[0], .627, active.position[1]);
+      const active = districts.find((d) => d.id === selected);
+      selection.visible = !!active;
+      if (active) selection.position.set(active.position[0], .627, active.position[1]);
       scene.updateMatrixWorld(); camera.updateMatrixWorld();
       labels.forEach((label, i) => {
         if (!label) return;
@@ -433,9 +442,9 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
         label.style.left = `${(projected.x * .5 + .5) * width}px`;
         label.style.top = `${(-projected.y * .5 + .5) * height}px`;
       });
-      renderer.render(scene, camera); dirty = false;
+      lens.render(); dirty = false;
     }
-    if (moving) schedule();
+    if (moving || cameraMoving || lensMoving) schedule();
   }
   function schedule() { if (!frame && !disposed) frame = requestAnimationFrame(render); }
   // Event-driven rendering also supports a fully still reduced-motion view.
@@ -453,7 +462,7 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
     host.removeEventListener("pointerleave", leave); host.removeEventListener("pointerleave", invalidate);
     host.removeEventListener("click", click);
     host.removeEventListener("pointerdown", pointerDown);
-    navigation.dispose();
+    navigation.dispose(); lens.dispose();
     renderer.domElement.removeEventListener("webglcontextlost", contextLost);
     for (const geo of geometries) geo.dispose();
     ground.geometry.dispose(); (ground.material as THREE.Material).dispose();
@@ -462,7 +471,14 @@ export function createCity({ host, labels, onSelect, onReady, onError }: CityOpt
   }
   render(0); onReady(); schedule();
   return {
-    select(id: DistrictId) { selected = id; invalidate(); },
+    select(id: DistrictId | null) {
+      selected = id;
+      const active = districts.find((d) => d.id === id);
+      const point = active ? new THREE.Vector3(active.position[0], active.height * .46 + .3, active.position[1]) : null;
+      navigation.focus(point, active?.height);
+      lens.setFocus(point);
+      invalidate();
+    },
     pause(value: boolean) { paused = value; invalidate(); },
     resetView() { navigation.reset(); },
     dispose,
