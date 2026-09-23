@@ -13,7 +13,7 @@ import { applyTextureQuality, resizeQuality } from "./quality-renderer";
 import { CardAppearance } from "./appearance";
 import { configureInternalOptics } from "./internal-optics";
 import { DecryptionController } from "./decryption";
-import { records, fileAtSlot, fileLocation } from "./data";
+import { records, fileAtSlot, fileLocation, columnFiles } from "./data";
 import {
   cellKey,
   sameCell,
@@ -497,6 +497,7 @@ export class ArchiveScene {
   private rebaseCoordinates() {
     // Periodically reduce the logical coordinates while preserving every
     // relative position, spring velocity, ripple and idle phase.
+    const rowPeriod = columnFiles(0).length;
     const shift = {
       lane:
         Math.abs(this.selectedCell.lane) > 2048
@@ -504,7 +505,7 @@ export class ArchiveScene {
           : 0,
       row:
         Math.abs(this.selectedCell.row) > 2048
-          ? Math.floor((this.selectedCell.row - 12) / 8) * 8
+          ? Math.floor((this.selectedCell.row - 12) / rowPeriod) * rowPeriod
           : 0,
     };
     if (!shift.lane && !shift.row) return;

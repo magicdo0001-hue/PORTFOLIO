@@ -38,7 +38,7 @@ export function validateContent(content) {
     errors.push("categories 与 columns 必须包含相同的五个分类（顺序可以不同）");
   }
   const records = Array.isArray(content.records) ? content.records : [];
-  if (records.length !== 40) errors.push("records：当前阵列要求四十份档案");
+  if (records.length !== 25) errors.push("records：当前阵列要求二十五份档案");
   const ids = new Set();
   const columnCounts = new Map();
   records.forEach((record, index) => {
@@ -76,8 +76,8 @@ export function validateContent(content) {
     }
   });
   for (const name of columns) {
-    if (records.filter((record) => record?.category === name).length !== 8) {
-      errors.push(`分类“${name}”：当前阵列要求八份档案`);
+    if (records.filter((record) => record?.category === name).length !== 5) {
+      errors.push(`分类“${name}”：当前阵列要求五份档案`);
     }
   }
   if (errors.length)
@@ -97,7 +97,7 @@ export async function loadContent() {
 }
 
 export function archiveText(r) {
-  if (r.project) return `\uFEFFPROJECT ARCHIVE\nFILE ${r.id} / ${r.en}\n${r.title} · ${r.project.category}\n\nCATEGORY / 项目类别：${r.department}\nSCOPE / 设计范围：${r.date}\nFOCUS / 设计重点：${r.lead}\nSTATUS / 项目阶段：${r.project.status}\n\n01 项目概述\nABSTRACT / 项目摘要\n${r.abstract}\n\n02 设计研究\n${r.findings.join("\n")}\n\n03 ${r.project.iterationLabel ?? "原型迭代"}\n${r.project.prototype}\n\n项目详情：${r.source}\n`;
+  if (r.project) return `\uFEFFPROJECT ARCHIVE\nFILE ${r.id} / ${r.en}\n${r.title} · ${r.project.category}\n\nCATEGORY / 项目类别：${r.department}\nSCOPE / 设计范围：${r.date}\nFOCUS / 设计重点：${r.lead}\nSTATUS / 项目阶段：${r.project.status}\n\n01 项目概述\nABSTRACT / 项目摘要\n${r.abstract}\n\n02 项目中职责\n${r.findings.join("\n")}\n\n03 ${r.project.iterationLabel ?? "项目成果"}\n${r.project.prototype}\n\n项目详情：${r.source}\n`;
 
   return `\uFEFFRHINE LAB · INTERNAL DATABASE\nFILE ${r.id} / ${r.title}\n${r.en}\n\n科室：${r.department}\n编目范围：${r.date}\n相关人物：${r.lead}\n访问范围：${r.clearance}\n\n${r.abstract}\n\n研究记录\n${r.findings.map((f, i) => `${i + 1}. ${f}`).join("\n")}\n\n设定参考：${r.source}\n本文为基于公开设定的档案式改写，非游戏原文。\n`;
 }

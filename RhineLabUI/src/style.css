@@ -560,7 +560,7 @@ button {
 .archive-navigation > button {
   width: 46px;
   height: 46px;
-  font-size: 28px;
+  font-size: 24px;
   transition: background 0.3s;
 }
 .archive-navigation > button:hover {
@@ -613,19 +613,19 @@ button {
 .file-ticks {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
 }
 .file-ticks button {
-  width: 14px;
+  width: 22px;
   height: 40px;
   position: relative;
 }
 .file-ticks button:before {
   content: "";
   position: absolute;
-  left: 6px;
+  left: calc(50% - 1.5px);
   top: 14px;
-  width: 2px;
+  width: 3px;
   height: 12px;
   background: #405139;
   transition:

@@ -53,7 +53,7 @@ $("#stage").innerHTML = `
   <section id="archive-ui" class="archive-ui" aria-label="档案选择">
     <div class="archive-callout"><div class="eyebrow">INTERNAL DATABASE <span>／</span> <span id="archive-category">机构档案</span></div><button class="file-title" data-action="open">FILE NUMBER: <span id="selected-id"><span id="selected-prefix">X<span id="selected-lane">3</span>-</span><span id="selected-code">01</span></span><span class="file-open">↗</span></button><div class="callout-rule"><i></i></div><div class="file-summary"><span id="selected-title">莱茵生命</span><span id="selected-clearance">BUSINESS AREA</span></div><button class="read-file" data-action="open">ACCESS FILE <span>→</span></button></div>
     <div id="hover-label" class="hover-label" hidden><span id="hover-prefix">X<span id="hover-lane">3</span>-</span><span id="hover-code">01</span> / <span id="hover-title"></span></div>
-    <div class="archive-counter"><span class="tiny-label">ARCHIVE / SELECT</span><div><span id="selected-number">01</span><i>/</i><span class="count-total">12</span></div></div>
+    <div class="archive-counter"><span class="tiny-label">ARCHIVE / SELECT</span><div><span id="selected-number">01</span><i>/</i><span class="count-total">05</span></div></div>
     <div class="archive-navigation"><button data-action="prev" aria-label="上一个档案">↑</button><div id="file-ticks" class="file-ticks"></div><button data-action="next" aria-label="下一个档案">↓</button></div>
     <div class="column-navigation"><button data-action="column-prev" aria-label="上一列">←</button><div><span id="column-number">COLUMN <span id="column-index">03</span> / 05</span><strong id="column-name">${escapeHtml(projectColumnNames[2])}</strong></div><button data-action="column-next" aria-label="下一列">→</button></div>
     <div class="archive-hint"><kbd>←</kbd> <kbd>→</kbd> 切换列 <span>／</span> <kbd>↑</kbd> <kbd>↓</kbd> 前后档案 <span>／</span> <kbd>ENTER</kbd> 读取</div>
@@ -400,7 +400,7 @@ function renderDetail() {
   <h2>${escapeHtml(r.en)}</h2><div class="detail-title-cn">${escapeHtml(r.title)}<span>${escapeHtml(r.project?.category ?? r.category)}</span></div>
   <div class="detail-rule"></div>
   <dl class="metadata"><div><dt>${r.project ? "CATEGORY / 项目类别" : "DEPARTMENT / 科室"}</dt><dd>${escapeHtml(r.department)}</dd></div><div><dt>${r.project ? "SCOPE / 设计范围" : "COLLECTION / 编目范围"}</dt><dd>${escapeHtml(r.date)}</dd></div><div><dt>${r.project ? "FOCUS / 设计重点" : "RELATED / 相关人物"}</dt><dd>${escapeHtml(r.lead)}</dd></div><div><dt>${r.project ? "STATUS / 项目阶段" : "STATUS / 状态"}</dt><dd><i></i>${escapeHtml(r.project?.status ?? (r.clearance === "RESTRICTED" ? "目录访问" : "已归档 · 可读取"))}</dd></div></dl>
-  <div class="detail-tabs" role="tablist"><button id="tab-overview" class="active" role="tab" aria-controls="tab-panel" aria-selected="true" data-tab="overview">01 <span>${r.project ? "项目概述" : "概述"}</span></button><button id="tab-notes" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="notes">02 <span>${r.project ? "设计研究" : "研究记录"}</span></button><button id="tab-history" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="history">03 <span>${r.project ? escapeHtml(r.project.iterationLabel ?? "原型迭代") : "访问日志"}</span></button><i class="tab-indicator" aria-hidden="true"></i></div>
+  <div class="detail-tabs" role="tablist"><button id="tab-overview" class="active" role="tab" aria-controls="tab-panel" aria-selected="true" data-tab="overview">01 <span>${r.project ? "项目概述" : "概述"}</span></button><button id="tab-notes" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="notes">02 <span>${r.project ? "项目中职责" : "研究记录"}</span></button><button id="tab-history" role="tab" aria-controls="tab-panel" aria-selected="false" data-tab="history">03 <span>${r.project ? escapeHtml(r.project.iterationLabel ?? "项目成果") : "访问日志"}</span></button><i class="tab-indicator" aria-hidden="true"></i></div>
   <div id="tab-panel" class="tab-panel" role="tabpanel">${overview()}</div>
   <div class="detail-actions"><button class="solid-button" data-action="project-details">PROJECT DETAILS<span>项目详情</span></button><a class="export-button" href="/archives/RHINE-LAB-${r.id}.txt" download="RHINE-LAB-${r.id}.txt" aria-label="${r.project ? "下载" : "导出"} ${r.id} 档案">${r.project ? "DOWNLOAD" : "EXPORT"} <span>↓</span></a></div>
   <div class="detail-footnote"><a href="${escapeHtml(r.source)}" target="_blank" rel="noopener">${r.project ? "项目完整介绍" : "设定参考"} ↗</a><span>${r.id} / ${String(records.length).padStart(2, "0")}</span></div>`;
@@ -432,8 +432,8 @@ function setTab(tab: string, sound = true) {
       ? overview()
       : r.project
         ? tab === "notes"
-          ? `<div class="panel-label">DESIGN RESEARCH / 设计研究</div><p>${escapeHtml(r.findings.join("\n"))}</p>`
-          : `<div class="panel-label">${escapeHtml(r.project.iterationHeading ?? "PROTOTYPE ITERATION / 原型迭代")}</div><p>${escapeHtml(r.project.prototype)}</p>`
+          ? `<div class="panel-label">PROJECT ROLE / 项目中职责</div><p>${escapeHtml(r.findings.join("\n"))}</p>`
+          : `<div class="panel-label">${escapeHtml(r.project.iterationHeading ?? "PROJECT OUTCOMES / 项目成果")}</div><p>${escapeHtml(r.project.prototype)}</p>`
         : tab === "notes"
         ? `<div class="panel-label">RESEARCH NOTES / 研究记录</div><ol class="research-notes">${r.findings.map((f, i) => `<li><span>${String(i + 1).padStart(2, "0")}</span>${escapeHtml(f)}</li>`).join("")}</ol>`
         : `<div class="panel-label">ACCESS LOG / 本次访问</div>${accessLog
@@ -780,7 +780,7 @@ function bootFrame(t: number) {
   }
   if (t >= 28.3) {
     step = "inspect";
-    caption = t >= 29.3 ? "保密级别：商业区" : `编号：${records[selected].id}`;
+    caption = t >= 29.3 ? "" : `编号：${records[selected].id}`;
   }
   if (step !== lastStep) {
     $("#stage").dataset.boot = step;

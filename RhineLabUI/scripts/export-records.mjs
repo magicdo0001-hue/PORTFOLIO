@@ -12,4 +12,11 @@ for (const record of records) {
     "utf8",
   );
 }
+// Remove generated downloads for archives no longer in the active collection.
+const activeFiles = new Set(records.map(record => `RHINE-LAB-${record.id}.txt`));
+for (const name of await fs.readdir(output)) {
+  if (/^RHINE-LAB-X\d+-\d+\.txt$/.test(name) && !activeFiles.has(name)) {
+    await fs.unlink(new URL(name, output));
+  }
+}
 console.log(`Prepared ${records.length} downloadable archive records.`);

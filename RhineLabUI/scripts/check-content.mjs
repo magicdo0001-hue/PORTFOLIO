@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { test } from "node:test";
 import {
   loadContent,
@@ -9,7 +9,9 @@ import {
 import { escapeHtml } from "../src/html.ts";
 
 const content = await loadContent();
-test("all forty downloads match the shared content, including the UTF-8 BOM", async () => {
+test("all twenty-five downloads match the shared content, including the UTF-8 BOM", async () => {
+  const downloads = (await readdir(new URL("../public/archives/", import.meta.url))).filter(name => /^RHINE-LAB-X\d+-\d+\.txt$/.test(name));
+  assert.deepEqual(downloads.sort(), content.records.map(r => `RHINE-LAB-${r.id}.txt`).sort());
   for (const record of content.records) {
     assert.equal(
       (
@@ -68,14 +70,14 @@ const invalidCases = [
     (c) => {
       c.records[0].category = c.columns[0];
     },
-    /八份档案/,
+    /五份档案/,
   ],
   [
     "missing record",
     (c) => {
       c.records.pop();
     },
-    /四十份档案/,
+    /二十五份档案/,
   ],
   [
     "null record",
