@@ -4,20 +4,25 @@
   "records": [
     {
       "id": "X3-01",
-      "title": "莱茵生命",
-      "en": "RHINE LAB, LLC.",
-      "department": "总辖构件科",
+      "title": "留学生选课决策平台",
+      "en": "SIMPLEUNILIFE",
+      "department": "教育服务 · 数字产品",
       "category": "机构档案",
-      "date": "跨期资料汇编",
-      "lead": "Kristen Wright / Saria",
-      "clearance": "REFERENCE AREA",
-      "abstract": "莱茵生命从克丽斯腾与塞雷娅共同创办的研究室发展而来。这里聚集着研究生命、能源与未知技术的人，也承受着资金、权力和成果应用的压力。理解这家机构，需要同时阅读它的实验记录与研究者的选择。",
+      "date": "交互设计与开发协同",
+      "lead": "课程信息与决策支持",
+      "clearance": "PROJECT ARCHIVE",
+      "abstract": "SimpleUniLife 是面向留学生的选课决策平台，围绕课程信息分散、比较与判断成本较高的问题，组织课程内容与使用流程，帮助用户形成更清晰的选课依据。项目从信息架构、交互流程与设计系统出发，衔接开发协作、页面状态梳理与可用性检查，推动产品从初期构想到上线及后续迭代。",
       "findings": [
-        "研究方向跨越多个科属，重大项目往往依赖跨科协作。",
-        "一项成果的技术价值，与它最终被怎样使用，需要分别讨论。",
-        "机构沿革与个人履历交叉编目，保留不同阶段的立场变化。"
+        "待补充：设计研究内容。"
       ],
-      "source": "https://arknights.wiki.gg/wiki/Rhine_Lab"
+      "source": "/work/simple-uni-life",
+      "project": {
+        "category": "数字产品设计",
+        "status": "已上线 · 迭代优化",
+        "prototype": "待补充：上线迭代内容。",
+        "iterationLabel": "上线迭代",
+        "iterationHeading": "LAUNCH ITERATION / 上线迭代"
+      }
     },
     {
       "id": "X1-01",

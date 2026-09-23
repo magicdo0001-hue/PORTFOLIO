@@ -12,7 +12,7 @@ export interface ArchiveRecord {
   abstract: string;
   findings: string[];
   source: string;
-  project?: { category: string; status: string; prototype: string };
+  project?: { category: string; status: string; prototype: string; iterationLabel?: string; iterationHeading?: string };
 }
 
 export const records: ArchiveRecord[] = content.records;

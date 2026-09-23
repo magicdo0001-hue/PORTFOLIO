@@ -97,7 +97,7 @@ export async function loadContent() {
 }
 
 export function archiveText(r) {
-  if (r.project) return `\uFEFFPROJECT ARCHIVE\nFILE ${r.id} / ${r.en}\n${r.title} · ${r.project.category}\n\nCATEGORY / 项目类别：${r.department}\nSCOPE / 设计范围：${r.date}\nFOCUS / 设计重点：${r.lead}\nSTATUS / 项目阶段：${r.project.status}\n\n01 项目概述\nABSTRACT / 项目摘要\n${r.abstract}\n\n02 设计研究\n${r.findings.join("\n")}\n\n03 原型迭代\n${r.project.prototype}\n\n项目详情：${r.source}\n`;
+  if (r.project) return `\uFEFFPROJECT ARCHIVE\nFILE ${r.id} / ${r.en}\n${r.title} · ${r.project.category}\n\nCATEGORY / 项目类别：${r.department}\nSCOPE / 设计范围：${r.date}\nFOCUS / 设计重点：${r.lead}\nSTATUS / 项目阶段：${r.project.status}\n\n01 项目概述\nABSTRACT / 项目摘要\n${r.abstract}\n\n02 设计研究\n${r.findings.join("\n")}\n\n03 ${r.project.iterationLabel ?? "原型迭代"}\n${r.project.prototype}\n\n项目详情：${r.source}\n`;
 
   return `\uFEFFRHINE LAB · INTERNAL DATABASE\nFILE ${r.id} / ${r.title}\n${r.en}\n\n科室：${r.department}\n编目范围：${r.date}\n相关人物：${r.lead}\n访问范围：${r.clearance}\n\n${r.abstract}\n\n研究记录\n${r.findings.map((f, i) => `${i + 1}. ${f}`).join("\n")}\n\n设定参考：${r.source}\n本文为基于公开设定的档案式改写，非游戏原文。\n`;
 }
