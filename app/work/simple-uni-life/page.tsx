@@ -1,9 +1,9 @@
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../project-shell";
 import { SimpleUniLifeLiveDemo } from "./live-demo";
+import { UniLifeCityHero } from "./city-hero";
 
 export const metadata = {
   title: "SIMPLE UNI LIFE | 严文厚",
@@ -13,16 +13,7 @@ export const metadata = {
 export default function SimpleUniLifePage() {
   return (
     <main className="project project--unilife">
-      <ProjectHero
-        index="03"
-        title="SIMPLE UNI LIFE"
-        category="数字产品"
-        period="14 周"
-        role="产品 / UIUX / 前端"
-        lede="把散落的学生经验，变成可以比较和判断的信息。"
-        image="/portfolio/unilife-layer-02.png"
-        tone="unilife"
-      />
+      <UniLifeCityHero />
 
       <section className="project-brief project-brief--orange" id="story">
         <div className="shell">
@@ -137,7 +128,7 @@ export default function SimpleUniLifePage() {
           <strong>拖动 / 滚动 →</strong>
         </div>
         <div className="screen-rail__track">
-          <figure>
+          <figure id="course-search">
             <img
               src="/portfolio/unilife-course-search.png"
               alt="Simple Uni Life 移动端课程搜索"
@@ -161,7 +152,7 @@ export default function SimpleUniLifePage() {
             />
             <figcaption>课程决策页</figcaption>
           </figure>
-          <figure>
+          <figure id="course-structure">
             <img
               src="/portfolio/unilife-course-structure.png"
               alt="Simple Uni Life 课程结构详情界面"

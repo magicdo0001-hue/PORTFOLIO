@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../../project-shell";
 import { SimpleUniLifeLiveDemo } from "../../../work/simple-uni-life/live-demo";
+import { UniLifeCityHero } from "../../../work/simple-uni-life/city-hero";
 
 export const metadata: Metadata = {
   title: "SIMPLE UNI LIFE | Wenhou Yan",
@@ -15,17 +15,7 @@ export const metadata: Metadata = {
 export default function SimpleUniLifeEnglishPage() {
   return (
     <main className="project project--unilife project--en" lang="en">
-      <ProjectHero
-        index="03"
-        title="SIMPLE UNI LIFE"
-        category="Digital product"
-        period="14 weeks"
-        role="Product / UI/UX / Front-end"
-        lede="Turning fragmented student experiences into information that can be compared and acted on."
-        image="/portfolio/unilife-layer-02.png"
-        tone="unilife"
-        locale="en"
-      />
+      <UniLifeCityHero locale="en" />
 
       <section className="project-brief project-brief--orange" id="story">
         <div className="shell">
@@ -146,7 +136,7 @@ export default function SimpleUniLifeEnglishPage() {
           <strong>DRAG / SCROLL →</strong>
         </div>
         <div className="screen-rail__track">
-          <figure>
+          <figure id="course-search">
             <img
               src="/portfolio/unilife-course-search.png"
               alt="Simple Uni Life mobile course search"
@@ -170,7 +160,7 @@ export default function SimpleUniLifeEnglishPage() {
             />
             <figcaption>Course decision page</figcaption>
           </figure>
-          <figure>
+          <figure id="course-structure">
             <img
               src="/portfolio/unilife-course-structure.png"
               alt="Simple Uni Life course structure interface"

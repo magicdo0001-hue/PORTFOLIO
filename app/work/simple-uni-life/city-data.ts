@@ -1,0 +1,8 @@
+export type DistrictId = "search" | "structure" | "reviews" | "pathway";
+
+export const districts = [
+  { id: "search", position: [-3.2, -3.2], height: 4.7, color: "#708976", zh: { name: "课程图书馆", feature: "课程搜索", description: "从课程名称或代码出发，把散落的信息聚在一起。", link: "查看课程搜索" }, en: { name: "Course Library", feature: "Course search", description: "Start with a course name or code. Bring scattered information into one place.", link: "Explore course search" }, target: "course-search" },
+  { id: "structure", position: [3.2, -3.2], height: 5.9, color: "#d8b96e", zh: { name: "学业规划站", feature: "课程结构", description: "看清课程结构与考核方式，让下一步有据可循。", link: "查看课程结构" }, en: { name: "Planning Hall", feature: "Course structure", description: "Understand course structure and assessment before deciding what comes next.", link: "Explore course structure" }, target: "course-structure" },
+  { id: "reviews", position: [-3.2, 3.2], height: 3.4, color: "#be765b", zh: { name: "同伴交流所", feature: "学生评价", description: "走近真实的学生经验，比较难度、工作量与课程体验。", link: "了解学生需求" }, en: { name: "Student Commons", feature: "Student reviews", description: "Compare student experiences of difficulty, workload and everyday learning.", link: "Read the research" }, target: "research" },
+  { id: "pathway", position: [3.2, 3.2], height: 3.0, color: "#648d86", zh: { name: "选课导航台", feature: "决策路径", description: "从搜索、理解到比较，把信息变成自己的选择。", link: "体验线上产品" }, en: { name: "Course Compass", feature: "Decision pathway", description: "Move from searching to understanding and comparing. Make the choice yours.", link: "Explore the live product" }, target: "online-product" },
+] as const;
