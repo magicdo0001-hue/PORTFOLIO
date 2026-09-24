@@ -1,5 +1,6 @@
+import SangreOrbit from "../../../work/sangre/orbit";
 import type { Metadata } from "next";
-import { FactRail, ProjectEnd, ProjectHero } from "../../../project-shell";
+import { FactRail, ProjectEnd } from "../../../project-shell";
 
 export const metadata: Metadata = {
   title: "SANGRE | Wenhou Yan",
@@ -9,17 +10,7 @@ export const metadata: Metadata = {
 export default function EnglishSangrePage() {
   return (
     <main className="project project--sangre project--en" lang="en">
-      <ProjectHero
-        index="01"
-        title="SANGRE"
-        category="Healthcare product"
-        period="14 weeks"
-        role="Lead designer"
-        lede="A home blood-testing device designed to reduce the burden of long-term monitoring."
-        image="/portfolio/sangre-hero.webp"
-        tone="sangre"
-        locale="en"
-      />
+      <SangreOrbit locale="en" />
 
       <section className="project-brief" id="story">
         <div className="shell">

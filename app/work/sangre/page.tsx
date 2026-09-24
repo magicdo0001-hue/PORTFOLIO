@@ -1,7 +1,7 @@
+import SangreOrbit from "./orbit";
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../project-shell";
 
 export const metadata = {
@@ -12,16 +12,7 @@ export const metadata = {
 export default function SangrePage() {
   return (
     <main className="project project--sangre">
-      <ProjectHero
-        index="01"
-        title="SANGRE"
-        category="医疗产品"
-        period="14 周"
-        role="主导设计"
-        lede="把复杂血检收进一台愿意长期使用的家庭设备。"
-        image="/portfolio/sangre-hero.webp"
-        tone="sangre"
-      />
+      <SangreOrbit />
 
       <section className="project-brief" id="story">
         <div className="shell">
