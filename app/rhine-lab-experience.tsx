@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { installArchiveProjectPortal } from "./archive-project-portal";
 import "./archive-project-portal.css";
@@ -7,10 +8,8 @@ import "./rhine-lab-experience.css";
 
 export default function RhineLabExperience({
   locale = "zh",
-  standalone = false,
 }: {
   locale?: "zh" | "en";
-  standalone?: boolean;
 }) {
   const english = locale === "en";
   const archive = useRef<HTMLIFrameElement>(null);
@@ -25,17 +24,16 @@ export default function RhineLabExperience({
           <a href="/rhine-lab/index.html" target="_blank" rel="noopener noreferrer">
             {english ? "Open separately ↗" : "独立打开 ↗"}
           </a>
-          <a href={standalone ? "/#top" : "#top"} onClick={(event) => {
-            event.preventDefault();
-            if (standalone) {
-              window.location.assign("/#top");
-            } else {
-              window.history.replaceState(window.history.state, "", "#top");
-              document.getElementById("top")?.scrollIntoView({ behavior: "smooth" });
-            }
-          }}>
-            {english ? "Explore portfolio ↓" : "继续浏览作品集 ↓"}
-          </a>
+          <Link href={english ? "/en/work" : "/work"}>
+            {english ? "Projects" : "项目"}
+          </Link>
+          <Link
+            href={english ? "/" : "/en"}
+            hrefLang={english ? "zh-CN" : "en"}
+            aria-label={english ? "切换至中文" : "Switch to English"}
+          >
+            {english ? "中" : "EN"}
+          </Link>
         </nav>
       </div>
       <iframe

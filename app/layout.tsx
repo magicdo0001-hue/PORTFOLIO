@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import "./globals.css";
 import "./site-system.css";
 import "./project-system.css";
-import "./home-english.css";
 
 const title = "严文厚 | 产品设计师";
 const description =

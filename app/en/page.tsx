@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HomePage } from "../home-page";
+import RhineLabExperience from "../rhine-lab-experience";
 
 export const metadata: Metadata = {
   title: "Wenhou Yan | Product Designer",
@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default function EnglishHome() {
-  return <HomePage locale="en" />;
+  return <main><RhineLabExperience locale="en" /></main>;
 }
 

@@ -43,7 +43,7 @@ Cloudflare 配置位于 `wrangler.jsonc`。如果以后需要数据库，可在�
 
 ## Rhine Lab 原版体验
 
-主页及英文主页首屏嵌入原版体验，独立体验页为 /home-lab。体验中的文字、档案、模型几何和交互沿用 RhineLabUI，配色已按用户授权调整为作品集暗绿主题。
+主页 / 及英文主页 /en 仅保留 RhineLab 交互体验，旧入口 /home-lab 永久跳转至 /。旧首页的轮播、个人介绍、能力卡片、联系方式和 PDF 下载菜单已移除；项目列表及五个独立项目详情继续保留。体验中的文字、档案、模型几何和交互沿用 RhineLabUI，配色已按用户授权调整为作品集暗绿主题。
 
 - Windows 本地依赖安装完成后，可双击 start-preview.cmd 启动 http://localhost:4175，无需全局 npm。
 - npm run dev 和 npm run build 会先执行 scripts/build-rhine-lab.mjs；首次使用 npm 执行且子项目依赖不存在时，会按子项目锁文件安装依赖。

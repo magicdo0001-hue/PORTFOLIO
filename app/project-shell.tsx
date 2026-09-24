@@ -27,21 +27,18 @@ export function SiteHeader({
   const isEnglish = locale === "en";
   const homeHref = isEnglish ? "/en" : "/";
   const [projectsOpen, setProjectsOpen] = useState(false);
-  const [downloadsOpen, setDownloadsOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!projectsOpen && !downloadsOpen) return;
+    if (!projectsOpen) return;
     const closeOnOutsideClick = (event: PointerEvent) => {
       if (!headerRef.current?.contains(event.target as Node)) {
         setProjectsOpen(false);
-        setDownloadsOpen(false);
       }
     };
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setProjectsOpen(false);
-        setDownloadsOpen(false);
       }
     };
     document.addEventListener("pointerdown", closeOnOutsideClick);
@@ -50,11 +47,10 @@ export function SiteHeader({
       document.removeEventListener("pointerdown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [downloadsOpen, projectsOpen]);
+  }, [projectsOpen]);
 
   const closeMenus = () => {
     setProjectsOpen(false);
-    setDownloadsOpen(false);
   };
 
   return (
@@ -89,9 +85,6 @@ export function SiteHeader({
           <strong>{isEnglish ? "Home" : "首页"}</strong>
         </Link>
         <nav aria-label={isEnglish ? "Main navigation" : "主导航"}>
-          <Link className="site-nav__glass" href={`${homeHref}#profile`} onClick={closeMenus}>
-            {isEnglish ? "About" : "关于"}
-          </Link>
           <div className="site-nav__projects">
             <Link
               className="site-nav__glass site-nav__projects-link"
@@ -107,7 +100,6 @@ export function SiteHeader({
               aria-expanded={projectsOpen}
               aria-controls="site-project-shortcuts"
               onClick={() => {
-                setDownloadsOpen(false);
                 setProjectsOpen((open) => !open);
               }}
             >
@@ -151,62 +143,6 @@ export function SiteHeader({
               {isEnglish ? "中" : "EN"}
             </Link>
           )}
-          <div className="site-nav__downloads">
-            <button
-              className="site-nav__download site-nav__glass"
-              type="button"
-              aria-label={isEnglish ? "Open PDF downloads" : "打开 PDF 下载选项"}
-              aria-expanded={downloadsOpen}
-              aria-controls="site-pdf-downloads"
-              aria-haspopup="menu"
-              onClick={() => {
-                setProjectsOpen(false);
-                setDownloadsOpen((open) => !open);
-              }}
-            >
-              <span className="site-nav__action-label">
-                {isEnglish ? "Download PDFs" : "下载 PDF 文档"}
-              </span>
-              <span aria-hidden="true">{downloadsOpen ? "↑" : "↓"}</span>
-            </button>
-            <div
-              id="site-pdf-downloads"
-              className={`site-nav__download-menu${downloadsOpen ? " is-open" : ""}`}
-              role="menu"
-              aria-hidden={!downloadsOpen}
-            >
-              <a
-                href={isEnglish ? "/wenhou-yan-resume-en.pdf" : "/wenhou-yan-resume.pdf"}
-                download={isEnglish ? "Wenhou_Yan_Product_Designer_Resume_Australia.pdf" : "严文厚_产品设计师_简历.pdf"}
-                role="menuitem"
-                tabIndex={downloadsOpen ? 0 : -1}
-                onClick={closeMenus}
-              >
-                <span>{isEnglish ? "Download resume" : "下载简历"}</span>
-                <span aria-hidden="true">↓</span>
-              </a>
-              <a
-                href={isEnglish ? "/wenhou-yan-portfolio-en.pdf" : "/wenhou-yan-portfolio-cn.pdf"}
-                download={isEnglish ? "Wenhou_Yan_Product_Design_Portfolio.pdf" : "严文厚_产品设计_作品集.pdf"}
-                role="menuitem"
-                tabIndex={downloadsOpen ? 0 : -1}
-                onClick={closeMenus}
-              >
-                <span>{isEnglish ? "Download portfolio" : "下载作品集文档"}</span>
-                <span aria-hidden="true">↓</span>
-              </a>
-            </div>
-          </div>
-          <Link
-            className="site-nav__contact site-nav__glass"
-            href={`${homeHref}#contact`}
-            onClick={closeMenus}
-          >
-            <span className="site-nav__action-label">
-              {isEnglish ? "Contact" : "联系我"}
-            </span>
-            <span aria-hidden="true">↗</span>
-          </Link>
         </div>
       </GlassSurface>
     </header>

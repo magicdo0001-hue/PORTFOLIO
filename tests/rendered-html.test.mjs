@@ -20,37 +20,29 @@ async function render(path = "/") {
   );
 }
 
-test("renders the portfolio index and three distinct case studies", async () => {
+test("renders the archive homepage and five distinct case studies", async () => {
   const response = await render();
   const html = await response.text();
 
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   assert.match(html, /严文厚/);
-  assert.match(html, /把研究推进为/);
-  assert.match(html, /把复杂问题推进到/);
-  assert.match(html, /SANGRE/);
-  assert.match(html, /BAMBINO V2/);
-  assert.match(html, /SIMPLE UNI LIFE/);
-  assert.match(html, /若您有合作兴趣，欢迎进一步沟通/);
-  assert.match(html, /期待我们更深度的交流/);
-  assert.match(html, /18705188117@163\.com/);
-  assert.match(html, /tel:\+8618705188117/);
-  assert.match(html, /tel:\+61449923613/);
-  assert.match(html, /下载 PDF 文档/);
-  assert.match(html, /下载简历/);
-  assert.match(html, /下载作品集文档/);
-  assert.match(html, /\/wenhou-yan-resume\.pdf/);
-  assert.match(html, /\/wenhou-yan-portfolio-cn\.pdf/);
-
   const englishResponse = await render("/en");
   assert.equal(englishResponse.status, 200);
   const englishHtml = await englishResponse.text();
-  assert.match(englishHtml, /Download PDFs/);
-  assert.match(englishHtml, /Download resume/);
-  assert.match(englishHtml, /Download portfolio/);
-  assert.match(englishHtml, /\/wenhou-yan-resume-en\.pdf/);
-  assert.match(englishHtml, /\/wenhou-yan-portfolio-en\.pdf/);
+  for (const homeHtml of [html, englishHtml]) {
+    assert.match(homeHtml, /src="\/rhine-lab\/index.html"/);
+    assert.equal((homeHtml.match(/<iframe\b/g) ?? []).length, 1);
+    assert.doesNotMatch(homeHtml, /home-hero|home-project-wheel|profile-about|profile-capabilities|profile-contact/);
+    assert.doesNotMatch(homeHtml, /#(?:profile|contact|top)|site-pdf-downloads|wenhou-yan-resume|wenhou-yan-portfolio/);
+  }
+  assert.match(html, /href="\/work"/);
+  assert.match(html, /href="\/en"/);
+  assert.match(englishHtml, /href="\/en\/work"/);
+  assert.match(englishHtml, /切换至中文/);
+  const oldLab = await render("/home-lab");
+  assert.equal(oldLab.status, 308);
+  assert.equal(new URL(oldLab.headers.get("location"), "http://localhost").pathname, "/");
 
   const englishWorkResponse = await render("/en/work");
   assert.equal(englishWorkResponse.status, 200);
@@ -75,20 +67,10 @@ test("renders the portfolio index and three distinct case studies", async () => 
     assert.equal(caseResponse.status, 200);
     const caseHtml = await caseResponse.text();
     assert.match(caseHtml, expectedTitle);
+    assert.doesNotMatch(caseHtml, /#(?:profile|contact)|site-pdf-downloads/);
     assert.match(caseHtml, expectedCopy);
     assert.match(caseHtml, /切换至中文/);
   }
-  assert.ok(
-    html.indexOf("关于") < html.indexOf("项目") &&
-      html.indexOf("项目") < html.indexOf("下载简历"),
-    "navigation follows 关于 → 项目 → 下载简历",
-  );
-  assert.ok(
-    html.indexOf("关于我 / 2026") < html.indexOf("可旋转项目球面"),
-    "profile content appears before the embedded project index",
-  );
-  assert.doesNotMatch(html, /PROJECT INDEX \/ 03 CASES/);
-
   const workResponse = await render("/work");
   assert.equal(workResponse.status, 200);
   const workHtml = await workResponse.text();
@@ -251,7 +233,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
   const sources = await Promise.all(
     [
       "../app/page.tsx",
-      "../app/home-project-wheel.tsx",
+      "../app/rhine-lab-experience.tsx",
       "../app/work/sphere-project-menu.tsx",
       "../app/work/sangre/page.tsx",
       "../app/work/bambino/page.tsx",
@@ -272,14 +254,7 @@ test("renders the portfolio index and three distinct case studies", async () => 
       access(new URL(`../public${path}`, import.meta.url)),
     ),
   );
-  await access(new URL("../public/wenhou-yan-resume.pdf", import.meta.url));
-  await access(
-    new URL("../public/wenhou-yan-portfolio-cn.pdf", import.meta.url),
-  );
-  await access(new URL("../public/wenhou-yan-resume-en.pdf", import.meta.url));
-  await access(
-    new URL("../public/wenhou-yan-portfolio-en.pdf", import.meta.url),
-  );
+
 });
 
 test("integrates the Infinite Menu museum into the work page", async () => {
