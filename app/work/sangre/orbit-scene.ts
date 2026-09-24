@@ -2,10 +2,11 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { createStructureDetails } from "./structure-details";
 
 type Hooks = { ready: () => void; error: () => void; marker: (index: number, x: number, y: number, visible: boolean) => void };
 export type SangreScene = { chapter: (index: number) => void; explore: (enabled: boolean) => void; reset: () => void; dispose: () => void };
-const views = [[3.8, 3.3, -5.2], [0.5, 3.7, -5.6], [-4.5, 3.4, -4.4], [4.0, 3.4, -5.5]];
+const views = [[3.8, 3.3, -5.2], [0.5, 3.7, -5.6], [-4.5, 3.4, -4.4], [4.6, 3.4, -6.8]];
 // SolidWorks coordinates in metres. These points are on the display and storage lid.
 const anchors = [[0.109, 0.089, 0.112], [0.029, 0.104, 0.13]];
 
@@ -36,15 +37,18 @@ export function createSangreScene(host: HTMLElement, hooks: Hooks): SangreScene 
   const parts: THREE.Object3D[] = [];
   const base = new Map<THREE.Object3D, THREE.Vector3>();
   const materials: THREE.Material[] = [];
+  const partMaterials: THREE.MeshPhysicalMaterial[] = [];
   const textures: THREE.Texture[] = [];
+  let enclosureEdges: THREE.LineSegments | null = null;
   let disposed = false, frame = 0, chapter = 0, free = false, visible = true, loaded = false, ticks = 90, explosion = 0;
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
   const destination = new THREE.Vector3().fromArray(views[0]);
   const invalidate = () => { ticks = 80; };
   controls.addEventListener("change", invalidate);
   const toScene = (point: number[]) => new THREE.Vector3().fromArray(point).sub(center).multiplyScalar(scale);
+  const details = createStructureDetails(toScene, scale); details.visible = false; root.add(details);
   const disposeObject = (object: THREE.Object3D) => object.traverse(child => {
-    if (child instanceof THREE.Mesh) { child.geometry.dispose(); for (const material of Array.isArray(child.material) ? child.material : [child.material]) material.dispose(); }
+    if (child instanceof THREE.Mesh || child instanceof THREE.LineSegments) { child.geometry.dispose(); for (const material of Array.isArray(child.material) ? child.material : [child.material]) material.dispose(); }
   });
   new GLTFLoader().load("/sangre/sangre.glb", gltf => {
     if (disposed) { disposeObject(gltf.scene); return; }
@@ -59,12 +63,17 @@ export function createSangreScene(host: HTMLElement, hooks: Hooks): SangreScene 
       if (index === 3) { m.color.set(0x949992); m.metalness = 0.75; m.roughness = 0.35; }
       if (index === 4) { m.color.set(0x292e2b); m.roughness = 0.6; }
       if (index === 5) { m.color.set(0xc5d1c6); m.transparent = true; m.opacity = 0.26; m.depthWrite = false; m.roughness = 0.12; m.metalness = 0.08; m.clearcoat = 0.8; m.side = THREE.DoubleSide; }
-      materials.push(m);
+      materials.push(m); partMaterials.push(m);
       const mesh = new THREE.Mesh(source.geometry, m);
       source.matrixWorld.decompose(mesh.position, mesh.quaternion, mesh.scale);
       mesh.position.sub(center).multiplyScalar(scale); mesh.scale.multiplyScalar(scale);
       const group = new THREE.Group(); group.name = names[index]; group.add(mesh); root.add(group);
       parts.push(group); base.set(group, group.position.clone());
+      if (index === 2) {
+        enclosureEdges = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, 28), new THREE.LineBasicMaterial({ color: 0xe9f4ed, transparent: true, opacity: 0.18 }));
+        enclosureEdges.position.copy(mesh.position); enclosureEdges.quaternion.copy(mesh.quaternion); enclosureEdges.scale.copy(mesh.scale);
+        enclosureEdges.visible = false; group.add(enclosureEdges);
+      }
       for (const old of Array.isArray(source.material) ? source.material : [source.material]) old.dispose();
     });
     // The display face slopes toward -Z. A separate decal preserves the original CAD geometry.
@@ -112,10 +121,37 @@ export function createSangreScene(host: HTMLElement, hooks: Hooks): SangreScene 
     if (!free) camera.position.lerp(destination, reduced.matches ? 1 : 0.08);
     const targetExplosion = chapter === 3 ? 1 : 0;
     explosion = THREE.MathUtils.lerp(explosion, targetExplosion, reduced.matches ? 1 : 0.075);
-    parts.forEach((part, index) => { part.position.copy(base.get(part)!); if (index === 1) part.position.y += explosion * 0.9; if (index === 5) part.position.y += explosion * 0.6; if (index === 3) part.position.y -= explosion * 0.4; });
+    parts.forEach((part, index) => {
+      part.position.copy(base.get(part)!);
+      // The reference removes the display and storage lid, then lifts the complete enclosure.
+      part.visible = (index !== 1 && index !== 5) || explosion < 0.12;
+      if (index === 2) part.position.y += explosion * 1.6;
+      if (index === 3 || index === 4) part.position.y -= explosion * 0.04;
+      if (index === 0) part.position.y += explosion * 0.13;
+    });
+    if (partMaterials.length) {
+      const shell = partMaterials[2];
+      const cutaway = explosion > 0.15;
+      if (shell.userData.cutaway !== cutaway) { shell.userData.cutaway = cutaway; shell.needsUpdate = true; }
+      shell.transparent = cutaway; shell.opacity = cutaway ? 0.12 : 1; shell.transmission = 0;
+      shell.thickness = 0.025; shell.ior = 1.47; shell.envMapIntensity = cutaway ? 3 : 1;
+      shell.depthWrite = !cutaway; shell.side = cutaway ? THREE.DoubleSide : THREE.FrontSide;
+      shell.color.set(0xd8d3c3).lerp(new THREE.Color(0xf3f5f0), explosion);
+      shell.roughness = 0.32 - explosion * 0.23; shell.metalness = 0.02 + explosion * 0.1;
+      shell.clearcoat = 0.18 + explosion * 0.65;
+      partMaterials[3].color.set(0x949992);
+      partMaterials[3].metalness = 0.75;
+      partMaterials[0].color.set(0x334c43).lerp(new THREE.Color(0x599c3f), explosion);
+    }
+    if (enclosureEdges) enclosureEdges.visible = explosion > 0.15;
+    details.visible = explosion > 0.15; details.position.y = -0.08 * explosion;
+    controls.target.y = explosion * 0.45;
+    renderer.toneMappingExposure = 0.9 - explosion * 0.06;
+    renderer.setClearColor(explosion > 0.15 ? 0x242822 : 0xeeeae2, 0);
     controls.update(); renderer.render(scene, camera);
     anchors.forEach((anchor, index) => {
-      point.copy(toScene(anchor)); point.y += explosion * (index === 0 ? 0.9 : 0.6); point.project(camera);
+      point.copy(toScene(chapter === 3 ? (index === 0 ? [0.113, 0.1, 0.106] : [0.071, 0.073, 0.126]) : anchor));
+      if (chapter === 3 && index === 0) point.y += explosion * 1.6; point.project(camera);
       hooks.marker(index, (point.x * 0.5 + 0.5) * host.clientWidth, (-point.y * 0.5 + 0.5) * host.clientHeight, !free && loaded && point.z < 1);
     });
   }
