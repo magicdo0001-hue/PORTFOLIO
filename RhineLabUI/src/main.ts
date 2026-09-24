@@ -153,7 +153,7 @@ const prefs = {
   sound: true,
   music: storedPrefs.sound ?? true,
   soundVolume: .55,
-  musicVolume: .5,
+  musicVolume: .25,
   reduced: matchMedia("(prefers-reduced-motion: reduce)").matches,
   quality: true,
   ...storedPrefs,

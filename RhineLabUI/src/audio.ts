@@ -305,7 +305,7 @@ export class TerminalAudio {
     sound: false,
     music: false,
     soundVolume: 0.55,
-    musicVolume: 0.5,
+    musicVolume: 0.25,
   };
   private context?: AudioContext;
   private effects?: GainNode;

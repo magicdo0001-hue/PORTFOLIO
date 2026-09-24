@@ -28,7 +28,6 @@ import {
   type ArchiveCell,
   type ArchiveNavigation,
 } from "./archive-loop";
-import { labelMarkSvg } from "./brand";
 import {
   archiveWave,
   extraction,
@@ -109,7 +108,6 @@ export class ArchiveScene {
   private loaded = false;
   private labelCanvas = document.createElement("canvas");
   private labelTexture?: THREE.CanvasTexture;
-  private labelMark = new Image();
   private reduced = false;
   private quality = normalizeQuality(undefined);
   private appliedQuality = "";
@@ -195,8 +193,6 @@ export class ArchiveScene {
     this.bindPointer();
   }
   async load(assetUrl = "/assets/archive-cassette.glb") {
-    this.labelMark.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(labelMarkSvg)}`;
-    await this.labelMark.decode();
     const gltf = await new GLTFLoader().loadAsync(
       assetUrl,
     );
@@ -727,7 +723,6 @@ export class ArchiveScene {
     c.fillStyle = portfolioTheme.text;
     c.font = "bold 64px MiSans";
     c.fillText("INFO", 830, 143);
-    c.drawImage(this.labelMark, 790, 242, 210, 98);
     this.labelTexture.needsUpdate = true;
   }
   resize() {
