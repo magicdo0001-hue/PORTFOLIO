@@ -50,4 +50,4 @@ Cloudflare 配置位于 `wrangler.jsonc`。如果以后需要数据库，可在�
 - npm run build:rhine 可单独重新构建。RhineLabUI 源码后续若有更新，需重新执行该命令。
 - 独立构建生成 public/rhine-lab，iframe 隔离其全局样式、事件和渲染环境；模型、音频、导出文档的 URL 仅在构建时加上子路径，原文件不改写。
 - 父项目的 TypeScript 和 ESLint 已排除 RhineLabUI；子项目在构建时独立进行 TypeScript 检查。生成目录和嵌套 node_modules 不提交。
-- 移动端保留原版横向画布，可使用“独立打开”横屏体验。
+- 移动端保留原版横向画布，可将设备横屏查看。

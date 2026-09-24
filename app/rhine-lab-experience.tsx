@@ -21,9 +21,6 @@ export default function RhineLabExperience({
       <div className="rhine-experience__bar">
         <span>RHINE LAB <span aria-hidden="true">/</span> {english ? "INTERACTIVE EXPERIENCE" : "交互体验"}</span>
         <nav aria-label={english ? "Experience navigation" : "体验导航"}>
-          <a href="/rhine-lab/index.html" target="_blank" rel="noopener noreferrer">
-            {english ? "Open separately ↗" : "独立打开 ↗"}
-          </a>
           <Link href={english ? "/en/work" : "/work"}>
             {english ? "Projects" : "项目"}
           </Link>
