@@ -4,6 +4,7 @@ import Link from "next/link";
 import { chapters, finishes, iterations, partLabels, type Finish, type Locale } from "./workbench-data";
 import type { WorkbenchApi, WorkbenchState } from "./workbench-scene";
 import "./workbench.css";
+import LockingFilm from "./locking-film";
 
 function Arrow({ back = false }: { back?: boolean }) {
   return <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" style={back ? { transform: "rotate(180deg)" } : undefined}><path d="M4 12h15M13 5l7 7-7 7" /></svg>;
@@ -16,8 +17,7 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
   const [finish, setFinish] = useState<Finish>("steel");
   const [iteration, setIteration] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [lock, setLock] = useState(0);
-  const [lockPlaying, setLockPlaying] = useState(false);
+  const [routeReady, setRouteReady] = useState(false);
   const [explosion, setExplosion] = useState(0.7);
   const [focus, setFocus] = useState(false);
   const [reading, setReading] = useState(false);
@@ -25,26 +25,30 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
   const [selected, setSelected] = useState("");
   const [retry, setRetry] = useState(0);
   const viewport = useRef<HTMLDivElement>(null);
-  const marker = useRef<HTMLSpanElement>(null);
   const api = useRef<WorkbenchApi | null>(null);
-  const modelState = useRef<WorkbenchState>({ chapter, finish, explosion, lock, focus, active: true });
-  const state: WorkbenchState = { chapter, finish, explosion, lock, focus, active: !reading && !(chapter === 2 && iteration < 3) };
+  const wantsModel = routeReady && !reading && chapter !== 3 && !(chapter === 2 && iteration < 3);
+  const modelState = useRef<WorkbenchState>({ chapter, finish, explosion, lock: 0, focus, active: false });
+  const state: WorkbenchState = { chapter, finish, explosion, lock: 0, focus, active: wantsModel };
 
   useEffect(() => {
-    if (!viewport.current) return;
+    if (!viewport.current || !wantsModel) return;
     const host = viewport.current; let mounted = true; let sceneApi: WorkbenchApi | null = null;
-    import("./workbench-scene").then(({ createWorkbench }) => createWorkbench(host, {
+    import("./workbench-scene").then(({ createWorkbench }) => {
+      if (!mounted) return null;
+      setStatus("loading");
+      return createWorkbench(host, {
       onReady: () => { if (mounted) setStatus("ready"); },
       onError: () => { if (mounted) setStatus("error"); },
       onPart: (name) => { if (mounted) setSelected(name); },
-      onMarker: (x, y, visible) => { if (marker.current) { marker.current.style.transform = `translate(${x}px, ${y}px)`; marker.current.style.opacity = visible ? "1" : "0"; } },
-    })).then((instance) => { if (!mounted) { instance.dispose(); return; } sceneApi = instance; api.current = instance; instance.update(modelState.current); }).catch(() => { if (mounted) setStatus("error"); });
+      onMarker: () => undefined,
+    });
+    }).then((instance) => { if (!instance) return; if (!mounted) { instance.dispose(); return; } sceneApi = instance; api.current = instance; instance.update(modelState.current); }).catch(() => { if (mounted) setStatus("error"); });
     return () => { mounted = false; sceneApi?.dispose(); api.current = null; };
-  }, [retry]);
+  }, [retry, wantsModel]);
 
-  useEffect(() => { modelState.current = { chapter, finish, explosion, lock, focus, active: !reading && !(chapter === 2 && iteration < 3) }; api.current?.update(modelState.current); }, [chapter, finish, explosion, lock, focus, reading, iteration]);
+  useEffect(() => { modelState.current = { chapter, finish, explosion, lock: 0, focus, active: wantsModel }; api.current?.update(modelState.current); }, [chapter, finish, explosion, focus, wantsModel]);
   useEffect(() => {
-    const sync = () => { const index = chapters.findIndex(item => `#${item.id}` === window.location.hash); if (index >= 0) { setChapter(index); setFocus(index === 1); } };
+    const sync = () => { const index = chapters.findIndex(item => `#${item.id}` === window.location.hash); if (index >= 0) { setChapter(index); setFocus(index === 1); } setRouteReady(true); };
     const id = requestAnimationFrame(sync); window.addEventListener("hashchange", sync);
     return () => { cancelAnimationFrame(id); window.removeEventListener("hashchange", sync); };
   }, []);
@@ -53,15 +57,9 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
     const timer = window.setTimeout(() => { if (iteration === 3) setPlaying(false); else setIteration(iteration + 1); }, 3500);
     return () => window.clearTimeout(timer);
   }, [playing, chapter, reading, iteration]);
-  useEffect(() => {
-    if (!lockPlaying || chapter !== 3 || reading) return;
-    let frame = 0; const started = performance.now();
-    const tick = (now: number) => { const progress = Math.min(1, (now - started) / 3200); setLock(progress); if (progress < 1) frame = requestAnimationFrame(tick); else setLockPlaying(false); };
-    frame = requestAnimationFrame(tick); return () => cancelAnimationFrame(frame);
-  }, [lockPlaying, chapter, reading]);
 
   function navigate(index: number) {
-    const next = Math.max(0, Math.min(4, index)); setChapter(next); setPlaying(false); setLockPlaying(false); setFocus(next === 1); setSelected("");
+    const next = Math.max(0, Math.min(4, index)); setChapter(next); setPlaying(false); setFocus(next === 1); setSelected("");
     api.current?.selectPart(""); window.history.replaceState(null, "", `#${chapters[next].id}`);
     if (reading) document.getElementById(`read-${chapters[next].id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -70,22 +68,22 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
   const modelLabel = chapter === 1 ? t("原版 BAMBINO · 外观示意", "ORIGINAL BAMBINO · FORM REFERENCE") : t("BAMBINO V2 · 最终设计", "BAMBINO V2 · FINAL DESIGN");
   const currentFinish = finishes.find(item => item.id === finish)!;
 
-  return <main className={`bw ${reading ? "bw--reading" : ""}`} lang={en ? "en" : "zh-CN"}>
+  return <main className={`bw ${reading ? "bw--reading" : ""} ${chapter === 3 ? "bw--locking" : ""}`} lang={en ? "en" : "zh-CN"}>
     <a className="bw-skip" href="#bw-content">{t("跳到项目说明", "Skip to project content")}</a>
     <header className="bw-header">
       <Link className="bw-back" href={en ? "/en?archive=X2-01" : "/?archive=X2-01"}><Arrow back /><span>{t("返回档案架", "Back to archive")}</span></Link>
       <Link className="bw-name" href={en ? "/en" : "/"}>WENHOU YAN<span> / BAMBINO V2</span></Link>
       <div className="bw-header-actions">
-        <button onClick={() => { setReading(value => !value); setPlaying(false); setLockPlaying(false); }} aria-pressed={reading}>{reading ? t("返回工作台", "3D workbench") : t("阅读模式", "Reading mode")}</button>
+        <button onClick={() => { setReading(value => !value); setPlaying(false); }} aria-pressed={reading}>{reading ? t("返回工作台", "3D workbench") : t("阅读模式", "Reading mode")}</button>
         <Link href={`${en ? "/work/bambino" : "/en/work/bambino"}#${chapters[chapter].id}`} hrefLang={en ? "zh-CN" : "en"}>{en ? "中文" : "EN"}</Link>
       </div>
     </header>
 
     <div className="bw-layout">
-      <div className={`bw-stage ${chapter === 2 && iteration < 3 ? "bw-stage--evidence" : ""}`} aria-label={t("产品工作台", "Product workbench")}>
+      <div className={`bw-stage ${chapter === 2 && iteration < 3 ? "bw-stage--evidence" : ""} ${chapter === 3 ? "bw-stage--film" : ""}`} aria-label={t("产品工作台", "Product workbench")}>
         <div className="bw-model-id"><span className="bw-dot" />{modelLabel}</div>
         <div ref={viewport} className="bw-canvas" tabIndex={0} aria-label={t("三维模型：拖动旋转，滚轮缩放；方向键旋转，加减键缩放，Home 重置", "3D model: drag to orbit, scroll to zoom. Arrow keys rotate, plus/minus zoom, Home resets.")} data-testid="model-viewport" data-status={status} data-model={chapter === 1 ? "original" : "v2"} data-explosion={chapter === 4 ? explosion.toFixed(2) : "0"} />
-        <span ref={marker} className="bw-marker" hidden={chapter !== 3}><i /><span>{t("拇指支点", "THUMB SUPPORT")}</span></span>
+        {chapter === 3 && !reading && <LockingFilm locale={locale} />}
         {status !== "ready" && <div className="bw-loading" role="status">
           <img src="/portfolio/bambino-cutout.png" alt="BAMBINO V2" />
           <p>{status === "loading" ? t("正在准备三维工作台…", "Preparing the workbench…") : t("此设备暂时无法显示三维模型，项目内容仍可阅读。", "3D is unavailable on this device. The project remains readable.")}</p>
@@ -132,11 +130,11 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
         <section id="read-locking" hidden={!reading && chapter !== 3} className="bw-panel">
           <h2>{t("一个支点，\n连接手与结构。", "One support.\nHand meets structure.")}</h2>
           <p className="bw-intro">{t("握住手柄，让大拇指抵住冲煮头旁的突出结构。手柄转动时，这个接触位置成为动作的一部分。", "Grip the handle and rest the thumb against the projecting support beside the group head. This contact becomes part of the turning action.")}</p>
-          <div className="bw-motion-steps"><span className={lock < 0.35 ? "is-current" : ""}>{t("接近", "Approach")}</span><span className={lock >= 0.35 && lock < 0.95 ? "is-current" : ""}>{t("支撑与转动", "Support & turn")}</span><span className={lock >= 0.95 ? "is-current" : ""}>{t("就位", "Seated")}</span></div>
-          <label className="bw-slider"><span>{t("操作进度", "Interaction progress")}<output>{Math.round(lock * 100)}%</output></span><input type="range" min="0" max="1" step="0.01" value={lock} onChange={event => { setLockPlaying(false); setLock(Number(event.target.value)); }} /></label>
-          <div className="bw-button-row"><button className="bw-primary" onClick={() => { if (lockPlaying) { setLockPlaying(false); return; } setLock(0); setLockPlaying(true); }}>{lockPlaying ? t("暂停动作", "Pause motion") : t("播放锁定示意", "Play locking motion")}<Arrow /></button><button className="bw-text-button" onClick={() => { setLockPlaying(false); setLock(0); }}>{t("复位", "Reset")}</button></div>
-          <figure className="bw-lock-reference"><img src="/portfolio/bambino-layer-04.jpg" alt={t("BAMBINO V2 冲煮头与拇指支点渲染", "BAMBINO V2 group head and thumb support")} loading="lazy" /></figure>
-          <p className="bw-note">{t("54 mm 粉碗与手柄为交互示意。动画说明可见操作，不代表内部机构、受力或锁定角度的工程验证。", "The nominal 54 mm basket and handle illustrate the visible action. This is not an engineering validation of the internal mechanism, forces or locking angle.")}</p>
+          <p className="bw-lock-summary">{t("冲煮头上的支点保持固定。用右手拇指抵住它的侧面，其余手指带动手柄转动，观察两者的接触关系。", "The support on the group head stays fixed. The right thumb rests against its side while the fingers turn the handle. Watch how the two surfaces meet.")}</p>
+          <p className="bw-note">{t("动作依据实体原型参考制作；半透明手部与手柄用于说明操作关系。", "Based on the physical prototype reference. The translucent hand and handle illustrate the interaction.")}</p>
+          <a className="bw-text-button" href="/portfolio/bambino-layer-04.jpg" target="_blank" rel="noreferrer">{t("查看原始设计特写", "View the original design detail")}<Arrow /></a>
+          {reading && <LockingFilm locale={locale} />}
+
         </section>
 
         <section id="read-structure" hidden={!reading && chapter !== 4} className="bw-panel">
