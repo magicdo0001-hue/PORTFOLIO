@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { SiteHeader } from "../../project-shell";
+import Link from "next/link";
 import { districts, type DistrictId } from "./city-data";
 import type { createCity } from "./city-scene";
 import "./city-hero.css";
@@ -20,11 +20,12 @@ function Arrow({ down = false }: { down?: boolean }) {
 
 export function UniLifeCityHero({ locale = "zh" }: { locale?: "zh" | "en" }) {
   const en = locale === "en";
+  const [reading, setReading] = useState(false);
   const [selected, setSelected] = useState<DistrictId | null>(null);
   const [motionOverride, setMotionOverride] = useState<boolean | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "fallback">("loading");
   const reduced = useSyncExternalStore(subscribeMotion, getMotion, serverMotion);
-  const paused = motionOverride ?? reduced;
+  const paused = reading || (motionOverride ?? reduced);
   const host = useRef<HTMLDivElement>(null);
   const labels = useRef<(HTMLButtonElement | null)[]>([]);
   const controls = useRef<ReturnType<typeof createCity> | null>(null);
@@ -36,6 +37,21 @@ export function UniLifeCityHero({ locale = "zh" }: { locale?: "zh" | "en" }) {
     setSelected(id);
     controls.current?.select(id);
   }, []);
+
+  useEffect(() => {
+    const sync = () => setReading(window.location.hash === "#reading");
+    const frame = requestAnimationFrame(sync);
+    window.addEventListener("hashchange", sync);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", sync); };
+  }, []);
+
+  function toggleReading() {
+    const next = !reading;
+    setReading(next);
+    if (next) setMotionOverride(true);
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${next ? "#reading" : ""}`);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
 
   useEffect(() => {
     current.current.paused = paused;
@@ -55,8 +71,18 @@ export function UniLifeCityHero({ locale = "zh" }: { locale?: "zh" | "en" }) {
   }, [chooseDistrict]);
 
   return (
-    <section className={`uni-city${selected ? " is-focused" : ""}`} data-district={selected ?? "overview"} aria-label={en ? "Simple Uni Life: explore the campus" : "Simple Uni Life：探索留学小城"}>
-      <SiteHeader locale={locale} showLanguage languageHref={en ? "/work/simple-uni-life" : "/en/work/simple-uni-life"} />
+    <section className={`uni-city${selected ? " is-focused" : ""}${reading ? " uni-city--reading" : ""}`} data-district={selected ?? "overview"} aria-label={en ? "Simple Uni Life: explore the campus" : "Simple Uni Life：探索留学小城"}>
+      <header className="uni-project-header">
+        <Link className="uni-project-back" href={en ? "/en?archive=X3-01" : "/?archive=X3-01"}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" style={{ transform: "rotate(180deg)" }}><path d="M4 12h15M13 5l7 7-7 7" /></svg>
+          <span>{en ? "Back to archive" : "返回档案架"}</span>
+        </Link>
+        <Link className="uni-project-name" href={en ? "/en" : "/"}>WENHOU YAN<span> / SIMPLE UNI LIFE</span></Link>
+        <div className="uni-project-header-actions">
+          <button type="button" onClick={toggleReading} aria-pressed={reading}>{reading ? (en ? "3D city" : "返回小城") : (en ? "Reading mode" : "阅读模式")}</button>
+          <Link href={`${en ? "/work/simple-uni-life" : "/en/work/simple-uni-life"}${reading ? "#reading" : ""}`} hrefLang={en ? "zh-CN" : "en"}>{en ? "中文" : "EN"}</Link>
+        </div>
+      </header>
       <div id="unilife-town" className={`uni-city__world is-${status}`} role="group" aria-label={en ? "Interactive campus districts" : "可交互的校园街区"}>
         <img className="uni-city__fallback" src="/portfolio/unilife-city-fallback.webp" alt={en ? "An isometric campus with a library, planning hall, student café and course pavilion" : "等距校园小城：课程图书馆、钟楼规划站、交流咖啡馆与选课导航台"} fetchPriority="high" />
         <div ref={host} className="uni-city__canvas" role="group" tabIndex={status === "ready" ? 0 : -1} aria-label={en ? "3D model. Select a building to focus. Drag to rotate, right-drag to pan, scroll to zoom. Arrow keys rotate, Shift and arrows pan, plus or minus zoom, Home returns to overview." : "3D 微缩模型。点击建筑聚焦。拖动旋转，右键拖动平移，滚轮缩放。方向键旋转，Shift 加方向键平移，加减号缩放，Home 返回全景。"} />

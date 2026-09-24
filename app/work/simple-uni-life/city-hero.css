@@ -86,13 +86,6 @@
 .uni-city__motion > span { display: grid; place-items: center; width: 25px; }
 .uni-city__motion svg { width: 16px; height: 16px; }
 .uni-city__motion:disabled { cursor: default; }
-.uni-city .site-nav { height: 64px; width: 92%; border-radius: 0; color: var(--city-ink); position: absolute; }
-.uni-city .site-nav__surface, .uni-city .site-nav__glass, .uni-city .site-nav__brand span { background: none; box-shadow: none; border-color: transparent; backdrop-filter: blur(0px); }
-.uni-city .site-nav__glass::before, .uni-city .site-nav__glass::after, .uni-city .glass-surface__filter { display: none; }
-.uni-city .site-nav__brand { padding-left: 0; }
-.uni-city .site-nav__brand span { font: 17px Georgia, serif; }
-.uni-city .site-nav__brand strong { font-size: 13px; font-weight: 400; }
-.uni-city .site-nav nav > a, .uni-city .site-nav__projects-link { font-size: 13px; font-weight: 400; }
 .project--unilife :where(#story,#research,#course-search,#course-structure,#online-product) { scroll-margin-top: 80px; }
 .project--en .uni-city__copy { width: min(37%, 540px); }
 .project--en .uni-city__copy h1 { font-size: clamp(32px, 3.25vw, 54px); }
@@ -128,10 +121,6 @@
   .uni-city__districts button > span { font-size: 9px; }
   .uni-city__districts button[aria-pressed="true"]::before { top: -16px; }
   .uni-city__motion { margin-left: auto; min-height: 34px; font-size: 11px; }
-  .uni-city .site-nav { width: calc(100% - 24px); }
-  .uni-city .site-nav__projects-toggle, .uni-city .site-nav__project-shortcuts { display: none; }
-  .uni-city .site-nav nav { left: 44%; gap: 0; }
-  .uni-city .site-nav nav .site-nav__glass { padding-inline: 12px; }
   .project--en .uni-city__districts { gap: 8px; flex-wrap: wrap; justify-content: flex-start; }
   .project--en .uni-city__districts button { font-size: 10px; margin-right: 5px; }
   .project--en .uni-city__districts button > span { display: none; }
@@ -140,3 +129,34 @@
 }
 @media (pointer: coarse) { .uni-city__desktop-hint { display: none; } .uni-city__touch-hint { display: inline; } }
 @media (prefers-reduced-motion: reduce) { html:has(.uni-city) { scroll-behavior: auto; } .uni-city *, .uni-city *::before, .uni-city *::after { transition: none !important; animation: none !important; } }
+
+/* Match the BAMBINO workbench header, while retaining the floating city view. */
+.uni-project-header { height: 78px; margin: 0 40px; border-bottom: 1px solid #d7eaca25; display: flex; align-items: center; justify-content: space-between; gap: 22px; position: relative; z-index: 4; color: #e8eee2; font-family: var(--site-font-body); font-synthesis: none; }
+.uni-project-header :is(a,button) { -webkit-tap-highlight-color: transparent; }
+.uni-project-header button { cursor: pointer; color: inherit; font: inherit; border: 0; background: none; }
+.uni-project-header :is(a,button):hover { color: #9bdd2a; }
+.uni-project-header :is(a,button):focus-visible { outline: 2px solid #9bdd2a; outline-offset: 5px; }
+.uni-project-back { display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: .04em; white-space: nowrap; }
+.uni-project-name { font-size: 12px; letter-spacing: .12em; font-weight: 600; white-space: nowrap; }
+.uni-project-name span { margin-left: 15px; color: #9caa99; font-weight: 400; }
+.uni-project-header-actions { display: flex; align-items: center; gap: 24px; font-size: 12px; white-space: nowrap; }
+.uni-project-header-actions button { padding: 9px 0; border-bottom: 1px solid transparent; }
+.uni-project-header-actions button[aria-pressed=true] { border-color: #9bdd2a; color: #9bdd2a; }
+.uni-city.uni-city--reading { height: 78px; min-height: 78px; background: #0d110e; }
+.uni-city--reading > :not(.uni-project-header), .uni-city--reading::after { display: none; }
+@media (max-width: 1050px) {
+  .uni-project-header { margin-inline: 24px; }
+  .uni-project-name span { display: none; }
+}
+@media (max-width: 760px) {
+  .uni-project-header { height: 62px; margin-inline: 18px; gap: 12px; }
+  .uni-project-back { font-size: 11px; gap: 7px; }
+  .uni-project-name { font-size: 10px; letter-spacing: .05em; }
+  .uni-project-header-actions { gap: 13px; font-size: 11px; }
+  .uni-project-header-actions button { font-size: 10px; }
+  .uni-city.uni-city--reading { height: 62px; min-height: 62px; }
+}
+@media (max-width: 390px) {
+  .uni-project-name { display: none; }
+  .uni-project-header { gap: 14px; }
+}
