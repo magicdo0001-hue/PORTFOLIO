@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { SangreScene } from "./orbit-scene";
 import "./orbit.css";
+import StructureFilm from "./structure-film";
 
 const chapters = [
   { label: ["整体", "Overview"], title: ["把日常健康，放回生活。", "Care, at home."], intro: ["一台围绕检测、读取与收纳设计的家庭健康设备。", "A home-health concept bringing testing, reading and storage into one considered object."], left: ["一个连续的流程", "One connected routine"], leftBody: ["从准备耗材，到读取结果。让每个动作都有自己的位置。", "From preparing consumables to reading results, each action has a place."], right: ["融入居家环境", "Made for the everyday"], rightBody: ["暖白色机身、柔和转角与透明收纳，让设备自然留在日常视线里。", "Warm ivory, soft edges and transparent storage bring a quieter presence to the home."] },
   { label: ["读取", "Read"], title: ["让信息，靠近视线。", "Clarity, within sight."], intro: ["倾斜屏幕承接操作与结果，界面按指标组织信息。", "An angled display connects the physical routine with a clearly organised dashboard."], left: ["倾斜式显示面", "An angled display"], leftBody: ["以自然的桌面视角读取信息，减少操作与查看之间的切换。", "A tabletop viewing angle keeps information close to the physical interaction."], right: ["清晰的信息分组", "Information in groups"], rightBody: ["以不同色彩区分指标与趋势。屏幕展示为设计界面示意。", "Colour separates metrics and trends. The screen shows an illustrative interface."] },
   { label: ["收纳", "Store"], title: ["下一次使用，也已准备好。", "Ready for the next routine."], intro: ["让采样组件与耗材有序归位，完整考虑使用前后。", "A place for sampling tools and consumables, before and after use."], left: ["透明收纳区域", "Visible storage"], leftBody: ["透过上盖看见内部空间，把整理与取用纳入同一套体验。", "A transparent cover makes the storage space visible and access more deliberate."], right: ["紧凑的桌面布局", "A compact arrangement"], rightBody: ["显示与收纳并排组织，减少零散物件对桌面空间的占用。", "Display and storage sit alongside one another to keep the routine together."] },
-  { label: ["结构", "Structure"], title: ["打开外壳，看见内部。", "Open the shell. See within."], intro: ["透明外壳抬升，供电、线圈与检测组件在底座上展开。", "The transparent enclosure lifts away to reveal power, coil and sensing components on the base."], left: ["透明外壳 · 整体抬升", "Enclosure · lifted as one"], leftBody: ["沿装配方向分离外壳，呈现内部支撑、空间分配与底座的关系。", "Separating the enclosure reveals the supports, internal spaces and their relationship to the base."], right: ["供电与检测 · 分区布局", "Power & sensing · zoned layout"], rightBody: ["电池、线圈与主板分区排列。内部电子组件按结构渲染图作展示示意。", "Battery, coil and boards occupy distinct zones. Electronic components are illustrated from the structural render."] },
+  { label: ["结构", "Structure"], title: ["折叠、展开，理解内部。", "From folded screen to inner assembly."], intro: ["沿预设镜头查看折叠屏、测试条与真实装配结构。可暂停或拖动进度，停下来观察细节。", "Follow the folding display, test strip and mechanical assembly. Pause or scrub to study the details."], left: ["透明外壳 · 整体抬升", "Enclosure · lifted as one"], leftBody: ["沿装配方向分离外壳，呈现内部支撑、空间分配与底座的关系。", "Separating the enclosure reveals the supports, internal spaces and their relationship to the base."], right: ["供电与检测 · 分区布局", "Power & sensing · zoned layout"], rightBody: ["电池、线圈与主板分区排列。内部电子组件按结构渲染图作展示示意。", "Battery, coil and boards occupy distinct zones. Electronic components are illustrated from the structural render."] },
 ] as const;
 
 export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" }) {
@@ -24,11 +25,13 @@ export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" })
   const [retry, setRetry] = useState(0);
   const [reference, setReference] = useState(false);
   const current = chapters[chapter];
+  const wantsModel = chapter !== 3;
   useEffect(() => {
-    if (!viewport.current) return;
+    if (!viewport.current || !wantsModel) return;
     const host = viewport.current; let cancelled = false; let instance: SangreScene | null = null;
     import("./orbit-scene").then(({ createSangreScene }) => {
       if (cancelled) return;
+      setStatus("loading");
       instance = createSangreScene(host, {
         ready: () => { if (!cancelled) setStatus("ready"); },
         error: () => { if (!cancelled) setStatus("error"); },
@@ -47,7 +50,7 @@ export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" })
       api.current = instance; instance.chapter(active.current);
     }).catch(() => { if (!cancelled) setStatus("error"); });
     return () => { cancelled = true; instance?.dispose(); api.current = null; };
-  }, [retry]);
+  }, [retry, wantsModel]);
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -80,6 +83,7 @@ export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" })
       <div className="sg-ground" aria-hidden="true"><div /><span>SANGRE / DESIGN STUDY</span></div>
       <div className={"sg-visual " + (free ? "sg-visual--free" : "")}>
         {chapter === 3 && reference && <figure className="sg-structure-reference"><img src="/sangre/structure-reference.jpg" alt={t("SANGRE 原始结构渲染图：透明外壳、线圈、电池、主板和底座的分层关系", "Original SANGRE structural render showing enclosure, coil, battery, boards and base")} /><figcaption>{t("原始结构渲染 · 设计参考", "ORIGINAL STRUCTURAL RENDER")}</figcaption></figure>}
+        {chapter === 3 && !reference && <StructureFilm locale={locale} />}
         <div ref={viewport} className="sg-canvas" tabIndex={free ? 0 : -1} role="group" aria-label={t("三维产品。自由查看时可拖动或用方向键旋转，Home 重置", "3D product. In explore mode, drag or use arrow keys to rotate; Home resets")} data-status={status} />
         <svg className="sg-leaders" aria-hidden="true"><polyline ref={marker0} /><polyline ref={marker1} /><circle ref={dot0} r="4" /><circle ref={dot1} r="4" /></svg>
         {status !== "ready" && <div className="sg-fallback"><img src="/portfolio/sangre-hero.webp" alt={t("SANGRE 暖白色机身与透明收纳区的渲染图", "SANGRE render with ivory housing and transparent storage")} /><div role="status">{status === "loading" ? t("正在加载三维模型…", "Loading the 3D model…") : t("三维暂不可用，可继续阅读项目。", "3D is unavailable. The project remains readable.")}{status === "error" && <button onClick={() => { setStatus("loading"); setRetry(value => value + 1); }}>{t("重新加载", "Retry")}</button>}</div></div>}
@@ -88,7 +92,7 @@ export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" })
         <aside className="sg-note sg-note--left"><span>0{chapter * 2 + 1} / {t("设计观察", "DESIGN NOTE")}</span><h3>{current.left[language]}</h3><p>{current.leftBody[language]}</p></aside>
         <aside className="sg-note sg-note--right"><span>0{chapter * 2 + 2} / {t("设计观察", "DESIGN NOTE")}</span><h3>{current.right[language]}</h3><p>{current.rightBody[language]}</p></aside>
       </div>
-      <div className="sg-controls"><span className="sg-live"><i />{t("交互式产品展示", "INTERACTIVE PRODUCT STUDY")}</span><div>{chapter === 3 && <button aria-pressed={reference} onClick={() => { setReference(value => !value); setFree(false); api.current?.explore(false); }}>{reference ? t("返回三维结构", "Back to 3D") : t("对照原始渲染", "View reference")}</button>}<button disabled={status !== "ready" || reference} aria-pressed={free} onClick={() => { const next = !free; setFree(next); api.current?.explore(next); }}>{free ? t("返回讲解", "Back to story") : t("自由查看 ↗", "Explore in 3D ↗")}</button>{free && <button onClick={() => api.current?.reset()}>{t("重置视角", "Reset view")}</button>}</div><span className="sg-hint">{free ? t("拖动或方向键旋转", "DRAG OR USE ARROW KEYS") : t("向下滚动，环绕探索 ↓", "SCROLL TO EXPLORE ↓")}</span></div>
+      <div className="sg-controls"><span className="sg-live"><i />{t("交互式产品展示", "INTERACTIVE PRODUCT STUDY")}</span><div>{chapter === 3 && <button aria-pressed={reference} onClick={() => { setReference(value => !value); setFree(false); api.current?.explore(false); }}>{reference ? t("返回结构影片", "Back to film") : t("对照原始渲染", "View reference")}</button>}{chapter !== 3 && <button disabled={status !== "ready" || reference} aria-pressed={free} onClick={() => { const next = !free; setFree(next); api.current?.explore(next); }}>{free ? t("返回讲解", "Back to story") : t("自由查看 ↗", "Explore in 3D ↗")}</button>}{free && <button onClick={() => api.current?.reset()}>{t("重置视角", "Reset view")}</button>}</div><span className="sg-hint">{chapter === 3 ? t("预设镜头 · 可暂停观察", "GUIDED FILM · PAUSE TO STUDY") : free ? t("拖动或方向键旋转", "DRAG OR USE ARROW KEYS") : t("向下滚动，环绕探索 ↓", "SCROLL TO EXPLORE ↓")}</span></div>
       <nav className="sg-chapters" aria-label={t("三维展示章节", "3D story chapters")}>{chapters.map((item, index) => <button key={index} aria-current={chapter === index ? "step" : undefined} onClick={() => go(index)}><span>0{index + 1}</span>{item.label[language]}<i /></button>)}<a href="#story">{t("研究与原型", "Research & prototypes")} <span>↘</span></a></nav>
     </div>
   </section>;

@@ -1,0 +1,32 @@
+{
+  "fps": 24,
+  "frames": 288,
+  "duration": 12,
+  "stages": [
+    0,
+    1.3,
+    4.4,
+    7.0
+  ],
+  "render_engine": "Cycles",
+  "motion_samples": 48,
+  "held_frame_samples": 96,
+  "width": 1440,
+  "height": 1080,
+  "mechanical_geometry": "user CAD",
+  "electronics": "reference-derived illustration",
+  "fold_hinge": "presentation rig inferred from supplied folded and flat states",
+  "variants": [
+    {
+      "width": 1440,
+      "height": 1080,
+      "bytes": 5390131
+    },
+    {
+      "width": 960,
+      "height": 720,
+      "bytes": 1784911
+    }
+  ],
+  "keyframe_interval": 0.5
+}
