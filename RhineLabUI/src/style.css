@@ -574,8 +574,20 @@ button {
   align-items: center;
   gap: 24px;
 }
-[data-mode="archive"] .column-navigation {
+/* One shared control row; the archive label sits above its number. */
+[data-mode="archive"] :is(.archive-counter, .archive-navigation, .column-navigation, .powered) {
+  bottom: 115px;
+  height: 64px;
   display: flex;
+  align-items: center;
+}
+[data-mode="archive"] .archive-counter .tiny-label {
+  position: absolute;
+  bottom: calc(100% + 16px);
+  white-space: nowrap;
+}
+[data-mode="archive"] .archive-counter > div {
+  margin-top: 0;
 }
 .column-navigation button {
   width: 46px;
@@ -646,7 +658,9 @@ button {
 .archive-hint {
   position: absolute;
   bottom: 60px;
-  left: 505px;
+  right: 59px;
+  text-align: right;
+  white-space: nowrap;
   color: #a6b69d;
   font-size: 10px;
   letter-spacing: 0.9px;
