@@ -673,37 +673,12 @@ button {
   font-size: 10px;
   letter-spacing: 0.9px;
   display: flex;
-  gap: 44px;
+  justify-content: flex-end;
   color: #a6b69d;
   z-index: 5;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.8s;
-}
-.system-footer > span {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.status-light {
-  width: 5px;
-  height: 5px;
-  background: #405139;
-  display: inline-block;
-}
-.system-footer > span:nth-child(2) {
-  margin-left: auto;
-}
-.system-footer i {
-  font-style: normal;
-  margin: 0 5px;
-}
-.system-footer button {
-  font-size: 10px;
-  letter-spacing: 1px;
-}
-.system-footer button:hover {
-  color: #e8eee2;
 }
 .detail-ui {
   position: absolute;
