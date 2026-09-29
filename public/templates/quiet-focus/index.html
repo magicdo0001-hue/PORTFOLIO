@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FORM / FOCUS：连接工业设计与数字体验的可编辑作品集模板。">
+  <meta name="theme-color" content="#f2f1ed">
+  <title>FORM / FOCUS — 工业设计作品集</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23252622' d='M2 2h12v12H2zm16 0h12v12H18zM2 18h12v12H2z'/%3E%3Cpath fill='%23c84b29' d='M18 18h12v12H18z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#work">跳至精选项目</a>
+  <div class="page" id="top">
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="FORM / FOCUS 首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-copy="brand">FORM / FOCUS</span></a>
+      <nav aria-label="主导航"><a class="active" href="#work">作品</a><button type="button" data-info="method">设计方法</button><button type="button" data-info="about">关于</button></nav>
+      <button class="edit-button" id="edit-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z"/></svg><span>编辑模板</span></button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="discipline" data-copy="discipline">工业设计 × 数字体验</p>
+          <h1 id="hero-title"><span data-copy="headline1">让专注，</span><span data-copy="headline2">有形可循。</span></h1>
+          <p class="intro"><span data-copy="intro1">一份关于效率、秩序与日常物件的设计探索。</span><span data-copy="intro2">从数字体验到实体触感，让复杂回归简单。</span></p>
+          <a class="primary" href="#work">探索作品<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+          <p class="byline" data-copy="byline">独立设计 · 2026</p>
+        </div>
+        <figure class="hero-media">
+          <img id="hero-image" src="assets/focus-timer.webp" width="1448" height="1086" alt="银色铝合金专注计时器，圆形深灰表盘搭配橙色按键" fetchpriority="high">
+          <figcaption><span id="hero-caption">01 / FOCUS TIMER</span><span data-copy="caption">专注，从一个转动开始。</span></figcaption>
+        </figure>
+      </section>
+
+      <section class="work" id="work" aria-labelledby="work-title">
+        <div class="work-heading"><h2 id="work-title">精选项目</h2><div class="filters" role="group" aria-label="筛选项目"><button type="button" data-filter="all" aria-pressed="true">全部 <span>03</span></button><button type="button" data-filter="physical" aria-pressed="false">实体产品</button><button type="button" data-filter="digital" aria-pressed="false">数字体验</button></div></div>
+        <div class="project-grid" id="project-grid"></div>
+        <p id="filter-status" class="sr-only" role="status"></p>
+        <noscript><p>请启用 JavaScript，以查看项目、编辑模板和导出网页。</p></noscript>
+      </section>
+    </main>
+    <footer><span data-copy="brand">FORM / FOCUS</span><span>概念项目 · 可编辑作品集模板</span><a href="#top">回到顶部<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V4m-6 6 6-6 6 6"/></svg></a></footer>
+  </div>
+
+  <dialog class="content-dialog" id="detail-dialog" aria-labelledby="detail-title"><form method="dialog" class="dialog-top"><span id="detail-label" class="mono"></span><button class="icon-button" aria-label="关闭案例">×</button></form><div id="detail-content"></div></dialog>
+  <dialog class="info-dialog" id="info-dialog" aria-labelledby="info-title"><form method="dialog" class="dialog-top"><span class="mono">FORM / FOCUS</span><button class="icon-button" aria-label="关闭">×</button></form><div id="info-content"></div></dialog>
+  <dialog class="editor" id="editor" aria-labelledby="editor-title">
+    <div class="dialog-top"><span class="mono">MAKE IT YOURS</span><button class="icon-button" id="close-editor" type="button" aria-label="取消编辑">×</button></div>
+    <h2 id="editor-title">你的作品，你的表达。</h2><p class="editor-intro">替换文字与图片，构建自己的作品集。修改保存在当前浏览器；导出后可独立打开或分享。</p>
+    <form id="editor-form">
+      <div class="field-grid" id="general-fields"></div>
+      <div id="project-fields"></div>
+      <p class="form-status" id="editor-status" role="status"></p>
+      <div class="editor-actions"><button class="text-button" id="reset-button" type="button">恢复示例</button><button class="secondary" id="export-button" type="button">导出完整网页<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg></button><button class="primary" type="submit">保存修改<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></button></div>
+    </form>
+  </dialog>
+  <p class="toast" id="toast" role="status" hidden></p>
+  <script type="application/json" id="portfolio-data">null</script>
+  <script src="app.js"></script>
+</body>
+</html>
