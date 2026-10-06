@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import * as THREE from "three";
 import { CardAppearance } from "../src/appearance.ts";
+import { applyPortfolioMaterial, portfolioTheme } from "../src/portfolio-theme.ts";
 
 const appearance = new CardAppearance();
 const high = new THREE.MeshPhysicalMaterial({
@@ -101,38 +102,45 @@ console.log(
 );
 
 // Switching selection must not recolor a returning file or its assembly copy.
-const ivoryHigh = high.clone();
-ivoryHigh.color.set("#fffdfa");
-ivoryHigh.attenuationColor.set("#eee6df");
-const ivoryLow = low.clone();
-ivoryLow.color.set("#fff5e9");
-ivoryLow.attenuationColor.set("#dfd4c6");
-appearance.register("Frosted_Polymer", ivoryHigh, ivoryLow, true);
+const sageHigh = high.clone();
+applyPortfolioMaterial("Frosted_Polymer", sageHigh, false, true);
+const sageLow = low.clone();
+applyPortfolioMaterial("Frosted_Polymer", sageLow, true, true);
+assert.equal(sageHigh.color.getHexString(), "87977b");
+assert.equal(sageLow.color.getHexString(), "87977b");
+const edge = new THREE.MeshPhysicalMaterial();
+applyPortfolioMaterial("Ivory_Edges", edge, true, true);
+assert.equal(edge.color.getHexString(), "a5af94");
+applyPortfolioMaterial("Index_Inlay", edge, true, true);
+assert.equal(edge.color.getHexString(), portfolioTheme.accent.slice(1));
+assert.equal(edge.emissive.getHexString(), portfolioTheme.accent.slice(1));
+edge.dispose();
+appearance.register("Frosted_Polymer", sageHigh, sageLow, true);
 const greenReturning = group.clone(true);
 appearance.prepare(greenReturning);
 appearance.apply(greenReturning, .37);
 const returningColor = greenReturning.children[0].material.color.clone();
 group.userData.original = true;
 appearance.apply(group, .5);
-assert.ok(body.material.color.equals(ivoryLow.color.clone().lerp(ivoryHigh.color, .5)));
+assert.ok(body.material.color.equals(sageLow.color.clone().lerp(sageHigh.color, .5)));
 assert.ok(greenReturning.children[0].material.color.equals(returningColor));
 assert.equal(body.userData.originalPalette.value, 1);
 assert.equal(greenReturning.children[0].userData.originalPalette.value, 0);
-const ivoryReturning = group.clone(true);
-appearance.prepare(ivoryReturning);
-appearance.apply(ivoryReturning, 0);
-assert.ok(ivoryReturning.children[0].material.color.equals(ivoryLow.color));
+const sageReturning = group.clone(true);
+appearance.prepare(sageReturning);
+appearance.apply(sageReturning, 0);
+assert.ok(sageReturning.children[0].material.color.equals(sageLow.color));
 group.userData.original = false;
 appearance.apply(group, 1);
 assert.ok(body.material.color.equals(high.color));
 assert.equal(body.userData.originalPalette.value, 0);
-assert.equal(ivoryReturning.children[0].userData.originalPalette.value, 1);
+assert.equal(sageReturning.children[0].userData.originalPalette.value, 1);
 // Clarity still uses the right palette after assembly parts are reparented.
 const assembly = new THREE.Group();
-assembly.add(ivoryReturning);
+assembly.add(sageReturning);
 appearance.setClarity(assembly, .5);
-assert.ok(ivoryReturning.children[0].material.attenuationColor.equals(ivoryLow.attenuationColor));
-assert.equal(ivoryReturning.children[0].material.attenuationDistance, THREE.MathUtils.lerp(ivoryLow.attenuationDistance, 8, .5));
+assert.ok(sageReturning.children[0].material.attenuationColor.equals(sageLow.attenuationColor));
+assert.equal(sageReturning.children[0].material.attenuationDistance, THREE.MathUtils.lerp(sageLow.attenuationDistance, 8, .5));
 appearance.dispose(greenReturning);
-appearance.dispose(ivoryReturning);
-console.log("Original/green selection, independent returning palette and assembly clarity: passed");
+appearance.dispose(sageReturning);
+console.log("Sage/green selection, independent returning palette and assembly clarity: passed");

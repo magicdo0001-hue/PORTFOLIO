@@ -258,6 +258,7 @@ export class ArchiveScene {
       configureInternalOptics(name, mat);
       const originalMat = mat.clone();
       applyPortfolioMaterial(name, mat);
+      applyPortfolioMaterial(name, originalMat, false, true);
       if (name === "Carbon_Ink") continue;
       const selectedMesh = new THREE.Mesh(geom, mat);
       selectedMesh.userData.surface = name;
@@ -309,6 +310,7 @@ export class ArchiveScene {
       }
       const originalArrayMat = arrayMat.clone();
       applyPortfolioMaterial(name, arrayMat, true);
+      applyPortfolioMaterial(name, originalArrayMat, true, true);
       this.appearance.register(name, mat, arrayMat);
       this.appearance.register(name, originalMat, originalArrayMat, true);
       for (const [material, original] of [[arrayMat, false], [originalArrayMat, true]] as const) {
@@ -715,9 +717,7 @@ export class ArchiveScene {
   }
   private drawLabel(index: number) {
     if (!this.labelTexture) return;
-    const labelTheme = records[index].id.endsWith("-01")
-      ? { label: "#eae5dc", text: "#171a16", muted: "#74756e" }
-      : portfolioTheme;
+    const labelTheme = portfolioTheme;
     const c = this.labelCanvas.getContext("2d")!;
     c.fillStyle = labelTheme.label;
     c.fillRect(0, 0, 1024, 440);
