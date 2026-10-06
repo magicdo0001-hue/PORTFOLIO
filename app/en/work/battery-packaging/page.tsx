@@ -1,8 +1,8 @@
+import { ProjectCityHero } from "../../../work/project-city/city-hero";
 import type { Metadata } from "next";
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../../project-shell";
 
 export const metadata: Metadata = {
@@ -32,17 +32,7 @@ const safetyGoals = [
 export default function BatteryPackagingEnglishPage() {
   return (
     <main className="project project--battery project--en" lang="en">
-      <ProjectHero
-        index="04"
-        title="CR2032 CIRCULAR SAFETY PACKAGING"
-        category="Packaging design · Circular design"
-        period="PIDA Student finalist"
-        role="Product designer"
-        lede="A modular button-cell package balancing child safety, convenient single-cell access and paper-plastic separation."
-        image="/portfolio/battery-museum-02.jpeg"
-        tone="battery"
-        locale="en"
-      />
+      <ProjectCityHero theme="battery" locale="en" />
 
       <section className="project-brief" id="story">
         <div className="shell">
@@ -79,7 +69,7 @@ export default function BatteryPackagingEnglishPage() {
         </div>
       </FactRail>
 
-      <section className="battery-regulation chapter">
+      <section className="battery-regulation chapter" id="regulation">
         <div className="battery-regulation__copy">
           <p className="chapter-label">02 / REGULATORY RESEARCH</p>
           <h2>Define the safety boundaries that cannot be compromised.</h2>
@@ -117,7 +107,7 @@ export default function BatteryPackagingEnglishPage() {
         </figure>
       </section>
 
-      <section className="battery-safety chapter">
+      <section className="battery-safety chapter" id="safety">
         <header>
           <p className="chapter-label">03 / SAFE ACCESS</p>
           <h2>Not simply harder to open—harder to open by accident.</h2>
@@ -134,7 +124,7 @@ export default function BatteryPackagingEnglishPage() {
           </figure>
           <div className="battery-safety__goals">
             {safetyGoals.map((goal) => (
-              <article key={goal.index}>
+              <article key={goal.index} id={goal.index === "02" ? "single-release" : undefined}>
                 <span>{goal.index}</span>
                 <h3>{goal.title}</h3>
                 <p>{goal.body}</p>
@@ -144,7 +134,7 @@ export default function BatteryPackagingEnglishPage() {
         </div>
       </section>
 
-      <section className="battery-circular chapter">
+      <section className="battery-circular chapter" id="circular">
         <div className="battery-circular__media">
           <figure>
             <img
@@ -173,7 +163,7 @@ export default function BatteryPackagingEnglishPage() {
             the paper and PET components to separate more easily and improving the
             package&apos;s recovery potential.
           </p>
-          <aside>
+          <aside id="recognition">
             <span>Recognition</span>
             <strong>
               Finalist · Packaging Innovation &amp; Design Awards (PIDA), Student

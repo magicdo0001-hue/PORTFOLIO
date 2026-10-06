@@ -53,8 +53,8 @@ test("renders the archive homepage and five distinct case studies", async () => 
   const englishCases = [
     [
       "/en/work/battery-packaging",
-      /CR2032 CIRCULAR SAFETY PACKAGING/,
-      /PIDA Student finalist/,
+      /CR2032 PACKAGING/,
+      /PIDA Student Award/,
     ],
     [
       "/en/work/vertical-car-park",
@@ -70,6 +70,9 @@ test("renders the archive homepage and five distinct case studies", async () => 
     assert.doesNotMatch(caseHtml, /#(?:profile|contact)|site-pdf-downloads/);
     assert.match(caseHtml, expectedCopy);
     assert.match(caseHtml, /切换至中文/);
+    assert.match(caseHtml, /uni-project-header/);
+    assert.match(caseHtml, /Reading mode/);
+    assert.match(caseHtml, /project-city--(?:battery|arti64)/);
   }
   const workResponse = await render("/work");
   assert.equal(workResponse.status, 200);

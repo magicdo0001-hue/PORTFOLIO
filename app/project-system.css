@@ -819,6 +819,8 @@
 .battery-regulation__copy h2,
 .battery-circular__copy h2 { margin-top: var(--project-space-sm); }
 
+.battery-regulation__copy { min-width: 0; overflow-wrap: anywhere; }
+
 .battery-regulation__copy > p:last-of-type,
 .battery-circular__copy > p:last-of-type { margin-top: var(--project-space-sm); }
 

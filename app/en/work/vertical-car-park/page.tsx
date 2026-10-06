@@ -1,8 +1,8 @@
+import { ProjectCityHero } from "../../../work/project-city/city-hero";
 import type { Metadata } from "next";
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../../project-shell";
 
 export const metadata: Metadata = {
@@ -14,17 +14,7 @@ export const metadata: Metadata = {
 export default function VerticalCarParkEnglishPage() {
   return (
     <main className="project project--frame project--arti64 project--en" lang="en">
-      <ProjectHero
-        index="05"
-        title="ARTI64"
-        category="Industrial design / 3D printing"
-        period="2025"
-        role="Co-founder / Product designer"
-        lede="Turning the storage of one model car into a display system that can keep growing."
-        image="/portfolio/arti64-display-wall.jpg"
-        tone="frame"
-        locale="en"
-      />
+      <ProjectCityHero theme="arti64" locale="en" />
 
       <section className="project-brief project-brief--dark" id="story">
         <div className="shell">
@@ -62,7 +52,7 @@ export default function VerticalCarParkEnglishPage() {
         </div>
       </FactRail>
 
-      <section className="arti64-context chapter">
+      <section className="arti64-context chapter" id="collectors">
         <div className="arti64-context__copy">
           <p className="chapter-label">REAL COLLECTIONS</p>
           <h2>Many storage formats, but no shared display language.</h2>
@@ -85,7 +75,7 @@ export default function VerticalCarParkEnglishPage() {
         </figure>
       </section>
 
-      <section className="arti64-process">
+      <section className="arti64-process" id="design-process">
         <div className="shell arti64-process__intro">
           <p className="chapter-label">DESIGN &amp; MANUFACTURING</p>
           <h2>Sketch, CAD, print, test—and return to the next iteration.</h2>
@@ -98,7 +88,7 @@ export default function VerticalCarParkEnglishPage() {
           </p>
         </div>
         <div className="shell arti64-process__grid">
-          <figure className="arti64-process__printing">
+          <figure className="arti64-process__printing" id="printing">
             <img
               src="/portfolio/arti64-printing.jpg"
               alt="White ARTI64 rack prototypes on a 3D-printer bed"
@@ -122,7 +112,7 @@ export default function VerticalCarParkEnglishPage() {
               <p>About 15 grams of material per unit supports small-batch validation.</p>
             </div>
           </div>
-          <figure className="arti64-process__production">
+          <figure className="arti64-process__production" id="production">
             <img
               src="/portfolio/arti64-production.jpg"
               alt="Batches of ARTI64 rack components prepared for assembly"
@@ -135,7 +125,7 @@ export default function VerticalCarParkEnglishPage() {
         </div>
       </section>
 
-      <section className="arti64-system">
+      <section className="arti64-system" id="brand-market">
         <div className="shell arti64-system__copy">
           <p className="chapter-label">FROM PRODUCT TO SYSTEM</p>
           <h2>The rack was only the beginning—brand, price and sales were design too.</h2>
@@ -176,7 +166,7 @@ export default function VerticalCarParkEnglishPage() {
         </figure>
       </section>
 
-      <section className="arti64-outcome chapter shell">
+      <section className="arti64-outcome chapter shell" id="display-system">
         <div className="arti64-outcome__media">
           <figure>
             <img

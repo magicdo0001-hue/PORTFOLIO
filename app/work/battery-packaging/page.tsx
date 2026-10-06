@@ -1,7 +1,7 @@
+import { ProjectCityHero } from "../project-city/city-hero";
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../project-shell";
 
 export const metadata = {
@@ -31,16 +31,7 @@ const safetyGoals = [
 export default function BatteryPackagingPage() {
   return (
     <main className="project project--battery">
-      <ProjectHero
-        index="04"
-        title="CR2032 循环安全包装"
-        category="包装设计 · 循环设计"
-        period="PIDA 学生组决赛入围"
-        role="产品设计"
-        lede="兼顾儿童安全、单颗便捷取用与纸塑分离回收的模块化纽扣电池包装。"
-        image="/portfolio/battery-museum-02.jpeg"
-        tone="battery"
-      />
+      <ProjectCityHero theme="battery" />
 
       <section className="project-brief" id="story">
         <div className="shell">
@@ -75,7 +66,7 @@ export default function BatteryPackagingPage() {
         </div>
       </FactRail>
 
-      <section className="battery-regulation chapter">
+      <section className="battery-regulation chapter" id="regulation">
         <div className="battery-regulation__copy">
           <p className="chapter-label">02 / 法规研究</p>
           <h2>先定义不能妥协的安全边界。</h2>
@@ -108,7 +99,7 @@ export default function BatteryPackagingPage() {
         </figure>
       </section>
 
-      <section className="battery-safety chapter">
+      <section className="battery-safety chapter" id="safety">
         <header>
           <p className="chapter-label">03 / 安全取用</p>
           <h2>不是更难打开，而是更难被误打开。</h2>
@@ -123,7 +114,7 @@ export default function BatteryPackagingPage() {
           </figure>
           <div className="battery-safety__goals">
             {safetyGoals.map((goal) => (
-              <article key={goal.index}>
+              <article key={goal.index} id={goal.index === "02" ? "single-release" : undefined}>
                 <span>{goal.index}</span>
                 <h3>{goal.title}</h3>
                 <p>{goal.body}</p>
@@ -133,7 +124,7 @@ export default function BatteryPackagingPage() {
         </div>
       </section>
 
-      <section className="battery-circular chapter">
+      <section className="battery-circular chapter" id="circular">
         <div className="battery-circular__media">
           <figure>
             <img
@@ -158,7 +149,7 @@ export default function BatteryPackagingPage() {
             本方案围绕真实回收场景优化材料连接方式，减少不可逆结合，使纸与 PET
             能够相对便捷地分离，从而提高该类包装的可回收率。
           </p>
-          <aside>
+          <aside id="recognition">
             <span>项目认可</span>
             <strong>澳大利亚包装创新与设计学生奖（PIDA）学生组决赛入围</strong>
           </aside>

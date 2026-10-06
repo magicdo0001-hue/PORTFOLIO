@@ -1,7 +1,7 @@
+import { ProjectCityHero } from "../project-city/city-hero";
 import {
   FactRail,
   ProjectEnd,
-  ProjectHero,
 } from "../../project-shell";
 
 export const metadata = {
@@ -13,16 +13,7 @@ export const metadata = {
 export default function VerticalCarParkPage() {
   return (
     <main className="project project--frame project--arti64">
-      <ProjectHero
-        index="05"
-        title="ARTI64"
-        category="工业设计 / 3D 打印"
-        period="2025"
-        role="共同创立 / 产品设计"
-        lede="把一辆模型车的收纳问题，发展成可以持续扩展的展示系统。"
-        image="/portfolio/arti64-display-wall.jpg"
-        tone="frame"
-      />
+      <ProjectCityHero theme="arti64" />
 
       <section className="project-brief project-brief--dark" id="story">
         <div className="shell">
@@ -56,7 +47,7 @@ export default function VerticalCarParkPage() {
         </div>
       </FactRail>
 
-      <section className="arti64-context chapter">
+      <section className="arti64-context chapter" id="collectors">
         <div className="arti64-context__copy">
           <p className="chapter-label">真实收藏场景</p>
           <h2>收纳方式很多，展示语言却彼此割裂。</h2>
@@ -74,7 +65,7 @@ export default function VerticalCarParkPage() {
         </figure>
       </section>
 
-      <section className="arti64-process">
+      <section className="arti64-process" id="design-process">
         <div className="shell arti64-process__intro">
           <p className="chapter-label">设计与制造</p>
           <h2>草图、CAD、打印、测试，再回到下一轮。</h2>
@@ -83,7 +74,7 @@ export default function VerticalCarParkPage() {
           </p>
         </div>
         <div className="shell arti64-process__grid">
-          <figure className="arti64-process__printing">
+          <figure className="arti64-process__printing" id="printing">
             <img
               src="/portfolio/arti64-printing.jpg"
               alt="3D 打印机平台上的白色 Arti64 车架原型"
@@ -105,7 +96,7 @@ export default function VerticalCarParkPage() {
               <p>以约 15 克材料完成一个单元，适合小批量验证。</p>
             </div>
           </div>
-          <figure className="arti64-process__production">
+          <figure className="arti64-process__production" id="production">
             <img
               src="/portfolio/arti64-production.jpg"
               alt="成批打印并分类整理的 Arti64 车架零件"
@@ -116,7 +107,7 @@ export default function VerticalCarParkPage() {
         </div>
       </section>
 
-      <section className="arti64-system">
+      <section className="arti64-system" id="brand-market">
         <div className="shell arti64-system__copy">
           <p className="chapter-label">从产品到系统</p>
           <h2>车架只是起点，品牌、价格与销售同样属于设计。</h2>
@@ -151,7 +142,7 @@ export default function VerticalCarParkPage() {
         </figure>
       </section>
 
-      <section className="arti64-outcome chapter shell">
+      <section className="arti64-outcome chapter shell" id="display-system">
         <div className="arti64-outcome__media">
           <figure>
             <img

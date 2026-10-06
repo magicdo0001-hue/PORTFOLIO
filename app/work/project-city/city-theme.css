@@ -1,0 +1,35 @@
+.project-city--battery { --city-accent: #ffc3a1; background: #869a97; }
+.project-city--arti64 { --city-accent: #ffd29b; background: #82928f; }
+.project-city .uni-city__brand { font-family: var(--site-font-body); letter-spacing: .04em; font-size: 18px; }
+.project-city .uni-city__districts { gap: clamp(12px, 2.8vw, 48px); justify-content: space-between; }
+.project-city .uni-city__districts button { gap: 10px; font-size: 12px; }
+.project-city .uni-city__labels { visibility: hidden; }
+.project-city .is-ready .uni-city__labels { visibility: visible; }
+.project-city .uni-city__actions .uni-city__primary { border-color: currentColor; }
+.project-city .uni-project-header :is(a,button):hover,
+.project-city .uni-project-header-actions button[aria-pressed=true] { color: var(--city-accent); }
+.project-city .uni-project-header-actions button[aria-pressed=true] { border-color: var(--city-accent); }
+.project--battery :where(#regulation,#safety,#single-release,#circular,#recognition),
+.project--arti64 :where(#collectors,#design-process,#printing,#production,#brand-market,#display-system) { scroll-margin-top: 30px; }
+@media (max-width: 1100px) and (min-width: 761px) {
+  .project-city .uni-city__directory { gap: 18px; }
+  .project-city .uni-city__districts { gap: 12px; }
+  .project-city .uni-city__districts button { gap: 6px; font-size: 11px; }
+}
+@media (max-width: 760px) {
+  .project-city .uni-city__directory { gap: 4px; }
+  .project-city .uni-city__districts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0 10px; }
+  .project-city .uni-city__districts button { min-height: 34px; gap: 6px; font-size: 10px; white-space: normal; text-align: left; }
+  .project-city .uni-city__districts button[aria-pressed=true]::before { top: auto; bottom: 0; height: 1px; }
+  .project-city .uni-city__copy { bottom: 216px; }
+  .project-city .uni-city__view-controls { bottom: 160px; }
+  .project-city .uni-city__motion { min-height: 28px; }
+  .project-city .uni-city__brand { font-size: 16px; }
+  .project-city .uni-city__label { font-size: 10px; }
+  .project-city .uni-city__label > svg { display: none; }
+  .project-city .uni-city__label::after { height: 12px; }
+  .project-city .uni-city__view-controls { gap: 8px; }
+  .project-city .uni-city__view-controls p { max-width: 61%; line-height: 1.6; }
+  .project--en .project-city .uni-city__districts button { margin: 0; font-size: 9px; }
+  .project--en .project-city .uni-city__intro { max-width: 30em; }
+}
