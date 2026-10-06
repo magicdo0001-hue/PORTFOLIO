@@ -1,0 +1,362 @@
+[
+  {
+    "device": "desktop",
+    "state": "home",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "desktop",
+    "state": "menu",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "desktop",
+    "state": "sound",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 1125,
+    "localScroll": 1125
+  },
+  {
+    "device": "desktop",
+    "state": "craft",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 2250,
+    "localScroll": 2250
+  },
+  {
+    "device": "desktop",
+    "state": "controls",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 4500,
+    "localScroll": 4500
+  },
+  {
+    "device": "desktop",
+    "state": "power",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 6678,
+    "localScroll": 6678
+  },
+  {
+    "device": "desktop",
+    "state": "internal",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 3375,
+    "localScroll": 3375
+  },
+  {
+    "device": "desktop",
+    "state": "core",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 7290,
+    "localScroll": 7290
+  },
+  {
+    "device": "desktop",
+    "state": "sound-enabled",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 7290,
+    "localScroll": 7290
+  },
+  {
+    "device": "desktop",
+    "state": "ask-open",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 7290,
+    "localScroll": 7290
+  },
+  {
+    "device": "desktop",
+    "state": "ask-error",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 7290,
+    "localScroll": 7290
+  },
+  {
+    "device": "desktop",
+    "state": "specs-top",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "desktop",
+    "state": "specs-1",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 648,
+    "localScroll": 648
+  },
+  {
+    "device": "desktop",
+    "state": "specs-2",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 1296,
+    "localScroll": 1296
+  },
+  {
+    "device": "desktop",
+    "state": "specs-3",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 1944,
+    "localScroll": 1944
+  },
+  {
+    "device": "desktop",
+    "state": "specs-4",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 2592,
+    "localScroll": 2592
+  },
+  {
+    "device": "desktop",
+    "state": "specs-5",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 3240,
+    "localScroll": 3240
+  },
+  {
+    "device": "desktop",
+    "state": "specs-6",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 3888,
+    "localScroll": 3888
+  },
+  {
+    "device": "desktop",
+    "state": "specs-7",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 4536,
+    "localScroll": 4536
+  },
+  {
+    "device": "desktop",
+    "state": "specs-8",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 4654,
+    "localScroll": 4654
+  },
+  {
+    "device": "desktop",
+    "state": "preorder",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "desktop",
+    "state": "preorder-footer",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 48,
+    "localScroll": 48
+  },
+  {
+    "device": "desktop",
+    "state": "home-return",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "desktop",
+    "state": "loop-return",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "mobile",
+    "state": "home",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "mobile",
+    "state": "menu",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "mobile",
+    "state": "sound",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 1055,
+    "localScroll": 1055
+  },
+  {
+    "device": "mobile",
+    "state": "craft",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 2110,
+    "localScroll": 2110
+  },
+  {
+    "device": "mobile",
+    "state": "controls",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 4220,
+    "localScroll": 4220
+  },
+  {
+    "device": "mobile",
+    "state": "power",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 6262,
+    "localScroll": 6262
+  },
+  {
+    "device": "mobile",
+    "state": "internal",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 3165,
+    "localScroll": 3165
+  },
+  {
+    "device": "mobile",
+    "state": "core",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 6836,
+    "localScroll": 6836
+  },
+  {
+    "device": "mobile",
+    "state": "ask-open",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 6836,
+    "localScroll": 6836
+  },
+  {
+    "device": "mobile",
+    "state": "ask-error",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 6836,
+    "localScroll": 6836
+  },
+  {
+    "device": "mobile",
+    "state": "specs-top",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "mobile",
+    "state": "specs-1",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 608,
+    "localScroll": 608
+  },
+  {
+    "device": "mobile",
+    "state": "specs-2",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 1215,
+    "localScroll": 1215
+  },
+  {
+    "device": "mobile",
+    "state": "specs-3",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 1823,
+    "localScroll": 1823
+  },
+  {
+    "device": "mobile",
+    "state": "specs-4",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 2431,
+    "localScroll": 2431
+  },
+  {
+    "device": "mobile",
+    "state": "specs-5",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 3038,
+    "localScroll": 3038
+  },
+  {
+    "device": "mobile",
+    "state": "specs-6",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 3341,
+    "localScroll": 3341
+  },
+  {
+    "device": "mobile",
+    "state": "preorder",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "mobile",
+    "state": "preorder-footer",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 105,
+    "localScroll": 105
+  },
+  {
+    "device": "mobile",
+    "state": "home-return",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  },
+  {
+    "device": "mobile",
+    "state": "loop-return",
+    "mismatches": [],
+    "maxCssGeometryDifferencePx": 0,
+    "sourceScroll": 0,
+    "localScroll": 0
+  }
+]

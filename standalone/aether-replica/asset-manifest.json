@@ -1,0 +1,303 @@
+[
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/css/aether1.shared.601c9c38f.min.css",
+    "file": "d0af8c6effae91.css",
+    "status": 200,
+    "bytes": 59547,
+    "local": "/assets/vendor/d0af8c6effae91.css"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/685e3d0ca628d0fd8d840af8_aether1-favicon.png",
+    "file": "e5ad34f6432945.png",
+    "status": 200,
+    "bytes": 1550,
+    "local": "/assets/vendor/e5ad34f6432945.png"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/685e3d0f99442f0d1bf757b5_aether1-webclip.png",
+    "file": "ddd85a862e67eb.png",
+    "status": 200,
+    "bytes": 42146,
+    "local": "/assets/vendor/ddd85a862e67eb.png"
+  },
+  {
+    "url": "https://aether-two-kappa.vercel.app/style.css",
+    "file": "0f526add30b5a2.css",
+    "status": 200,
+    "bytes": 35992,
+    "local": "/assets/vendor/0f526add30b5a2.css"
+  },
+  {
+    "url": "https://aether-two-kappa.vercel.app/app.js",
+    "file": "56c3795e31d5e2.js",
+    "status": 200,
+    "bytes": 7642478,
+    "local": "/assets/vendor/aether-runtime.js"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67ffbff4838845e31127ddbb_placeholder.svg",
+    "file": "6cd4f896641495.svg",
+    "status": 200,
+    "bytes": 3297,
+    "local": "/assets/vendor/6cd4f896641495.svg"
+  },
+  {
+    "url": "https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=67d82e54a965eb11a044638f",
+    "file": "e6417c516f861e.js",
+    "status": 200,
+    "bytes": 89476,
+    "local": "/assets/vendor/e6417c516f861e.js"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/js/aether1.schunk.47fd547f44146dd0.js",
+    "file": "f0195f84b6adfa.js",
+    "status": 200,
+    "bytes": 35469,
+    "local": "/assets/vendor/f0195f84b6adfa.js"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/js/aether1.751e0867.148dc658e77a3916.js",
+    "file": "cda587f07d4e13.js",
+    "status": 200,
+    "bytes": 1062,
+    "local": "/assets/vendor/cda587f07d4e13.js"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/68625fa104fdfb3455e1385e_aether1-opengraph.webp",
+    "file": "a7debe539989f8.webp",
+    "status": 200,
+    "bytes": 23896,
+    "local": "/assets/vendor/a7debe539989f8.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/models/scene-258.glb",
+    "file": "e64e03ca228627.glb",
+    "status": 200,
+    "bytes": 585984,
+    "local": "/assets/models/scene-258.glb"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/noise-r.png",
+    "file": "437aa6a67309f0.png",
+    "status": 200,
+    "bytes": 191068,
+    "local": "/assets/textures/noise-r.png"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/case-alpha-ao-03.webp",
+    "file": "131157f64806d5.webp",
+    "status": 200,
+    "bytes": 13956,
+    "local": "/assets/textures/case-alpha-ao-03.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/case-emissive-16.webp",
+    "file": "42d00b2cae592f.webp",
+    "status": 200,
+    "bytes": 1156,
+    "local": "/assets/textures/case-emissive-16.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/case-matcap-mask-01.webp",
+    "file": "25211b904bb96e.webp",
+    "status": 200,
+    "bytes": 4308,
+    "local": "/assets/textures/case-matcap-mask-01.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/case-bottom-diffuse-08.webp",
+    "file": "d21f9c7c18777a.webp",
+    "status": 200,
+    "bytes": 21326,
+    "local": "/assets/textures/case-bottom-diffuse-08.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-alpha-05.webp",
+    "file": "d6d7453c075d3c.webp",
+    "status": 200,
+    "bytes": 1376,
+    "local": "/assets/textures/headphone-alpha-05.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-emissive-11.webp",
+    "file": "6e397b96b85110.webp",
+    "status": 200,
+    "bytes": 13358,
+    "local": "/assets/textures/headphone-emissive-11.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-emissive-mask-06.webp",
+    "file": "ad4b287759a2e6.webp",
+    "status": 200,
+    "bytes": 1746,
+    "local": "/assets/textures/headphone-emissive-mask-06.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-volume-shadow-03.webp",
+    "file": "8b2ecede8f5820.webp",
+    "status": 200,
+    "bytes": 774,
+    "local": "/assets/textures/headphone-volume-shadow-03.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-roughness-ao-03.webp",
+    "file": "d5a946f6517da6.webp",
+    "status": 200,
+    "bytes": 83898,
+    "local": "/assets/textures/headphone-roughness-ao-03.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-normal-10.webp",
+    "file": "eacdda6b332277.webp",
+    "status": 200,
+    "bytes": 27470,
+    "local": "/assets/textures/headphone-normal-10.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/bloom-12.webp",
+    "file": "7dbfe5591bdbb7.webp",
+    "status": 200,
+    "bytes": 37580,
+    "local": "/assets/textures/bloom-12.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/headphone-silicone-19.webp",
+    "file": "bb43f4afbb8f83.webp",
+    "status": 200,
+    "bytes": 36170,
+    "local": "/assets/textures/headphone-silicone-19.webp"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/textures/matcap-glass-01.png",
+    "file": "9d2f1eac8b4106.png",
+    "status": 200,
+    "bytes": 101459,
+    "local": "/assets/textures/matcap-glass-01.png"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_UI_question-send-03.mp3",
+    "file": "c5462a9843a242.mp3",
+    "status": 200,
+    "bytes": 60603,
+    "local": "/assets/audio/AETHER_2.5_UI_question-send-03.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_UI_reply-03.mp3",
+    "file": "91c3225d49a284.mp3",
+    "status": 200,
+    "bytes": 60603,
+    "local": "/assets/audio/AETHER_2.5_UI_reply-03.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_UI_menu-close-03.mp3",
+    "file": "79b4b1f59cb037.mp3",
+    "status": 200,
+    "bytes": 60603,
+    "local": "/assets/audio/AETHER_2.5_UI_menu-close-03.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_UI_ask-aether-open-03.mp3",
+    "file": "8f1b60f20e1bd4.mp3",
+    "status": 200,
+    "bytes": 60603,
+    "local": "/assets/audio/AETHER_2.5_UI_ask-aether-open-03.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_UI_menu-open-03.mp3",
+    "file": "b0ab419f644ed8.mp3",
+    "status": 200,
+    "bytes": 60603,
+    "local": "/assets/audio/AETHER_2.5_UI_menu-open-03.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_synthloop-03.mp3",
+    "file": "d682cd670b7a29.mp3",
+    "status": 200,
+    "bytes": 400195,
+    "local": "/assets/audio/AETHER_2.5_synthloop-03.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/audio/AETHER_2.5_powerloop-02.mp3",
+    "file": "d4fa5ce75497dc.mp3",
+    "status": 200,
+    "bytes": 1680195,
+    "local": "/assets/audio/AETHER_2.5_powerloop-02.mp3"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/draco/draco_wasm_wrapper.js",
+    "file": "3e9b176c27699f.js",
+    "status": 200,
+    "bytes": 58763,
+    "local": "/assets/draco/draco_wasm_wrapper.js"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/draco/draco_decoder.wasm",
+    "file": "32aae4c61b9a14.wasm",
+    "status": 200,
+    "bytes": 285747,
+    "local": "/assets/draco/draco_decoder.wasm"
+  },
+  {
+    "url": "https://aether1.itsoffbrand.io/assets/draco/draco_decoder.js",
+    "file": "f0588c27c3c838.js",
+    "status": 403,
+    "requiredForVerifiedRuntime": false,
+    "note": "原站 Chrome/WASM 运行路径未加载的备用纯 JavaScript Draco 解码器；已本地化实际需要的 WASM 解码路径。"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05ddb5cedbf8a4becd05_AzeretMono-SemiBold.woff2",
+    "file": "3e239c212ee2c1.woff2",
+    "status": 200,
+    "bytes": 22732,
+    "local": "/assets/vendor/3e239c212ee2c1.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05dd85b2a9f281a89c54_AzeretMono-Regular.woff2",
+    "file": "3fbc8f997d5d73.woff2",
+    "status": 200,
+    "bytes": 22608,
+    "local": "/assets/vendor/3fbc8f997d5d73.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05dd0bc10b6db7bb06d7_AzeretMono-Light.woff2",
+    "file": "6f990391e9b3f5.woff2",
+    "status": 200,
+    "bytes": 22664,
+    "local": "/assets/vendor/6f990391e9b3f5.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05f884d8433d52fc6c66_Manrope-Light.woff2",
+    "file": "ad7a02660c7c8e.woff2",
+    "status": 200,
+    "bytes": 30952,
+    "local": "/assets/vendor/ad7a02660c7c8e.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05f8c4e8544dae9d3e95_Manrope-Medium.woff2",
+    "file": "a66fc77c4cbb4c.woff2",
+    "status": 200,
+    "bytes": 30412,
+    "local": "/assets/vendor/a66fc77c4cbb4c.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05f8ec35d11e87780e8b_Manrope-ExtraLight.woff2",
+    "file": "4f6b6ff9881198.woff2",
+    "status": 200,
+    "bytes": 29400,
+    "local": "/assets/vendor/4f6b6ff9881198.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67d82e54a965eb11a044638f/67fd05f80a1cd60d03de976c_Manrope-Regular.woff2",
+    "file": "260037fd616be9.woff2",
+    "status": 200,
+    "bytes": 30872,
+    "local": "/assets/vendor/260037fd616be9.woff2"
+  },
+  {
+    "url": "https://cdn.prod.website-files.com/67f677e839ea6c41eb381a7d/67fa3c8069df927d4c2fdb6a_noise-transparent.png",
+    "file": "d9b3f84c3d191a.png",
+    "status": 200,
+    "bytes": 11126,
+    "local": "/assets/vendor/d9b3f84c3d191a.png"
+  }
+]

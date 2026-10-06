@@ -1,0 +1,1491 @@
+{
+  "kind": "implementation",
+  "device": "mobile",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "states": [
+    {
+      "name": "home",
+      "url": "http://localhost:4190/",
+      "y": 0,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sound Without Boundaries",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 276.671875,
+          "height": 26.390625,
+          "left": 56.65625,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Unrivalled audio quality",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 239.734375,
+          "height": 26.390625,
+          "left": 75.125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "url": "http://localhost:4190/",
+      "y": 0,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sound Without Boundaries",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 276.671875,
+          "height": 26.390625,
+          "left": 56.65625,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Unrivalled audio quality",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 239.734375,
+          "height": 26.390625,
+          "left": 75.125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "sound",
+      "url": "http://localhost:4190/",
+      "y": 1055,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Unrivalled audio quality",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 239.734375,
+          "height": 26.390625,
+          "left": 75.125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "craft",
+      "url": "http://localhost:4190/",
+      "y": 2110,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "controls",
+      "url": "http://localhost:4190/",
+      "y": 4220,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "power",
+      "url": "http://localhost:4190/",
+      "y": 6262,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "internal",
+      "url": "http://localhost:4190/",
+      "y": 3165,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "core",
+      "url": "http://localhost:4190/",
+      "y": 6836,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "ask-open",
+      "url": "http://localhost:4190/",
+      "y": 6836,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "How can I guide you?",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 290,
+          "height": 140,
+          "left": 50,
+          "top": 683
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "ask-error",
+      "url": "http://localhost:4190/",
+      "y": 6836,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Error - Try Again",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 0, 0)",
+          "width": 290,
+          "height": 42,
+          "left": 50,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "specs-top",
+      "url": "http://localhost:4190/specs",
+      "y": 0,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": 130.8125
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "specs-1",
+      "url": "http://localhost:4190/specs",
+      "y": 608,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": -477.1875
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "specs-2",
+      "url": "http://localhost:4190/specs",
+      "y": 1215,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": -1084.1875
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "specs-3",
+      "url": "http://localhost:4190/specs",
+      "y": 1823,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": -1692.1875
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "specs-4",
+      "url": "http://localhost:4190/specs",
+      "y": 2431,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": -2300.1875
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "specs-5",
+      "url": "http://localhost:4190/specs",
+      "y": 3038,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": -2907.1875
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "specs-6",
+      "url": "http://localhost:4190/specs",
+      "y": 3341,
+      "height": 4185,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Aether:1,Specificity",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 109.375,
+          "height": 52.78125,
+          "left": 140.3125,
+          "top": -3210.1875
+        },
+        {
+          "selector": "specs__cta w-inline-block",
+          "text": "Preorder",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 82.984375,
+          "height": 42,
+          "left": 287.015625,
+          "top": 782
+        }
+      ]
+    },
+    {
+      "name": "preorder",
+      "url": "http://localhost:4190/preorder",
+      "y": 0,
+      "height": 949,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "preorder__title mobile",
+          "text": "Aether:1 feels real, but is not. OFF+BRAND. is though.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "30px",
+          "weight": "500",
+          "line": "42px",
+          "color": "rgb(255, 255, 255)",
+          "width": 320,
+          "height": 126,
+          "left": 35,
+          "top": 120
+        },
+        {
+          "selector": "preorder__cta w-inline-block",
+          "text": "Visit our website",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "14.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 174.59375,
+          "height": 42,
+          "left": 107.703125,
+          "top": 551.734375
+        }
+      ]
+    },
+    {
+      "name": "preorder-footer",
+      "url": "http://localhost:4190/preorder",
+      "y": 105,
+      "height": 949,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "preorder__title mobile",
+          "text": "Aether:1 feels real, but is not. OFF+BRAND. is though.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "30px",
+          "weight": "500",
+          "line": "42px",
+          "color": "rgb(255, 255, 255)",
+          "width": 320,
+          "height": 126,
+          "left": 35,
+          "top": 15
+        },
+        {
+          "selector": "preorder__cta w-inline-block",
+          "text": "Visit our website",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "14.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 174.59375,
+          "height": 42,
+          "left": 107.703125,
+          "top": 446.734375
+        }
+      ]
+    },
+    {
+      "name": "home-return",
+      "url": "http://localhost:4190/",
+      "y": 0,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sound Without Boundaries",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 276.671875,
+          "height": 26.390625,
+          "left": 56.65625,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Unrivalled audio quality",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 239.734375,
+          "height": 26.390625,
+          "left": 75.125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    },
+    {
+      "name": "loop-return",
+      "url": "http://localhost:4190/",
+      "y": 0,
+      "height": 9284,
+      "styles": [
+        {
+          "selector": "nav__header",
+          "text": "Aether : 1menu",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "12px",
+          "weight": "500",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 328,
+          "height": 56,
+          "left": 31,
+          "top": 16
+        },
+        {
+          "selector": "section__title",
+          "text": "Sound Without Boundaries",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 276.671875,
+          "height": 26.390625,
+          "left": 56.65625,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Unrivalled audio quality",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 239.734375,
+          "height": 26.390625,
+          "left": 75.125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Crafted for pure clarity.",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 236.8125,
+          "height": 26.390625,
+          "left": 76.59375,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Intuitive Controls",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 179.4375,
+          "height": 26.390625,
+          "left": 105.28125,
+          "top": 130.8125
+        },
+        {
+          "selector": "section__title",
+          "text": "Sub Alphatonic Power Core",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "22px",
+          "weight": "500",
+          "line": "26.4px",
+          "color": "rgb(255, 255, 255)",
+          "width": 279.25,
+          "height": 26.390625,
+          "left": 55.375,
+          "top": 130.8125
+        },
+        {
+          "selector": "ae__btn",
+          "text": "Ask Aether",
+          "font": "Manrope, Arial, sans-serif",
+          "size": "10px",
+          "weight": "400",
+          "line": "12px",
+          "color": "rgb(255, 255, 255)",
+          "width": 160,
+          "height": 42,
+          "left": 115,
+          "top": 781
+        },
+        {
+          "selector": "indicator-w w-inline-block",
+          "text": "[ discover specs ]",
+          "font": "Azeretmono, Arial, sans-serif",
+          "size": "8px",
+          "weight": "300",
+          "line": "9.6px",
+          "color": "rgb(255, 255, 255)",
+          "width": 93.609375,
+          "height": 9.59375,
+          "left": 286.390625,
+          "top": 812.40625
+        }
+      ]
+    }
+  ],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Submission failed: Error: API error\n    at VO (http://localhost:4190/assets/vendor/aether-runtime.js:97:17035)\n    at J7.submitQuestion (http://localhost:4190/assets/vendor/aether-runtime.js:5966:4839)"
+  ],
+  "external": [],
+  "failed": [
+    {
+      "url": "http://localhost:4190/api/agent",
+      "status": 503
+    }
+  ],
+  "assertions": [
+    "WebGL canvas loaded",
+    "Homepage heading",
+    "Empty question prevented",
+    "Unavailable AI error surfaced",
+    "AI retry reopens input",
+    "Specs content and price",
+    "Fictional product disclosure",
+    "Original studio CTA",
+    "All footer links",
+    "End of page loops back to homepage",
+    "No external runtime asset or analytics requests",
+    "No failed local asset requests",
+    "No unexpected browser errors"
+  ]
+}
