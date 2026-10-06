@@ -45,3 +45,13 @@ export function applyPortfolioMaterial(name: string, material: MeshPhysicalMater
     material.emissiveIntensity = 0.12;
   }
 }
+
+// Share the same depth tint between instanced rows and the extracted cassette.
+export const archiveTintGLSL = `
+vec3 archiveTint(float height, float original) {
+  float top = smoothstep(0.1, 1.0, height);
+  vec3 green = mix(vec3(0.16, 0.24, 0.13), vec3(0.86, 1.0, 0.80), top);
+  vec3 ivory = mix(vec3(0.32, 0.28, 0.23), vec3(1.0, 0.97, 0.92), top);
+  return mix(green, ivory, original);
+}
+`;

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { archiveTintGLSL } from "./portfolio-theme.ts";
 import { glassRevealGLSL, frostedTransmissionGLSL, FROSTED_ROUGHNESS } from "./glass-reveal.ts";
 import { internalOpticsFragment } from "./internal-optics.ts";
 
@@ -9,9 +10,13 @@ type Palette = { high: Surface; low?: Surface };
 // on one mesh so transparent shells never overlap during a quality change.
 export class CardAppearance {
   private palettes = new Map<string, Palette>();
+  private originalPalettes = new Map<string, Palette>();
 
-  register(name: string, high: Surface, low?: Surface) {
-    this.palettes.set(name, { high, low });
+  register(name: string, high: Surface, low?: Surface, original = false) {
+    (original ? this.originalPalettes : this.palettes).set(name, { high, low });
+  }
+  private palette(name: string, original: boolean) {
+    return (original ? this.originalPalettes : this.palettes).get(name);
   }
 
   prepare(group: THREE.Group) {
@@ -23,18 +28,21 @@ export class CardAppearance {
       const mat = palette.high.clone();
       const amount = { value: 0 };
       const clarity = { value: 0 };
+      const original = { value: group.userData.original ? 1 : 0 };
       mesh.material = mat;
       if (mat.userData.opticalOrder)
         mesh.renderOrder = mat.userData.opticalOrder;
       mesh.userData.appearance = amount;
       mesh.userData.glassClarity = clarity;
+      mesh.userData.originalPalette = original;
       mat.onBeforeCompile = (shader) => {
         if (mat.userData.opticalOrder)
           shader.fragmentShader = internalOpticsFragment(shader.fragmentShader);
         shader.uniforms.archiveQuality = amount;
         shader.uniforms.archiveClarity = clarity;
+        shader.uniforms.archiveOriginal = original;
         shader.fragmentShader =
-          "uniform float archiveQuality;\nuniform float archiveClarity;\n" +
+          "uniform float archiveQuality;\nuniform float archiveClarity;\nuniform float archiveOriginal;\n" +
           shader.fragmentShader;
         if (name === "Frosted_Polymer") {
           shader.vertexShader =
@@ -45,7 +53,7 @@ export class CardAppearance {
           );
           shader.fragmentShader =
             "varying float vArchiveHeight;\nvarying vec2 vArchiveProjectedAxis;\n" +
-            glassRevealGLSL +
+            archiveTintGLSL + glassRevealGLSL +
             shader.fragmentShader;
           shader.vertexShader = shader.vertexShader.replace(
             "#include <project_vertex>",
@@ -60,7 +68,7 @@ export class CardAppearance {
           );
           shader.fragmentShader = shader.fragmentShader.replace(
             "#include <color_fragment>",
-            "#include <color_fragment>\ndiffuseColor.rgb *= mix(mix(vec3(0.16, 0.24, 0.13), vec3(0.86, 1.0, 0.80), smoothstep(0.1, 1.0, vArchiveHeight)), vec3(1.0), archiveQuality);",
+            "#include <color_fragment>\ndiffuseColor.rgb *= mix(archiveTint(vArchiveHeight, archiveOriginal), vec3(1.0), archiveQuality);",
           );
           shader.fragmentShader = shader.fragmentShader.replace(
             "#include <roughnessmap_fragment>",
@@ -89,7 +97,7 @@ export class CardAppearance {
       child.userData.glassClarity.value = clarity;
       if (child.userData.surface !== "Frosted_Polymer") return;
       const mat = child.material as Surface;
-      const palette = this.palettes.get("Frosted_Polymer")!;
+      const palette = this.palette("Frosted_Polymer", Boolean(child.userData.originalPalette.value))!;
       const quality = child.userData.appearance.value as number;
       const baseline = (
         key: "thickness" | "transmission" | "attenuationDistance",
@@ -120,16 +128,20 @@ export class CardAppearance {
   apply(group: THREE.Group, value: number) {
     for (const child of group.children) {
       const mesh = child as THREE.Mesh;
-      const palette = this.palettes.get(mesh.userData.surface);
+      const original = Boolean(group.userData.original);
+      const palette = this.palette(mesh.userData.surface, original);
       if (!palette) {
         // The printed canvas belongs to this file, including returning copies.
         (mesh.material as THREE.MeshBasicMaterial).opacity = value;
         continue;
       }
       mesh.userData.appearance.value = value;
+      mesh.userData.originalPalette.value = original ? 1 : 0;
       const { high, low } = palette;
-      if (!low) continue;
       const mat = mesh.material as Surface;
+      mat.emissive.copy(high.emissive);
+      mat.emissiveIntensity = high.emissiveIntensity;
+      if (!low) { mat.color.copy(high.color); continue; }
       mat.color.copy(low.color).lerp(high.color, value);
       if (
         mat.attenuationColor &&

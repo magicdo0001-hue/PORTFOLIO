@@ -93,9 +93,46 @@ const shader = {
 };
 body.material.onBeforeCompile(shader, null);
 assert.equal(shader.uniforms.archiveQuality, body.userData.appearance);
-assert.ok(shader.fragmentShader.includes("roughnessFactor = mix(0.28"));
+assert.ok(shader.fragmentShader.includes("roughnessFactor = mix(mix(0.28"));
 appearance.dispose(returning);
 assert.ok(body.material.color.r > 0);
 console.log(
   "Appearance interpolation, independent returning materials, shader uniform and array handoff: passed",
 );
+
+// Switching selection must not recolor a returning file or its assembly copy.
+const ivoryHigh = high.clone();
+ivoryHigh.color.set("#fffdfa");
+ivoryHigh.attenuationColor.set("#eee6df");
+const ivoryLow = low.clone();
+ivoryLow.color.set("#fff5e9");
+ivoryLow.attenuationColor.set("#dfd4c6");
+appearance.register("Frosted_Polymer", ivoryHigh, ivoryLow, true);
+const greenReturning = group.clone(true);
+appearance.prepare(greenReturning);
+appearance.apply(greenReturning, .37);
+const returningColor = greenReturning.children[0].material.color.clone();
+group.userData.original = true;
+appearance.apply(group, .5);
+assert.ok(body.material.color.equals(ivoryLow.color.clone().lerp(ivoryHigh.color, .5)));
+assert.ok(greenReturning.children[0].material.color.equals(returningColor));
+assert.equal(body.userData.originalPalette.value, 1);
+assert.equal(greenReturning.children[0].userData.originalPalette.value, 0);
+const ivoryReturning = group.clone(true);
+appearance.prepare(ivoryReturning);
+appearance.apply(ivoryReturning, 0);
+assert.ok(ivoryReturning.children[0].material.color.equals(ivoryLow.color));
+group.userData.original = false;
+appearance.apply(group, 1);
+assert.ok(body.material.color.equals(high.color));
+assert.equal(body.userData.originalPalette.value, 0);
+assert.equal(ivoryReturning.children[0].userData.originalPalette.value, 1);
+// Clarity still uses the right palette after assembly parts are reparented.
+const assembly = new THREE.Group();
+assembly.add(ivoryReturning);
+appearance.setClarity(assembly, .5);
+assert.ok(ivoryReturning.children[0].material.attenuationColor.equals(ivoryLow.attenuationColor));
+assert.equal(ivoryReturning.children[0].material.attenuationDistance, THREE.MathUtils.lerp(ivoryLow.attenuationDistance, 8, .5));
+appearance.dispose(greenReturning);
+appearance.dispose(ivoryReturning);
+console.log("Original/green selection, independent returning palette and assembly clarity: passed");

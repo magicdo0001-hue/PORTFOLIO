@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { portfolioTheme, applyPortfolioMaterial } from "./portfolio-theme";
+import { portfolioTheme, applyPortfolioMaterial, archiveTintGLSL } from "./portfolio-theme";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { createArchiveLighting, type LightingLook } from "./archive-lighting";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -63,6 +63,7 @@ export class ArchiveScene {
   private cursor = new THREE.Vector2();
   private raycaster = new THREE.Raycaster();
   private dummy = new THREE.Object3D();
+  private hiddenInstance = new THREE.Matrix4().makeScale(0, 0, 0);
   private positions: THREE.Vector3[] = [];
   private cells: ArchiveCell[] = [];
   private selectedCell: ArchiveCell = { lane: 2, row: 12 };
@@ -255,6 +256,7 @@ export class ArchiveScene {
         mat.metalness = 0.08;
       }
       configureInternalOptics(name, mat);
+      const originalMat = mat.clone();
       applyPortfolioMaterial(name, mat);
       if (name === "Carbon_Ink") continue;
       const selectedMesh = new THREE.Mesh(geom, mat);
@@ -274,9 +276,10 @@ export class ArchiveScene {
         ].includes(name)
       ) {
         this.appearance.register(name, mat);
+        this.appearance.register(name, originalMat, undefined, true);
         continue;
       }
-      const arrayMat = mat.clone();
+      const arrayMat = originalMat.clone();
       if (name === "Frosted_Polymer") {
         arrayMat.transmission = 0.78;
         if (this.lightingLook === "refined") {
@@ -288,20 +291,6 @@ export class ArchiveScene {
         }
         arrayMat.transparent = false;
         arrayMat.color.set("#fff7ed");
-        arrayMat.onBeforeCompile = (shader) => {
-          shader.vertexShader =
-            "varying float vPanelHeight;\n" + shader.vertexShader;
-          shader.vertexShader = shader.vertexShader.replace(
-            "#include <begin_vertex>",
-            "#include <begin_vertex>\nvPanelHeight = position.y / 3.7;",
-          );
-          shader.fragmentShader =
-            "varying float vPanelHeight;\n" + shader.fragmentShader;
-          shader.fragmentShader = shader.fragmentShader.replace(
-            "#include <color_fragment>",
-            "#include <color_fragment>\ndiffuseColor.rgb *= mix(vec3(0.16, 0.24, 0.13), vec3(0.86, 1.0, 0.80), smoothstep(0.1, 1.0, vPanelHeight));",
-          );
-        };
         arrayMat.roughness = 0.28;
         arrayMat.clearcoat = 0.3;
         arrayMat.clearcoatRoughness = 0.25;
@@ -318,15 +307,35 @@ export class ArchiveScene {
         arrayMat.color.set("#e4d6c5");
         arrayMat.metalness = 0.05;
       }
+      const originalArrayMat = arrayMat.clone();
       applyPortfolioMaterial(name, arrayMat, true);
       this.appearance.register(name, mat, arrayMat);
-      const inst = new THREE.InstancedMesh(geom, arrayMat, count);
-      inst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-      inst.castShadow = name === "Optical_Diffuser";
-      inst.receiveShadow = true;
-      inst.frustumCulled = false;
-      this.instances.push(inst);
-      this.scene.add(inst);
+      this.appearance.register(name, originalMat, originalArrayMat, true);
+      for (const [material, original] of [[arrayMat, false], [originalArrayMat, true]] as const) {
+        if (name === "Frosted_Polymer") {
+          material.onBeforeCompile = (shader) => {
+            shader.vertexShader = "varying float vPanelHeight;\n" + shader.vertexShader;
+            shader.vertexShader = shader.vertexShader.replace(
+              "#include <begin_vertex>",
+              "#include <begin_vertex>\nvPanelHeight = position.y / 3.7;",
+            );
+            shader.fragmentShader = "varying float vPanelHeight;\n" + archiveTintGLSL + shader.fragmentShader;
+            shader.fragmentShader = shader.fragmentShader.replace(
+              "#include <color_fragment>",
+              `#include <color_fragment>\ndiffuseColor.rgb *= archiveTint(vPanelHeight, ${original ? "1.0" : "0.0"});`,
+            );
+          };
+          material.customProgramCacheKey = () => `archive-array-${original}`;
+        }
+        const inst = new THREE.InstancedMesh(geom, material, count);
+        inst.userData.original = original;
+        inst.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+        inst.castShadow = name === "Optical_Diffuser";
+        inst.receiveShadow = true;
+        inst.frustumCulled = false;
+        this.instances.push(inst);
+        this.scene.add(inst);
+      }
     }
     this.labelCanvas.width = 1024;
     this.labelCanvas.height = 440;
@@ -345,6 +354,7 @@ export class ArchiveScene {
     );
     label.position.set(-1.36, 3.04, 0.255);
     this.model.add(label);
+    this.model.userData.original = records[fileAtSlot(this.selectedSlot)].id.endsWith("-01");
     this.appearance.prepare(this.model);
     this.appearance.apply(this.model, 0);
     this.drawLabel(0);
@@ -446,6 +456,7 @@ export class ArchiveScene {
   }
   private assemblyTemplate?: Promise<THREE.Group>;
   async createAssemblyModel() {
+    const original = Boolean(this.model.userData.original);
     this.assemblyTemplate ??= new GLTFLoader()
       .loadAsync("/assets/archive-assembly.glb")
       .then((gltf) => {
@@ -458,6 +469,7 @@ export class ArchiveScene {
       });
     const template = await this.assemblyTemplate;
     const model = new THREE.Group();
+    model.userData.original = original;
     const meshes: THREE.Mesh[] = [];
     template.traverse((object) => {
       if (!(object instanceof THREE.Mesh)) return;
@@ -673,6 +685,7 @@ export class ArchiveScene {
       this.lift.velocity = 0;
     }
     this.selectedSlot = next;
+    this.model.userData.original = records[index].id.endsWith("-01");
     this.selectedCell = cell;
     if (changed) {
       this.decryption.select();
@@ -702,25 +715,28 @@ export class ArchiveScene {
   }
   private drawLabel(index: number) {
     if (!this.labelTexture) return;
+    const labelTheme = records[index].id.endsWith("-01")
+      ? { label: "#eae5dc", text: "#171a16", muted: "#74756e" }
+      : portfolioTheme;
     const c = this.labelCanvas.getContext("2d")!;
-    c.fillStyle = portfolioTheme.label;
+    c.fillStyle = labelTheme.label;
     c.fillRect(0, 0, 1024, 440);
-    c.fillStyle = portfolioTheme.text;
+    c.fillStyle = labelTheme.text;
     c.fillRect(12, 12, 1000, 6);
     c.fillRect(12, 419, 1000, 3);
     c.font = "bold 81px MiSans";
     c.fillText("RHINE LAB, LLC.", 22, 116);
     c.font = "32px MiSans";
-    c.fillStyle = portfolioTheme.muted;
+    c.fillStyle = labelTheme.muted;
     c.fillText("INTERNAL DATABASE", 25, 174);
-    c.fillStyle = portfolioTheme.text;
+    c.fillStyle = labelTheme.text;
     c.font = "bold 130px MiSans";
     c.fillText(records[index].id, 22, 360);
     c.fillRect(782, 32, 221, 39);
-    c.fillStyle = portfolioTheme.label;
+    c.fillStyle = labelTheme.label;
     c.font = "24px MiSans";
     c.fillText("R L / I S", 809, 61);
-    c.fillStyle = portfolioTheme.text;
+    c.fillStyle = labelTheme.text;
     c.font = "bold 64px MiSans";
     c.fillText("INFO", 830, 143);
     this.labelTexture.needsUpdate = true;
@@ -1082,7 +1098,11 @@ export class ArchiveScene {
           : 1,
       );
       this.dummy.updateMatrix();
-      for (const inst of this.instances) inst.setMatrixAt(i, this.dummy.matrix);
+      // Resolve the file from its logical cell: recycling and wraparound keep 01 ivory.
+      const original = records[fileAtCell(this.cells[i])].id.endsWith("-01");
+      for (const inst of this.instances) {
+        inst.setMatrixAt(i, inst.userData.original === original ? this.dummy.matrix : this.hiddenInstance);
+      }
     }
     for (const inst of this.instances) inst.instanceMatrix.needsUpdate = true;
     this.model.position.set(
@@ -1360,6 +1380,7 @@ export class ArchiveScene {
       pulses: this.pulses.map((pulse) => ({ ...pulse })),
       referenceTime: Math.round((this.scanTime + 5) * 100) / 100,
       selectedSlot: this.selectedSlot,
+      palette: this.model.userData.original ? "original" : "green",
       selectedLane: Math.floor(this.selectedSlot / 32),
       selectedCell: { ...this.selectedCell },
       coordinateOrigin: { ...this.coordinateOrigin },
@@ -1385,6 +1406,7 @@ export class ArchiveScene {
       fogNear: (this.scene.fog as THREE.Fog).near,
       fogFar: (this.scene.fog as THREE.Fog).far,
       returningAppearance: this.outgoing.map((o) => ({
+        palette: o.group.userData.original ? "original" : "green",
         slot: o.slot,
         cell: { ...o.cell },
         lift: o.lift.value,
