@@ -2,154 +2,129 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { chapterStops, storyAt } from "./story-timeline.mjs";
+import type { SangreScene } from "./orbit-scene";
+import { chapterStops, storyAt, textAt } from "./story-timeline.mjs";
 import "./orbit.css";
 
+const partLabels = [
+  [["折叠显示屏", "FOLDING DISPLAY"], ["透明收纳罩", "CLEAR STORAGE"]],
+  [["细腻哑光 · PP", "SATIN FINISH / PP"], ["透亮边缘 · PET", "CLEAR EDGES / PET"]],
+  [["完整阅读视野", "FULL-HEIGHT VIEW"], ["折叠转轴", "FOLDING JOINT"]],
+  [["移开收纳上盖", "LIFT TO ACCESS"], ["三孔测试条", "THREE-WELL STRIP"]],
+  [["铜线圈", "COPPER WINDING"], ["壳体分层", "LAYERED ENCLOSURE"]],
+];
+const calloutPositions=[[[.48,.21],[.84,.18]],[[.45,.20],[.84,.145]],[[.79,.18],[.88,.29]],[[.47,.20],[.52,.77]],[[.47,.46],[.84,.18]]];
 const chapters = [
-  { label: ["整体", "Overview"], title: ["把日常健康，\n放回生活。", "Care,\nat home."], body: ["检测、读取与收纳，围绕日常动作设计的一台家庭健康设备。", "Testing, reading and storage. A home-health concept shaped around everyday routines."], detail: ["让设备自然留在生活里", "Made for the everyday"], note: ["暖白机身与透明收纳，让每个物件都有自己的位置。", "Warm ivory and clear storage give every part of the routine a place."], tag: "FORM / EVERYDAY CARE" },
-  { label: ["展开", "Unfold"], title: ["展开屏幕，\n看见全貌。", "Unfold.\nSee the whole picture."], body: ["从紧凑的倾斜屏，展开为完整长屏。让信息随着使用动作靠近视线。", "A compact, angled display unfolds into a full-height dashboard, bringing information into view."], detail: ["同一块屏幕，两种阅读状态", "One display. Two reading states."], note: ["折叠状态便于日常读取，展开后容纳完整的指标与趋势。界面为设计示意。", "An angled view for quick reading; a full dashboard for metrics and trends. Illustrative interface."], tag: "INTERACTION / FOLDING DISPLAY" },
-  { label: ["操作", "Routine"], title: ["每个动作，\n都有位置。", "A place for\nevery action."], body: ["移开透明上盖，测试条沿预设路径靠近设备，让准备、定位与收纳连成一体。", "The clear cover moves aside. The test strip approaches its position, connecting preparation and storage."], detail: ["从取用，到有序归位", "From access to a considered routine"], note: ["采用实际测试条模型展示接近与定位。动画说明操作关系，不模拟检测过程。", "The supplied test-strip model demonstrates approach and positioning, without simulating a test."], tag: "WORKFLOW / TEST STRIP" },
-  { label: ["结构", "Assembly"], title: ["向内一层，\n理解设计。", "Look inside.\nUnderstand the design."], body: ["沿装配方向逐层展开，让外壳、支撑与内部空间的关系清晰可见。", "The assembly separates in layers, revealing how the enclosure, supports and internal spaces fit together."], detail: ["真实装配，清晰分层", "An assembly, revealed in layers"], note: ["上下壳与固定件来自实际 CAD。主板、线圈依照结构图作展示示意。", "Enclosure and fixing parts come from the supplied CAD. Boards and coil are reference-based illustrations."], tag: "CONSTRUCTION / LAYER BY LAYER" },
+  { label: ["整体", "Form"], title: ["让关怀，\n回到日常。", "Care belongs\nat home."], body: ["一台设备，连接检测、读取与收纳。为家庭健康，留出一个自然的位置。", "Testing, reading and storage, brought together. A considered place for everyday health."], detail: ["一体之间，各有位置", "Together, with a place for everything"], note: ["倾斜屏幕与透明收纳并置。158 × 100 × 59 mm，让桌面上的每一处空间都有意义。", "An angled display beside clear storage. A considered 158 × 100 × 59 mm footprint."], tag: "A QUIETER KIND OF CARE" },
+  { label: ["材质", "Material"], title: ["温和的触感。\n清晰的边界。", "Soft to touch.\nClear by design."], body: ["暖白壳体、深色玻璃与透明上盖。通过质感的差异，自然区分握持、读取和收纳。", "Warm ivory, dark glass and a clear cover. Material contrast gives every surface its own role."], detail: ["暖白 PP，与透明 PET", "Warm ivory PP. Clear PET."], note: ["漫反射的暖白外壳，搭配透亮的收纳上盖。柔和圆角与细分件缝保留清楚的轮廓。", "Satin ivory meets clear storage. Soft radii and fine seams preserve a precise silhouette."], tag: "COLOUR / MATERIAL / FINISH" },
+  { label: ["展开", "Unfold"], title: ["轻轻展开，\n看见全貌。", "Unfold.\nThe full picture."], body: ["倾斜短屏展开为完整长屏。从当下读数，到一段时间的变化，让信息随着动作展开。", "A compact angled screen unfolds into a full dashboard, from a quick reading to a longer view."], detail: ["同一块屏幕，两种阅读状态", "One display. Two reading states."], note: ["折叠转轴连接上下屏面，保留紧凑的日常姿态。屏幕内容为界面设计示意。", "A folding joint connects the two screen leaves. The dashboard is an illustrative interface."], tag: "INTERACTION / FOLDING DISPLAY" },
+  { label: ["操作", "Routine"], title: ["顺着动作，\n有序发生。", "A natural\nsequence of care."], body: ["取下上盖，移出测试条，沿插槽定位。将准备与操作，整理成一条清楚的路径。", "Lift the cover, take the strip and align it with the slot. A clear path from preparation to placement."], detail: ["三孔测试条，与专属收纳", "Three wells. Dedicated storage."], note: ["独立重建测试条孔位、黑色底托与活动件。动画展示取用和定位关系。", "Reconstructed wells, carrier and sliding detail. Motion illustrates access and positioning."], tag: "WORKFLOW / TEST STRIP" },
+  { label: ["结构", "Inside"], title: ["向内一层，\n理解设计。", "Look inside.\nDesign, revealed."], body: ["外壳逐层抬起，支撑、线圈与电路空间显露。让不可见的结构，也成为设计的叙述。", "The shell lifts away to reveal supports, coil and circuit space. The unseen becomes part of the story."], detail: ["由外到内，层次清晰", "An assembly, revealed in layers"], note: ["根据工图与结构渲染重建。电子元件和拆解路径用于设计说明，不代表已验证电路。", "Rebuilt from drawings and structural renders. Electronics and assembly motion are design illustrations."], tag: "CONSTRUCTION / LAYER BY LAYER" },
 ] as const;
 
 export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" }) {
-  const language = locale === "en" ? 1 : 0;
-  const t = (zh: string, en: string) => language ? en : zh;
-  const section = useRef<HTMLElement>(null), stage = useRef<HTMLDivElement>(null);
-  const video = useRef<HTMLVideoElement>(null), slider = useRef<HTMLInputElement>(null);
-  const reference = useRef<HTMLDialogElement>(null);
-  const desiredTime = useRef(0), active = useRef(0);
-  const [chapter, setChapter] = useState(0);
-  const [motion, setMotion] = useState<boolean | null>(null);
-  const [ready, setReady] = useState(false), [failed, setFailed] = useState(false);
-  const [reload, setReload] = useState(0);
-  const current = chapters[chapter];
-
-  function seek() {
-    const media = video.current;
-    if (!media || media.readyState < 2 || media.seeking || !Number.isFinite(media.duration)) return;
-    const time = Math.min(media.duration - 1 / 24, desiredTime.current);
-    if (Math.abs(media.currentTime - time) > 1 / 48) media.currentTime = time;
-  }
-
-  useEffect(() => {
-    const preference = matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setMotion(!preference.matches);
-    update(); preference.addEventListener("change", update);
-    return () => preference.removeEventListener("change", update);
-  }, []);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      if (!section.current || !stage.current) return;
-      const rect = section.current.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, -rect.top / Math.max(1, rect.height - stage.current.offsetHeight)));
-      const next = storyAt(progress);
-      desiredTime.current = next.time;
-      stage.current.style.setProperty("--story-progress", `${progress * 100}%`);
-      if (slider.current) slider.current.value = String(Math.round(progress * 1000));
-      if (next.chapter !== active.current) { active.current = next.chapter; setChapter(next.chapter); }
-      if (motion) seek();
-    };
-    const scroll = () => { if (!frame) frame = requestAnimationFrame(update); };
-    const resize = new ResizeObserver(scroll);
-    if (section.current) resize.observe(section.current);
-    window.addEventListener("scroll", scroll, { passive: true });
-    window.addEventListener("resize", scroll); update();
-    return () => { cancelAnimationFrame(frame); resize.disconnect(); window.removeEventListener("scroll", scroll); window.removeEventListener("resize", scroll); };
-  }, [motion]);
-
-  useEffect(() => {
-    const media = video.current;
-    if (!media || !motion) return;
-    const source = matchMedia("(max-width: 760px)").matches ? "/sangre/film/structure-960.mp4" : "/sangre/film/structure-1440.mp4";
-    const abort = new AbortController();
-    let objectUrl: string | null = null, disposed = false;
-    // Reuse the previous player's Range fallback: some hosts return an entire,
-    // otherwise unseekable response. One pending seek always lands on the latest scroll.
-    void (async () => {
+  const language=locale==="en"?1:0, t=(zh:string,en:string)=>language?en:zh;
+  const section=useRef<HTMLElement>(null),stage=useRef<HTMLDivElement>(null),host=useRef<HTMLDivElement>(null);
+  const slider=useRef<HTMLInputElement>(null),reference=useRef<HTMLDialogElement>(null),detail=useRef<HTMLElement>(null);
+  const leader=useRef<SVGPolylineElement>(null),dot=useRef<SVGCircleElement>(null);
+  const copies=useRef<(HTMLDivElement|null)[]>([]),calloutLabels=useRef<(HTMLSpanElement|null)[]>([]),calloutLines=useRef<(SVGPolylineElement|null)[]>([]);
+  const scene=useRef<SangreScene|null>(null),progress=useRef(0),active=useRef(0),motionRef=useRef(true);
+  const [chapter,setChapter]=useState(0),[motion,setMotion]=useState(true),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[reload,setReload]=useState(0);
+  const current=chapters[chapter];
+  useEffect(()=>{
+    const preference=matchMedia("(prefers-reduced-motion: reduce)"),update=()=>setMotion(!preference.matches);
+    update();preference.addEventListener("change",update);return()=>preference.removeEventListener("change",update);
+  },[]);
+  useEffect(()=>{motionRef.current=motion;scene.current?.motion(motion);},[motion]);
+  useEffect(()=>{
+    let cancelled=false;
+    void import("./orbit-scene").then(({createSangreScene})=>{
+      if(cancelled||!host.current)return;
       try {
-        const response = await fetch(source, { headers: { Range: "bytes=0-0" }, signal: abort.signal });
-        if (!response.ok) throw new Error(`Video response ${response.status}`);
-        if (response.status === 206) {
-          await response.body?.cancel();
-          if (disposed) return;
-          media.src = source;
-        } else {
-          const blob = await response.blob();
-          if (disposed) return;
-          objectUrl = URL.createObjectURL(blob); media.src = objectUrl;
-        }
-        media.load();
-      } catch {
-        if (!disposed && !abort.signal.aborted) { setFailed(true); setReady(false); }
-      }
-    })();
-    const resume = () => { if (!document.hidden) seek(); };
-    document.addEventListener("visibilitychange", resume);
-    return () => {
-      disposed = true; abort.abort(); document.removeEventListener("visibilitychange", resume);
-      media.pause(); media.removeAttribute("src"); media.load();
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+        scene.current=createSangreScene(host.current,{
+          ready:()=>{if(!cancelled){setReady(true);setFailed(false);}},
+          error:()=>{if(!cancelled){setReady(false);setFailed(true);}},
+          frame:(p,intro)=>{
+            const next=storyAt(p).chapter;
+            if(next!==active.current){active.current=next;setChapter(next);}
+            copies.current.forEach((copy,index)=>{
+              if(!copy)return;const v=textAt(p,index,intro),still=!motionRef.current;
+              copy.style.visibility=(still?index===next:v.visible)?"visible":"hidden";
+              copy.style.setProperty("--line-a",String(still?1:v.line1));copy.style.setProperty("--line-b",String(still?1:v.line2));
+              copy.style.setProperty("--body",String(still?1:v.body));copy.style.setProperty("--out",String(still?0:v.leave));
+            });
+            stage.current?.style.setProperty("--note",String(motionRef.current?textAt(p,next,intro).note:1));
+          },
+          callouts:(points)=>{
+            if(!host.current)return;const w=host.current.clientWidth,h=host.current.clientHeight;
+            const positions=calloutPositions[active.current];
+            points.forEach(([x,y],index)=>{const label=calloutLabels.current[index],line=calloutLines.current[index];if(!label||!line)return;
+              const [px,py]=positions[index],lx=Math.min(w-170,w*px),ly=h*py;
+              label.style.transform=`translate3d(${lx}px,${ly}px,0)`;
+              line.setAttribute("points",`${x},${y} ${lx+20},${ly+22} ${lx},${ly+22}`);
+            });
+          },
+          marker:(x,y)=>{
+            if(!stage.current||!host.current||!detail.current||!leader.current||!dot.current)return;
+            const s=stage.current.getBoundingClientRect(),h=host.current.getBoundingClientRect(),d=detail.current.getBoundingClientRect();
+            const px=x+h.left-s.left,py=y+h.top-s.top,ex=d.left-s.left,ey=d.top-s.top+9;
+            leader.current.setAttribute("points",`${px},${py} ${ex-30},${ey} ${ex},${ey}`);
+            dot.current.setAttribute("cx",String(px));dot.current.setAttribute("cy",String(py));
+          }
+        });scene.current.motion(motionRef.current);scene.current.progress(progress.current);
+      } catch {setFailed(true);}
+    }).catch(()=>{if(!cancelled)setFailed(true);});
+    return()=>{cancelled=true;scene.current?.dispose();scene.current=null;};
+  },[reload]);
+  useEffect(()=>{
+    let frame=0;
+    const update=()=>{
+      frame=0;if(!section.current||!stage.current)return;
+      const rect=section.current.getBoundingClientRect(),p=Math.max(0,Math.min(1,-rect.top/Math.max(1,rect.height-stage.current.offsetHeight)));
+      progress.current=p;scene.current?.progress(p);stage.current.style.setProperty("--story-progress",`${p*100}%`);
+      if(slider.current)slider.current.value=String(Math.round(p*1000));
+      const next=storyAt(p).chapter;if(!scene.current&&next!==active.current){active.current=next;setChapter(next);}
     };
-  }, [motion, reload]);
-
-  function go(progress: number, smooth = true) {
-    if (!section.current || !stage.current) return;
-    const rect = section.current.getBoundingClientRect();
-    window.scrollTo({ top: window.scrollY + rect.top + (rect.height - stage.current.offsetHeight) * progress,
-      behavior: smooth && motion ? "smooth" : "instant" });
-  }
-
-  function toggleMotion() { setReady(false); setFailed(false); setMotion(value => !value); }
-
-  return <section ref={section} className="sg-orbit" aria-label={t("SANGRE 产品展示", "SANGRE product story")}>
-    <div ref={stage} className="sg-stage" data-chapter={chapter} data-motion={motion ? "scroll" : "still"}>
+    const scroll=()=>{if(!frame)frame=requestAnimationFrame(update);};const resize=new ResizeObserver(scroll);if(section.current)resize.observe(section.current);
+    window.addEventListener("scroll",scroll,{passive:true});window.addEventListener("resize",scroll);update();
+    return()=>{cancelAnimationFrame(frame);resize.disconnect();window.removeEventListener("scroll",scroll);window.removeEventListener("resize",scroll);};
+  },[]);
+  function go(p:number,smooth=true){if(!section.current||!stage.current)return;const rect=section.current.getBoundingClientRect();window.scrollTo({top:window.scrollY+rect.top+(rect.height-stage.current.offsetHeight)*p,behavior:smooth&&motion?"smooth":"instant"});}
+  return <section ref={section} className="sg-orbit" aria-label={t("SANGRE 产品展示","SANGRE product story")}>
+    <div ref={stage} className="sg-stage" data-chapter={chapter} data-motion={motion?"scroll":"still"} data-ready={ready&&!failed} data-failed={failed}>
       <header className="sg-header">
-        <Link href={language ? "/en?archive=X1-01" : "/?archive=X1-01"} className="sg-back"><span aria-hidden="true">↖</span>{t("返回档案", "Back to archive")}</Link>
+        <Link href={language?"/en?archive=X1-01":"/?archive=X1-01"} className="sg-back"><span aria-hidden="true">↖</span>{t("返回档案","Back to archive")}</Link>
         <h1>SANGRE<span> / HOME HEALTH</span></h1>
-        <div><a className="sg-skip" href="#story">{t("研究与原型", "Research & prototypes")} <span aria-hidden="true">↘</span></a><Link href={language ? "/work/sangre" : "/en/work/sangre"} hrefLang={language ? "zh-CN" : "en"} aria-label={t("Switch to English", "切换至中文")}>{language ? "中文" : "EN"}</Link></div>
+        <div><a className="sg-skip" href="#story">{t("研究与原型","Research & prototypes")} <span aria-hidden="true">↘</span></a><Link href={language?"/work/sangre":"/en/work/sangre"} hrefLang={language?"zh-CN":"en"} aria-label={t("Switch to English","切换至中文")}>{language?"中文":"EN"}</Link></div>
       </header>
-
-      <div className="sg-visual" data-ready={ready} data-failed={failed}>
-        <div className="sg-film-frame">
-          <div className="sg-still" role="img" aria-label={current.title[language].replace("\n", " ")} style={{ backgroundPosition: `${chapter % 2 * 100}% ${Math.floor(chapter / 2) * 100}%` }} />
-          <video ref={video} preload="auto" playsInline muted tabIndex={-1}
-            aria-label={t("随滚动展示折叠屏、测试条与装配结构", "Scroll-controlled folding display, test strip and assembly")}
-            onLoadedData={() => { setReady(true); setFailed(false); seek(); }} onCanPlay={seek} onSeeked={seek}
-            onError={() => { setFailed(true); setReady(false); }} />
-        </div>
+      <div ref={host} className="sg-visual" role="img" aria-label={t("SANGRE 三维产品：暖白楔形机身、黑色折叠屏与透明收纳罩","SANGRE in 3D: an ivory wedge enclosure, black folding screen and clear storage cover")} />
+      {failed&&<img className="sg-fallback" src="/sangre/material-reference.jpg" alt={t("SANGRE 原始设计渲染","Original SANGRE design render")} />}
+      {chapters.map((item,index)=><div ref={el=>{copies.current[index]=el;}} className="sg-copy" data-copy={index} key={item.tag} aria-hidden={chapter!==index}>
+        <p className="sg-eyebrow"><span>0{index+1} / 05</span>{item.tag}</p>
+        <h2 aria-label={item.title[language].replace("\n"," ")}>{item.title[language].split("\n").map((line,i)=><span className="sg-title-line" aria-hidden="true" key={i}><span>{line}</span></span>)}</h2>
+        <p className="sg-intro">{item.body[language]}</p>
+      </div>)}
+      <p className="sg-sr-only" aria-live="polite">{current.title[language].replace("\n"," ")}</p>
+      <div className="sg-callouts" aria-hidden="true">
+        <svg>{[0,1].map(i=><polyline key={i} ref={el=>{calloutLines.current[i]=el;}} pathLength="1" fill="none"/>)}</svg>
+        {[0,1].map(i=><span key={i} ref={el=>{calloutLabels.current[i]=el;}}>{partLabels[chapter][i][language]}</span>)}
       </div>
-
-      <div className="sg-copy" key={`copy-${chapter}`} aria-live="polite">
-        <p className="sg-eyebrow"><span>0{chapter + 1} / 04</span>{current.tag}</p>
-        <h2>{current.title[language]}</h2>
-        <p className="sg-intro">{current.body[language]}</p>
-      </div>
-      <aside className="sg-detail" key={`detail-${chapter}`}>
-        <span className="sg-detail-line" aria-hidden="true" />
-        <p>{t("设计观察", "DESIGN NOTE")} / 0{chapter + 1}</p>
-        <h3>{current.detail[language]}</h3><p>{current.note[language]}</p>
-      </aside>
-
+      <svg className="sg-leader" aria-hidden="true"><polyline ref={leader} fill="none"/><circle ref={dot} r="3"/></svg>
+      <aside ref={detail} className="sg-detail"><p>{t("设计观察","DESIGN NOTE")} / 0{chapter+1}</p><h3>{current.detail[language]}</h3><p>{current.note[language]}</p></aside>
       <div className="sg-bottom">
-        <div className="sg-utility">
-          <span className="sg-scroll-cue">{motion ? t("向下滚动，逐层展开", "SCROLL TO REVEAL") : t("静帧阅读 · 滚动切换章节", "STILL FRAMES · SCROLL THROUGH CHAPTERS")}<span aria-hidden="true">↓</span></span>
-          <div><button onClick={toggleMotion} aria-pressed={motion === false}>{motion ? t("静帧阅读", "Still frames") : t("启用滚动动画", "Enable motion")}</button><button onClick={() => reference.current?.showModal()}>{t("结构参考", "View reference")}</button></div>
-        </div>
-        <label className="sg-progress"><span className="sg-sr-only">{t("展示进度", "Story progress")}</span><input ref={slider} type="range" min="0" max="1000" step="1" defaultValue="0" onChange={event => go(Number(event.target.value) / 1000, false)} /></label>
-        <nav className="sg-chapters" aria-label={t("产品展示章节", "Product story chapters")}>
-          {chapters.map((item, index) => <button key={item.tag} aria-current={chapter === index ? "step" : undefined} onClick={() => go(chapterStops[index])}><span>0{index + 1}</span>{item.label[language]}<i aria-hidden="true" /></button>)}
-          <a href="#story">{t("进入设计过程", "Explore the process")}<span aria-hidden="true">↘</span></a>
+        <div className="sg-utility"><span className="sg-scroll-cue">{motion?t("滚动探索","SCROLL TO EXPLORE"):t("静态阅读 · 按章节切换","STILL VIEWS · CHAPTER BY CHAPTER")}<span aria-hidden="true">↓</span></span><div><button onClick={()=>setMotion(v=>!v)} aria-pressed={!motion}>{motion?t("减少动态","Reduce motion"):t("启用动画","Enable motion")}</button><button onClick={()=>reference.current?.showModal()}>{t("渲染参考","Design references")}</button></div></div>
+        <label className="sg-progress"><span className="sg-sr-only">{t("展示进度","Story progress")}</span><input ref={slider} type="range" min="0" max="1000" step="1" defaultValue="0" onChange={e=>go(Number(e.target.value)/1000,false)}/></label>
+        <nav className="sg-chapters" aria-label={t("产品展示章节","Product story chapters")}>
+          {chapters.map((item,index)=><button key={item.tag} aria-current={chapter===index?"step":undefined} onClick={()=>go(chapterStops[index])}><span>0{index+1}</span>{item.label[language]}<i aria-hidden="true"/></button>)}
+          <a href="#story">{t("设计过程","Design process")}<span aria-hidden="true">↘</span></a>
         </nav>
       </div>
-      {motion && !ready && <div className="sg-status" role="status">{failed ? t("动画暂不可用，已显示关键帧。", "Video unavailable. Showing key frames.") : t("正在准备动画，仍可滚动阅读。", "Preparing motion. You can keep exploring.")}{failed && <button onClick={() => { setFailed(false); setReload(value => value + 1); }}>{t("重试", "Retry")}</button>}</div>}
-      <dialog ref={reference} className="sg-reference" aria-label={t("原始结构渲染参考", "Original structural reference")} onClick={event => { if (event.target === event.currentTarget) reference.current?.close(); }}>
-        <button autoFocus onClick={() => reference.current?.close()}>{t("关闭", "Close")} ×</button>
-        <img src="/sangre/structure-reference.jpg" alt={t("原始 SANGRE 结构渲染图", "Original SANGRE structural render")} loading="lazy" />
-        <p>{t("原始结构渲染 · 设计参考", "ORIGINAL STRUCTURAL RENDER")}</p>
+      {(!ready||failed)&&<div className="sg-status" role="status">{failed?t("三维展示暂不可用，已显示原始渲染。","3D is unavailable. Showing the original render."):t("正在准备三维展示…","Preparing the product view…")}{failed&&<button onClick={()=>{setFailed(false);setReady(false);setReload(v=>v+1);}}>{t("重试","Retry")}</button>}</div>}
+      <dialog ref={reference} className="sg-reference" aria-label={t("原始渲染参考","Original design references")} onClick={e=>{if(e.target===e.currentTarget)reference.current?.close();}}>
+        <button autoFocus onClick={()=>reference.current?.close()}>{t("关闭","Close")} ×</button>
+        <img src="/sangre/material-reference.jpg" alt={t("SANGRE 外观与展开状态原始渲染","Original SANGRE appearance and unfolded display render")} loading="lazy"/>
+        <img src="/sangre/structure-reference.jpg" alt={t("SANGRE 原始结构渲染","Original SANGRE structural render")} loading="lazy"/>
+        <p>{t("原始产品与结构渲染 · 材质与形态参考","ORIGINAL PRODUCT & STRUCTURAL RENDERS")}</p>
       </dialog>
     </div>
   </section>;

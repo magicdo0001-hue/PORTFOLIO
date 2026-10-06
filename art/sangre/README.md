@@ -1,36 +1,27 @@
-# SANGRE web model
+# SANGRE procedural product story
 
-- `public/sangre/sangre.glb`: unmodified user-supplied SolidWorks GLB export (2,418,664 bytes).
-- `public/sangre/screen.png`: unmodified user-supplied dashboard image. Illustrative interface, not live health data.
-- `app/work/sangre/orbit-scene.ts`: presentation materials, display decal and separated assembly view. CAD geometry remains unchanged.
+The active SANGRE opening uses Three.js geometry built in `app/work/sangre/procedural-model.ts`. There are no GLB loaders, imported meshes or videos in the active display. Other case studies and the research/prototype sections are unchanged.
 
-The export contains six meshes in scene traversal order: battery, display, housing, chassis, switch and storage lid. Original Chinese node names have export encoding damage; geometry and order are used to identify parts. Rendering uses warm ivory plastic, a dark display bezel, a transparent lid and a metallic internal chassis, referencing the existing portfolio renders.
+## Reference and CMF
 
-The four guided views support the existing research and physical prototype story. Layer offsets explain assembly relationships; they do not simulate a mechanical disassembly sequence. No electronic detection or medical validation is represented.
+- Envelope: 158 × 100 × 59 mm from the supplied `final.png` engineering sheet; scene scale is 1 unit = 50 mm.
+- Form/finish: `3-2.jpg`, `6.jpg`, `10.jpg` and the engineering views. Warm ivory PP, satin surfaces, rounded wedge walls, black screen surround, clear PET storage cover, a recessed insertion slot and fine parting lines.
+- Procedure-built parts: hollow upper/lower shells, molded supports and screw posts, pads/switch, folding display and hinge, removable tray/cover, three-well test strips and sliding details, boards/components, battery, copper winding and optical enclosure.
+- `public/sangre/screen.png` is the supplied compact UI. `unfolded-ui.png` is the existing adapted full dashboard. `material-reference.jpg` and `structure-reference.jpg` are original user renders, available through the reference dialog.
+- The reconstruction follows the reference silhouette and material roles. Hinge, electronics and assembly paths illustrate the design; they are not verified manufacturing geometry or a functioning detection system.
 
-## Structural reference update
+## Camera and typography
 
-`public/sangre/structure-reference.jpg` is the unmodified user-supplied `10.jpg`. The structure chapter lifts the complete transparent enclosure and removes the display/storage lid, following that reference. `structure-details.ts` supplies illustrative boards, a copper coil, a sensing enclosure, and the base plate/fixing posts absent from the GLB. These are reference-derived presentation geometry, not validated electronics or manufacturing CAD. The original render is available alongside the 3D view for comparison.
+`orbit-scene.ts` owns the renderer, studio environment, camera, shadows and part transforms. `story-timeline.mjs` provides one reversible, continuous scroll timeline: overview → material close-up → unfolding → strip positioning → exploded interior. A brief entry orbit settles into the first composition; the renderer sleeps when the pose and pointer settle, when the stage leaves the viewport, or when the tab is hidden.
 
-## Chapter 04 pre-rendered film
+Aether's scene-led composition informed the presentation. The title uses separate line masks, followed by the description and component callouts. Exit motion runs before each next chapter, and reverse scrolling reverses the masks. Typography is updated from the camera's eased progress, rather than running an unrelated mount animation. Each desktop chapter has a distinct title/annotation composition; narrow views preserve a common reading column and omit fine callout lines. Reduced motion switches directly between held chapter poses. No GSAP, smooth-scroll library or new dependency was added.
 
-The 12-second, 24 fps film was first delivered for Chapter 04, rendered offline with Blender Cycles at 1440 × 1080, at least 48 samples in motion, 96 for the held structure frame, and GPU denoising. The October 2026 scroll-driven story below reuses this film throughout the opening. Both encodes use half-second keyframes and retain the seekable Blob fallback for servers that ignore HTTP Range.
+Clear PET uses geometric wall thickness, transmission, restrained alpha blending and fine edge highlights. A real scene background is sampled by the refraction pass: an alpha-only canvas would give the transmission buffer a white background. Large neutral studio cards, key/fill/rim lighting and restrained exposure keep the ivory from washing out or turning green. The model uses shared material roles and merges fixed details by material inside each moving assembly.
 
-Mechanical sources are preserved in `source/assembly-exploded.glb` and `source/test-strip.glb`. The actual upper/lower enclosure, supports, pads and retainer replace the earlier approximate base. The supplied flat display is divided into two render-scene panels and folded around an inferred presentation hinge; the original source file is unchanged. `source/unfolded-reference.jpg` is the supplied 3-2.jpg; `source/unfolded-ui.svg` and its PNG are an adapted illustrative dashboard, not live health readings. Boards and the copper coil remain reference-derived illustrations. The strip retains its geometry/material regions; only its approach path is animated.
+## Budget and checks
 
-Rebuild:
+Targets: <= 100 main render calls, <= 300k reported triangles in the guided views, capped DPR (desktop 1.65 / mobile 1.35), one shadow-casting light, 2048 desktop / 1024 mobile shadow maps, no post-processing chain. Final held-view captures measured 44–48 calls, 89k–237k triangles, 27–41 geometries and 9 textures; transition views can reach 72 calls and 277k triangles. Culling the hidden electronics reduced the assembled views from 277k to 89k triangles. These renderer counts include the transmission work; animation frame timing in headless Chrome is diagnostic, not a promise for physical mobile devices.
 
-```powershell
-& "F:\TOOL 2\blender.exe" -b --factory-startup --python-exit-code 1 --python scripts/render-sangre-structure.py -- --output "E:\Codex File\OWN WEB\tmp\sangre-film-final"
-python scripts/encode-sangre-structure.py --ffmpeg "F:\TOOL 2\bin\ffmpeg.exe"
-```
+Run `node --test tests/sangre-timeline.test.mjs` for continuous bounded poses, model envelope, exact reset after unfolding/disassembly, strip clearance above the lid/tray and the title's staggered entry/exit. Run the existing production build and rendered HTML checks as well. Browser verification covers all five desktop/mobile compositions, intermediate and reverse motion, English, reduced motion, chapter/range controls, reference modal/Escape, rendering failure/retry and continuation into the research section.
 
-Use `--preview` for four low-resolution keyframes and `--frames 1,91,137,240` for selected full-quality frames. Existing output frames are retained to resume interrupted renders; use a fresh output directory after changing the scene. PNG masters and the generated Blender scene remain in ignored tmp. The final two-second held frame uses frame 240. Encoded deliverables are 1440/960 H.264 videos, a poster, four static keyframes and render metadata under `public/sangre/film`.
-
-## Scroll-driven product story — October 2026
-
-The opening four chapters now share the existing rendered film across one full-screen stage. `orbit.tsx` maps native page scrolling to the video with a single outstanding seek; `story-timeline.mjs` adds reading holds at the unfolded display, positioned strip and complete assembly. Chapter links seek to those holds, the progress input supports keyboard navigation, and the story continues into the existing research and prototype sections. There is no scroll hijacking or automatic loop.
-
-The film keeps its 4:3 composition, with feathered edges into the forest-green stage rather than stretching or cropping the CAD. Stage-specific HTML copy remains outside the video. The original reference opens in a native modal dialog. Reduced-motion preference and the Still frames control use the existing four-frame image without fetching video; loading and network errors retain these readable stills, with retry available. The previous realtime scene source and original GLB are preserved, but the opening no longer imports Three.js or requires realtime rendering.
-
-Run `node --test tests/sangre-timeline.test.mjs` for timeline bounds, chapter destinations and reading holds. Browser QA should additionally cover forward/backward scroll, rapid seek, reduced motion, retry, modal Escape and the research link in both languages and on a narrow viewport.
+Original source GLBs remain in `public/sangre` and `art/sangre/source`; the old rendered film and Blender rebuild scripts are preserved as historical assets. They are not fetched by the active opening. The previous imported-model scene and auxiliary approximated structure implementation have been replaced.

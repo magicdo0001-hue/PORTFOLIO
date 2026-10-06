@@ -1,165 +1,104 @@
-import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { createStructureDetails } from "./structure-details";
+import * as T from "three";
+import { createSangreModel } from "./procedural-model";
+import { storyAt, chapterStops } from "./story-timeline.mjs";
 
-type Hooks = { ready: () => void; error: () => void; marker: (index: number, x: number, y: number, visible: boolean) => void };
-export type SangreScene = { chapter: (index: number) => void; explore: (enabled: boolean) => void; reset: () => void; dispose: () => void };
-const views = [[3.8, 3.3, -5.2], [0.5, 3.7, -5.6], [-4.5, 3.4, -4.4], [4.6, 3.4, -6.8]];
-// SolidWorks coordinates in metres. These points are on the display and storage lid.
-const anchors = [[0.109, 0.089, 0.112], [0.029, 0.104, 0.13]];
+type Hooks = { ready: () => void; error: () => void; marker: (x: number, y: number) => void; frame: (progress: number, intro: number) => void; callouts: (points: number[][]) => void };
+export type SangreScene = { progress: (value: number) => void; motion: (enabled: boolean) => void; dispose: () => void };
 
 export function createSangreScene(host: HTMLElement, hooks: Hooks): SangreScene {
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
-  renderer.setClearColor(0xeeeae2, 0);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.9;
-  renderer.domElement.setAttribute("aria-hidden", "true");
-  host.appendChild(renderer.domElement);
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
-  camera.position.fromArray(views[0]);
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true; controls.enablePan = false; controls.enableZoom = false;
-  controls.enabled = false; renderer.domElement.style.touchAction = "pan-y"; controls.minPolarAngle = 0.25; controls.maxPolarAngle = Math.PI * 0.63;
-  const pmrem = new THREE.PMREMGenerator(renderer), room = new RoomEnvironment();
-  const environment = pmrem.fromScene(room, 0.04);
-  scene.environment = environment.texture; scene.environmentIntensity = 0.6;
-  room.dispose(); pmrem.dispose();
-  scene.add(new THREE.HemisphereLight(0xfffaf0, 0x64645a, 1.25));
-  const key = new THREE.DirectionalLight(0xfff5df, 2.2); key.position.set(-3, 6, -4); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xffffff, 1.3); rim.position.set(4, 2, 4); scene.add(rim);
-  const root = new THREE.Group(); scene.add(root);
-  const center = new THREE.Vector3(0.071875, 0.08060, 0.12908);
-  const scale = 24;
-  const parts: THREE.Object3D[] = [];
-  const base = new Map<THREE.Object3D, THREE.Vector3>();
-  const materials: THREE.Material[] = [];
-  const partMaterials: THREE.MeshPhysicalMaterial[] = [];
-  const textures: THREE.Texture[] = [];
-  let enclosureEdges: THREE.LineSegments | null = null;
-  let disposed = false, frame = 0, chapter = 0, free = false, visible = true, loaded = false, ticks = 90, explosion = 0;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const destination = new THREE.Vector3().fromArray(views[0]);
-  const invalidate = () => { ticks = 80; };
-  controls.addEventListener("change", invalidate);
-  const toScene = (point: number[]) => new THREE.Vector3().fromArray(point).sub(center).multiplyScalar(scale);
-  const details = createStructureDetails(toScene, scale); details.visible = false; root.add(details);
-  const disposeObject = (object: THREE.Object3D) => object.traverse(child => {
-    if (child instanceof THREE.Mesh || child instanceof THREE.LineSegments) { child.geometry.dispose(); for (const material of Array.isArray(child.material) ? child.material : [child.material]) material.dispose(); }
-  });
-  new GLTFLoader().load("/sangre/sangre.glb", gltf => {
-    if (disposed) { disposeObject(gltf.scene); return; }
-    gltf.scene.updateMatrixWorld(true);
-    const names = ["battery", "display", "housing", "chassis", "switch", "storage-lid"];
-    const meshes: THREE.Mesh[] = [];
-    gltf.scene.traverse(object => { if (object instanceof THREE.Mesh) meshes.push(object); });
-    meshes.forEach((source, index) => {
-      const m = new THREE.MeshPhysicalMaterial({ color: 0xd8d3c3, roughness: 0.32, metalness: 0.02, clearcoat: 0.18 });
-      if (index === 0) { m.color.set(0x334c43); m.roughness = 0.45; m.metalness = 0.25; }
-      if (index === 1) { m.color.set(0xdfdacb); m.roughness = 0.25; }
-      if (index === 3) { m.color.set(0x949992); m.metalness = 0.75; m.roughness = 0.35; }
-      if (index === 4) { m.color.set(0x292e2b); m.roughness = 0.6; }
-      if (index === 5) { m.color.set(0xc5d1c6); m.transparent = true; m.opacity = 0.26; m.depthWrite = false; m.roughness = 0.12; m.metalness = 0.08; m.clearcoat = 0.8; m.side = THREE.DoubleSide; }
-      materials.push(m); partMaterials.push(m);
-      const mesh = new THREE.Mesh(source.geometry, m);
-      source.matrixWorld.decompose(mesh.position, mesh.quaternion, mesh.scale);
-      mesh.position.sub(center).multiplyScalar(scale); mesh.scale.multiplyScalar(scale);
-      const group = new THREE.Group(); group.name = names[index]; group.add(mesh); root.add(group);
-      parts.push(group); base.set(group, group.position.clone());
-      if (index === 2) {
-        enclosureEdges = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry, 28), new THREE.LineBasicMaterial({ color: 0xe9f4ed, transparent: true, opacity: 0.18 }));
-        enclosureEdges.position.copy(mesh.position); enclosureEdges.quaternion.copy(mesh.quaternion); enclosureEdges.scale.copy(mesh.scale);
-        enclosureEdges.visible = false; group.add(enclosureEdges);
-      }
-      for (const old of Array.isArray(source.material) ? source.material : [source.material]) old.dispose();
-    });
-    // The display face slopes toward -Z. A separate decal preserves the original CAD geometry.
-    const right = new THREE.Vector3(-1, 0, 0), up = new THREE.Vector3(0, 0.671, 0.741).normalize();
-    const normal = new THREE.Vector3().crossVectors(right, up);
-    const rotation = new THREE.Matrix4().makeBasis(right, up, normal);
-    const screenGroup = parts[1];
-    const bezelMaterial = new THREE.MeshStandardMaterial({ color: 0x121b1b, roughness: 0.22, metalness: 0.1 }); materials.push(bezelMaterial);
-    const bezel = new THREE.Mesh(new THREE.PlaneGeometry(0.067 * scale, 0.058 * scale), bezelMaterial);
-    bezel.position.copy(toScene([0.1030, 0.0861, 0.1135])).addScaledVector(normal, 0.006);
-    bezel.quaternion.setFromRotationMatrix(rotation); screenGroup.add(bezel);
-    const screenMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false }); materials.push(screenMaterial);
-    const display = new THREE.Mesh(new THREE.PlaneGeometry(0.050 * scale, 0.050 * scale), screenMaterial);
-    display.position.copy(bezel.position).addScaledVector(normal, 0.003); display.quaternion.copy(bezel.quaternion); screenGroup.add(display);
-    new THREE.TextureLoader().load("/sangre/screen.png", texture => {
-      if (disposed) { texture.dispose(); return; }
-      texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
-      textures.push(texture); screenMaterial.map = texture; screenMaterial.needsUpdate = true; invalidate();
-    }, undefined, () => { if (!disposed) { screenMaterial.color.set(0x223e3c); invalidate(); } });
-    loaded = true; hooks.ready(); invalidate();
-  }, undefined, () => { if (!disposed) hooks.error(); });
-  const resize = () => {
-    const { width, height } = host.getBoundingClientRect();
-    if (!width || !height) return;
-    renderer.setSize(width, height); camera.aspect = width / height; camera.updateProjectionMatrix(); invalidate();
-  };
-  const ro = new ResizeObserver(resize); ro.observe(host); resize();
-  const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; invalidate(); }); io.observe(host);
-  const onContextLost = (event: Event) => { event.preventDefault(); hooks.error(); };
-  renderer.domElement.addEventListener("webglcontextlost", onContextLost);
-  const onKey = (event: KeyboardEvent) => {
-    if (!free || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home"].includes(event.key)) return;
-    event.preventDefault();
-    if (event.key === "Home") { camera.position.copy(destination); controls.target.set(0, 0, 0); }
-    else { const spherical = new THREE.Spherical().setFromVector3(camera.position); spherical.theta += event.key === "ArrowLeft" ? -0.13 : event.key === "ArrowRight" ? 0.13 : 0; spherical.phi = THREE.MathUtils.clamp(spherical.phi + (event.key === "ArrowUp" ? -0.1 : event.key === "ArrowDown" ? 0.1 : 0), 0.25, Math.PI * 0.63); camera.position.setFromSpherical(spherical); }
-    controls.update(); invalidate();
-  };
-  host.addEventListener("keydown", onKey);
-  const point = new THREE.Vector3();
-  function render() {
-    if (disposed) return;
-    frame = requestAnimationFrame(render);
-    if (!visible || document.hidden || ticks <= 0) return;
-    ticks--;
-    if (!free) camera.position.lerp(destination, reduced.matches ? 1 : 0.08);
-    const targetExplosion = chapter === 3 ? 1 : 0;
-    explosion = THREE.MathUtils.lerp(explosion, targetExplosion, reduced.matches ? 1 : 0.075);
-    parts.forEach((part, index) => {
-      part.position.copy(base.get(part)!);
-      // The reference removes the display and storage lid, then lifts the complete enclosure.
-      part.visible = (index !== 1 && index !== 5) || explosion < 0.12;
-      if (index === 2) part.position.y += explosion * 1.6;
-      if (index === 3 || index === 4) part.position.y -= explosion * 0.04;
-      if (index === 0) part.position.y += explosion * 0.13;
-    });
-    if (partMaterials.length) {
-      const shell = partMaterials[2];
-      const cutaway = explosion > 0.15;
-      if (shell.userData.cutaway !== cutaway) { shell.userData.cutaway = cutaway; shell.needsUpdate = true; }
-      shell.transparent = cutaway; shell.opacity = cutaway ? 0.12 : 1; shell.transmission = 0;
-      shell.thickness = 0.025; shell.ior = 1.47; shell.envMapIntensity = cutaway ? 3 : 1;
-      shell.depthWrite = !cutaway; shell.side = cutaway ? THREE.DoubleSide : THREE.FrontSide;
-      shell.color.set(0xd8d3c3).lerp(new THREE.Color(0xf3f5f0), explosion);
-      shell.roughness = 0.32 - explosion * 0.23; shell.metalness = 0.02 + explosion * 0.1;
-      shell.clearcoat = 0.18 + explosion * 0.65;
-      partMaterials[3].color.set(0x949992);
-      partMaterials[3].metalness = 0.75;
-      partMaterials[0].color.set(0x334c43).lerp(new THREE.Color(0x599c3f), explosion);
-    }
-    if (enclosureEdges) enclosureEdges.visible = explosion > 0.15;
-    details.visible = explosion > 0.15; details.position.y = -0.08 * explosion;
-    controls.target.y = explosion * 0.45;
-    renderer.toneMappingExposure = 0.9 - explosion * 0.06;
-    renderer.setClearColor(explosion > 0.15 ? 0x242822 : 0xeeeae2, 0);
-    controls.update(); renderer.render(scene, camera);
-    anchors.forEach((anchor, index) => {
-      point.copy(toScene(chapter === 3 ? (index === 0 ? [0.113, 0.1, 0.106] : [0.071, 0.073, 0.126]) : anchor));
-      if (chapter === 3 && index === 0) point.y += explosion * 1.6; point.project(camera);
-      hooks.marker(index, (point.x * 0.5 + 0.5) * host.clientWidth, (-point.y * 0.5 + 0.5) * host.clientHeight, !free && loaded && point.z < 1);
-    });
+  const renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+  const mobile=host.clientWidth<700;
+  renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.35:1.65));
+  renderer.setClearColor(0x171a1b,0);renderer.outputColorSpace=T.SRGBColorSpace;
+  renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=.95;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;
+  renderer.domElement.setAttribute("aria-hidden","true");host.appendChild(renderer.domElement);
+  const scene=new T.Scene(), camera=new T.PerspectiveCamera(34,1,.03,80);
+  const model=createSangreModel();scene.add(model.root);
+  // Transmission must sample the actual studio background. An alpha canvas
+  // otherwise gives Three's refraction pass a white clear colour.
+  const backdrop=document.createElement("canvas");backdrop.width=1024;backdrop.height=1024;
+  const bg=backdrop.getContext("2d")!;const gradient=bg.createRadialGradient(740,440,20,630,460,700);
+  gradient.addColorStop(0,"#424a4c");gradient.addColorStop(.5,"#282f32");gradient.addColorStop(1,"#141a1e");bg.fillStyle=gradient;bg.fillRect(0,0,1024,1024);
+  const backdropTexture=new T.CanvasTexture(backdrop);backdropTexture.colorSpace=T.SRGBColorSpace;scene.background=backdropTexture;
+  // A neutral photographic light tent: broad panels make the clear PET edges
+  // readable without tinting the warm-white polymer green or blue.
+  const studio=new T.Scene();studio.background=new T.Color(0x74777b);
+  function card(w:number,h:number,position:number[],power:number) {
+    const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color:new T.Color().setScalar(power),side:T.DoubleSide}));
+    m.position.fromArray(position);m.lookAt(0,0,0);studio.add(m);
   }
-  render();
+  card(5,7,[-4,5,3],2.5);card(2,6,[4,3,-3],2);card(5,2,[0,5,-1],2.3);card(3,4,[1,1,6],1.1);
+  const pmrem=new T.PMREMGenerator(renderer),environment=pmrem.fromScene(studio,.035);
+  scene.environment=environment.texture;scene.environmentIntensity=.45;
+  studio.traverse(o=>{if(o instanceof T.Mesh){o.geometry.dispose();(o.material as T.Material).dispose();}});pmrem.dispose();
+  scene.add(new T.HemisphereLight(0xe8edf3,0x56504a,.45));
+  const key=new T.DirectionalLight(0xfff9ef,2.4);key.position.set(-3.5,6,5);key.castShadow=true;
+  key.shadow.mapSize.set(mobile?1024:2048,mobile?1024:2048);key.shadow.camera.left=-4;key.shadow.camera.right=4;key.shadow.camera.top=5;key.shadow.camera.bottom=-3;key.shadow.normalBias=.012;key.shadow.bias=-.0002;key.shadow.radius=4;scene.add(key);
+  const rim=new T.DirectionalLight(0xe3edff,1.0);rim.position.set(3,3,-4);scene.add(rim);
+  const fill=new T.DirectionalLight(0xffffff,.3);fill.position.set(3,1,5);scene.add(fill);
+  const floor=new T.Mesh(new T.PlaneGeometry(200,200),new T.ShadowMaterial({color:0x000000,opacity:.19}));floor.rotation.x=-Math.PI/2;floor.position.y=-.08;floor.receiveShadow=true;scene.add(floor);
+  const textures:T.Texture[]=[model.materials.plastic.bumpMap!];
+  let disposed=false,frame=0,shown=true,moving=!matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let desired=0,current=0,ticks=0,last=performance.now(),drawn=0,frameTotal=0,frameSamples=0,intro=0;
+  const pointer=new T.Vector2(),parallax=new T.Vector2(),target=new T.Vector3(),point=new T.Vector3();
+  const wake=()=>{if(!frame&&!disposed&&shown&&!document.hidden){frame=requestAnimationFrame(render);}};
+  const loader=new T.TextureLoader();
+  function texture(url:string,material:T.MeshBasicMaterial) {loader.load(url,t=>{if(disposed){t.dispose();return;}t.colorSpace=T.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());textures.push(t);material.map=t;material.color.setScalar(.88);material.needsUpdate=true;ticks=0;wake();},undefined,()=>{if(!disposed){material.color.set(0xc8cccb);wake();}});}
+  texture("/sangre/screen.png",model.materials.displayMaterial);texture("/sangre/unfolded-ui.png",model.materials.fullMaterial);
+  function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h);camera.aspect=w/h;
+    camera.setViewOffset(w,h,w>700?-w*.205:0,w>700?h*.065:0,w,h);camera.updateProjectionMatrix();ticks=0;wake();}
+  const ro=new ResizeObserver(resize);ro.observe(host);resize();
+  const io=new IntersectionObserver(([entry])=>{shown=entry.isIntersecting;if(shown)wake();else{cancelAnimationFrame(frame);frame=0;}});io.observe(host);
+  const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else wake();};document.addEventListener("visibilitychange",visibility);
+  const mouse=(e:PointerEvent)=>{if(e.pointerType!=="mouse"||!moving)return;const r=host.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width-.5,(e.clientY-r.top)/r.height-.5);ticks=0;wake();};
+  const leave=()=>{pointer.set(0,0);ticks=0;wake();};host.addEventListener("pointermove",mouse);host.addEventListener("pointerleave",leave);
+  const contextLost=(e:Event)=>{e.preventDefault();hooks.error();};renderer.domElement.addEventListener("webglcontextlost",contextLost);
+  function render(now:number) {
+    frame=0;if(disposed||!shown||document.hidden)return;
+    const elapsed=now-last,dt=Math.max(.001,Math.min(.05,elapsed/1000));last=now;
+    const p=moving?desired:chapterStops[storyAt(desired).chapter];
+    intro=moving?Math.min(1,intro+dt/2):1;
+    current=moving?T.MathUtils.lerp(current,p,1-Math.exp(-dt*7)):p;
+    if(Math.abs(current-p)<.00003)current=p;
+    parallax.lerp(moving?pointer:new T.Vector2(),1-Math.exp(-dt*4));
+    const pose=storyAt(current);model.pose(pose.unfold,pose.access,pose.explode);
+    const narrow=host.clientWidth<700;
+    // Portrait uses the complete product silhouette, including the opened screen.
+    const enter=desired<.02?Math.pow(1-intro,3):0;
+    const focus=T.MathUtils.smoothstep(current,.17,.23)*(1-T.MathUtils.smoothstep(current,.30,.38));
+    const w=host.clientWidth,h=host.clientHeight,top=h<740?225:260,bottom=h<740?170:186;
+    camera.setViewOffset(w,h,narrow?0:-w*(.205+focus*.10),narrow?(bottom-top)/2:h*.065,w,h);
+    const distance=pose.distance*(narrow?.83*h/Math.max(165,h-top-bottom):1.25)*(1+enter*.12),yaw=pose.yaw+parallax.x*.08-enter*.24,elevation=pose.elevation-parallax.y*.035;
+    target.set(pose.x,pose.y,0);
+    camera.position.set(target.x+Math.sin(yaw)*Math.cos(elevation)*distance,target.y+Math.sin(elevation)*distance,Math.cos(yaw)*Math.cos(elevation)*distance);
+    camera.lookAt(target);
+    if(narrow)camera.fov=45;else camera.fov=34;camera.updateProjectionMatrix();
+    renderer.render(scene,camera);hooks.frame(current,intro);drawn++;if(elapsed>0&&elapsed<100){frameTotal+=elapsed;frameSamples++;}
+    if(pose.chapter===0)point.set(.89,1.14,.70);
+    else if(pose.chapter===1)point.set(1.47,.51,.60);
+    else if(pose.chapter===2){point.set(0,2.35,.04);model.display.localToWorld(point);}
+    else if(pose.chapter===3){point.set(0,.05,.13);model.strip.localToWorld(point);}
+    else {point.set(0,0,.035);model.coil.localToWorld(point);}
+    point.project(camera);hooks.marker((point.x*.5+.5)*host.clientWidth,(-point.y*.5+.5)*host.clientHeight);
+    const calloutPoints:T.Vector3[]=[];
+    if(pose.chapter===0){calloutPoints.push(model.display.localToWorld(new T.Vector3(0,1.5,0)),model.lid.localToWorld(new T.Vector3(.57,.48,0)));}
+    else if(pose.chapter===1){calloutPoints.push(new T.Vector3(-1.44,.44,.58),model.lid.localToWorld(new T.Vector3(.57,.48,.70)));}
+    else if(pose.chapter===2){calloutPoints.push(model.display.localToWorld(new T.Vector3(.6,2.7,.04)),model.display.localToWorld(new T.Vector3(.65,1.5,.04)));}
+    else if(pose.chapter===3){calloutPoints.push(model.lid.localToWorld(new T.Vector3(-.5,.48,.5)),model.strip.localToWorld(new T.Vector3(0,.08,0)));}
+    else {calloutPoints.push(model.coil.localToWorld(new T.Vector3(-.25,0,.03)),model.shell.localToWorld(new T.Vector3(.7,.6,.6)));}
+    hooks.callouts(calloutPoints.map(p=>{p.project(camera);return[(p.x*.5+.5)*host.clientWidth,(-p.y*.5+.5)*host.clientHeight];}));
+    if(drawn===1)hooks.ready();
+    if(drawn%20===0||current===p) {host.dataset.renderStats=JSON.stringify({frames:drawn,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,dpr:renderer.getPixelRatio(),averageFrameMs:+(frameTotal/Math.max(1,frameSamples)).toFixed(1),progress:+current.toFixed(4)});}
+    ticks++;
+    if(current!==p||parallax.distanceTo(pointer)>.001||ticks<3||intro<1)wake();
+  }
+  wake();
   return {
-    chapter(index) { chapter = index; free = false; controls.enabled = false; renderer.domElement.style.touchAction = "pan-y"; destination.fromArray(views[index]); invalidate(); },
-    explore(enabled) { free = enabled; controls.enabled = enabled; renderer.domElement.style.touchAction = enabled ? "none" : "pan-y"; invalidate(); },
-    reset() { camera.position.copy(destination); controls.target.set(0, 0, 0); controls.update(); invalidate(); },
-    dispose() { disposed = true; cancelAnimationFrame(frame); ro.disconnect(); io.disconnect(); host.removeEventListener("keydown", onKey); renderer.domElement.removeEventListener("webglcontextlost", onContextLost); controls.dispose(); disposeObject(root); materials.forEach(m => m.dispose()); textures.forEach(t => t.dispose()); environment.dispose(); renderer.dispose(); renderer.domElement.remove(); },
+    progress(value){desired=T.MathUtils.clamp(Number.isFinite(value)?value:0,0,1);ticks=0;wake();},
+    motion(enabled){moving=enabled;pointer.set(0,0);ticks=0;wake();},
+    dispose(){disposed=true;cancelAnimationFrame(frame);ro.disconnect();io.disconnect();document.removeEventListener("visibilitychange",visibility);host.removeEventListener("pointermove",mouse);host.removeEventListener("pointerleave",leave);renderer.domElement.removeEventListener("webglcontextlost",contextLost);
+      const geometries=new Set<T.BufferGeometry>(),materials=new Set<T.Material>();scene.traverse(o=>{if(o instanceof T.Mesh||o instanceof T.LineSegments){geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));}});
+      Object.values(model.materials).forEach(m=>materials.add(m));geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());environment.dispose();backdropTexture.dispose();key.shadow.map?.dispose();renderer.dispose();renderer.domElement.remove();}
   };
 }
