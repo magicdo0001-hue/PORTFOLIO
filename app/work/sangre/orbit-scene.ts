@@ -45,7 +45,7 @@ export function createSangreScene(host: HTMLElement, hooks: Hooks): SangreScene 
   const wake=()=>{if(!frame&&!disposed&&shown&&!document.hidden){frame=requestAnimationFrame(render);}};
   const loader=new T.TextureLoader();
   function texture(url:string,material:T.MeshBasicMaterial) {loader.load(url,t=>{if(disposed){t.dispose();return;}t.colorSpace=T.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());textures.push(t);material.map=t;material.color.setScalar(.88);material.needsUpdate=true;ticks=0;wake();},undefined,()=>{if(!disposed){material.color.set(0xc8cccb);wake();}});}
-  texture("/sangre/screen.png",model.materials.displayMaterial);texture("/sangre/unfolded-ui.png",model.materials.fullMaterial);
+  texture("/sangre/screen.png",model.materials.displayMaterial);texture("/sangre/portrait-dashboard.svg",model.materials.fullMaterial);
   function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h);camera.aspect=w/h;
     camera.setViewOffset(w,h,w>700?-w*.205:0,w>700?h*.065:0,w,h);camera.updateProjectionMatrix();ticks=0;wake();}
   const ro=new ResizeObserver(resize);ro.observe(host);resize();
@@ -77,14 +77,14 @@ export function createSangreScene(host: HTMLElement, hooks: Hooks): SangreScene 
     renderer.render(scene,camera);hooks.frame(current,intro);drawn++;if(elapsed>0&&elapsed<100){frameTotal+=elapsed;frameSamples++;}
     if(pose.chapter===0)point.set(.89,1.14,.70);
     else if(pose.chapter===1)point.set(1.47,.51,.60);
-    else if(pose.chapter===2){point.set(0,2.35,.04);model.display.localToWorld(point);}
+    else if(pose.chapter===2){point.set(0,.76,0);model.hinge.localToWorld(point);}
     else if(pose.chapter===3){point.set(0,.05,.13);model.strip.localToWorld(point);}
     else {point.set(0,0,.035);model.coil.localToWorld(point);}
     point.project(camera);hooks.marker((point.x*.5+.5)*host.clientWidth,(-point.y*.5+.5)*host.clientHeight);
     const calloutPoints:T.Vector3[]=[];
     if(pose.chapter===0){calloutPoints.push(model.display.localToWorld(new T.Vector3(0,1.5,0)),model.lid.localToWorld(new T.Vector3(.57,.48,0)));}
     else if(pose.chapter===1){calloutPoints.push(new T.Vector3(-1.44,.44,.58),model.lid.localToWorld(new T.Vector3(.57,.48,.70)));}
-    else if(pose.chapter===2){calloutPoints.push(model.display.localToWorld(new T.Vector3(.6,2.7,.04)),model.display.localToWorld(new T.Vector3(.65,1.5,.04)));}
+    else if(pose.chapter===2){calloutPoints.push(model.hinge.localToWorld(new T.Vector3(.6,1.1,0)),model.hinge.localToWorld(new T.Vector3(.65,0,0)));}
     else if(pose.chapter===3){calloutPoints.push(model.lid.localToWorld(new T.Vector3(-.5,.48,.5)),model.strip.localToWorld(new T.Vector3(0,.08,0)));}
     else {calloutPoints.push(model.coil.localToWorld(new T.Vector3(-.25,0,.03)),model.shell.localToWorld(new T.Vector3(.7,.6,.6)));}
     hooks.callouts(calloutPoints.map(p=>{p.project(camera);return[(p.x*.5+.5)*host.clientWidth,(-p.y*.5+.5)*host.clientHeight];}));

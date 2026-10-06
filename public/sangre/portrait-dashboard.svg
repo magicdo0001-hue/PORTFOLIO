@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="2000" viewBox="0 0 900 2000">
+  <title>SANGRE portrait health overview</title>
+  <desc>Illustrative readings and a seven-day trend, designed at the display's native 9:20 aspect ratio.</desc>
+  <rect width="900" height="2000" fill="#f1f2ed"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#243b36">
+    <text x="50" y="86" font-size="30" font-weight="700" letter-spacing="5">SANGRE</text>
+    <text x="734" y="84" text-anchor="end" font-size="24">09:41</text>
+    <rect x="766" y="64" width="69" height="26" rx="6" fill="none" stroke="#52645d" stroke-width="3"/>
+    <rect x="773" y="71" width="49" height="12" rx="2" fill="#52645d"/>
+    <path d="M842 72v10" stroke="#52645d" stroke-width="4" stroke-linecap="round"/>
+    <text x="50" y="183" font-size="59" font-weight="700" letter-spacing="-2">Health overview</text>
+    <text x="53" y="235" font-size="28" fill="#708078">Tuesday, 18 June</text>
+    <rect x="50" y="276" width="800" height="78" rx="39" fill="#e2e7df"/>
+    <rect x="56" y="282" width="258" height="66" rx="33" fill="#fff"/>
+    <g font-size="27" text-anchor="middle">
+      <text x="185" y="326" font-weight="700">Today</text>
+      <text x="450" y="326" fill="#65776e">Week</text>
+      <text x="715" y="326" fill="#65776e">Month</text>
+    </g>
+    <rect x="50" y="393" width="800" height="499" rx="32" fill="#fff"/>
+    <circle cx="94" cy="445" r="8" fill="#d57e64"/>
+    <text x="118" y="454" font-size="27" font-weight="700">Blood glucose</text>
+    <text x="805" y="453" font-size="22" text-anchor="end" fill="#738078">LATEST</text>
+    <text x="88" y="597" font-size="136" font-weight="700" letter-spacing="-6">9.88</text>
+    <text x="395" y="594" font-size="28" fill="#738078">mmol/L</text>
+    <text x="90" y="643" font-size="23" fill="#738078">Your last 7 readings</text>
+    <path d="M92 780H808M92 722H808" fill="none" stroke="#e9ede8" stroke-width="2"/>
+    <path d="M94 759C130 759 173 709 213 716S293 767 331 749S410 688 450 698S529 747 568 732S648 676 687 687S766 709 806 683L806 807H94Z" fill="#f9eae3"/>
+    <path d="M94 759C130 759 173 709 213 716S293 767 331 749S410 688 450 698S529 747 568 732S648 676 687 687S766 709 806 683" fill="none" stroke="#d57e64" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="806" cy="683" r="10" fill="#d57e64" stroke="#fff" stroke-width="5"/>
+    <g font-size="22" fill="#819087">
+      <text x="91" y="850">12 JUN</text>
+      <text x="805" y="850" text-anchor="end">18 JUN</text>
+    </g>
+    <text x="50" y="976" font-size="33" font-weight="700">Latest readings</text>
+    <text x="850" y="974" text-anchor="end" font-size="20" fill="#738078" letter-spacing="2">5 METRICS</text>
+    <g stroke="#d9e0d7" stroke-width="2"><path d="M50 1011H850M50 1122H850M50 1233H850M50 1344H850M50 1455H850M50 1566H850"/></g>
+    <g font-size="29">
+      <circle cx="65" cy="1054" r="7" fill="#d57e64"/><text x="91" y="1065">Uric acid</text>
+      <circle cx="65" cy="1165" r="7" fill="#79a6ab"/><text x="91" y="1176">LDL cholesterol</text>
+      <circle cx="65" cy="1276" r="7" fill="#c2a661"/><text x="91" y="1287">HDL cholesterol</text>
+      <circle cx="65" cy="1387" r="7" fill="#9184a3"/><text x="91" y="1398">Triglycerides</text>
+      <circle cx="65" cy="1498" r="7" fill="#ab8f74"/><text x="91" y="1509">Total cholesterol</text>
+    </g>
+    <g font-size="21" fill="#78867d">
+      <text x="91" y="1097">μmol/L</text><text x="91" y="1208">mmol/L</text><text x="91" y="1319">mmol/L</text><text x="91" y="1430">mmol/L</text><text x="91" y="1541">mmol/L</text>
+    </g>
+    <g font-size="47" text-anchor="end" font-weight="700" letter-spacing="-1">
+      <text x="844" y="1088">359.5</text><text x="844" y="1199">3.57</text><text x="844" y="1310">1.77</text><text x="844" y="1421">1.42</text><text x="844" y="1532">4.89</text>
+    </g>
+    <rect x="50" y="1620" width="800" height="117" rx="28" fill="#304b41"/>
+    <text x="90" y="1691" font-size="31" font-weight="700" fill="#fff">View reading history</text>
+    <path d="M766 1666l14 14-14 14" fill="none" stroke="#e8eee5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="450" y="1798" text-anchor="middle" font-size="22" fill="#78867d">Small moments. A longer view.</text>
+    <text x="450" y="1845" text-anchor="middle" font-size="17" letter-spacing="2" fill="#8b978d">SAMPLE DATA · INTERFACE CONCEPT</text>
+    <path d="M50 1890H850" stroke="#d9e0d7" stroke-width="2"/>
+    <g font-size="25" text-anchor="middle">
+      <text x="173" y="1948" font-weight="700">Overview</text><text x="450" y="1948" fill="#7a897e">History</text><text x="727" y="1948" fill="#7a897e">Device</text>
+    </g>
+    <rect x="132" y="1966" width="82" height="4" rx="2" fill="#304b41"/>
+  </g>
+</svg>

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { Box3, Vector3, Mesh } from "three";
+import { readFileSync } from "node:fs";
+import { Box3, Vector3, Mesh, Raycaster } from "three";
 import { storyAt, chapterStops, textAt } from "../app/work/sangre/story-timeline.mjs";
 import { createSangreModel } from "../app/work/sangre/procedural-model.ts";
 
@@ -28,6 +29,24 @@ test("procedural assembly preserves the drawing envelope and resets after disass
   for(const name of ["lower-shell","upper-shell","folding-display","clear-storage-cover","test-strip","copper-coil","18650-battery","optical-module"])assert.ok(model.root.getObjectByName(name));
   const snapshot=()=>{const result=[];model.root.traverse(o=>result.push([o.name,o.position.toArray(),o.rotation.toArray(),o.visible]));return result;};
   const closed=snapshot();
+  const screen=model.root.getObjectByName("continuous-foldable-screen"),vertices=screen.geometry.getAttribute("position"),uv=screen.geometry.getAttribute("uv");
+  const folded=Array.from(vertices.array),asset=readFileSync(new URL("../public/sangre/portrait-dashboard.svg",import.meta.url),"utf8");
+  const [,width,height]=asset.match(/width="(\d+)" height="(\d+)"/);
+  assert.ok(Math.abs(Number(width)/Number(height)-screen.geometry.parameters.width/screen.geometry.parameters.height)<1e-8,"UI must match the physical display aspect ratio");
+  for(const unfold of [0,.25,.5,.75,1]){
+    model.pose(unfold,0,0);model.root.updateMatrixWorld(true);
+    // Arc length stays constant through the fold, keeping text proportions intact.
+    let length=0;for(let i=2;i<vertices.count;i+=2)length+=new Vector3().fromBufferAttribute(vertices,i).distanceTo(new Vector3().fromBufferAttribute(vertices,i-2));
+    assert.ok(Math.abs(length-2.8)<.004,"fold must bend without stretching the UI");
+  }
+  for(let i=0;i<vertices.count;i++){
+    assert.ok(Math.abs(vertices.getY(i)-(.1+uv.getY(i)*2.8))<1e-6);
+    assert.ok(Math.abs(vertices.getZ(i)-.034)<1e-6,"unfolded screen must be one coplanar surface");
+  }
+  const origin=model.display.localToWorld(new Vector3(0,1.5,.3)),direction=new Vector3(0,0,-1).transformDirection(model.display.matrixWorld);
+  const hit=new Raycaster(origin,direction).intersectObject(model.display,true).find(h=>h.object.visible);
+  assert.ok(hit.object.geometry===screen.geometry,"no hinge bar may cover the middle of the screen");
+  model.pose(0,0,0);assert.deepEqual(Array.from(vertices.array),folded);assert.equal(screen.visible,false,"expanded UI must not leak past the compact display");
   for(let i=42;i<=100;i++){model.pose(0,i/100,0);model.root.updateMatrixWorld(true);const stripBounds=new Box3().setFromObject(model.strip);assert.ok(stripBounds.max.y<new Box3().setFromObject(model.lid).min.y,"strip must clear the lifted cover");if(i>=58)assert.ok(!stripBounds.intersectsBox(new Box3().setFromObject(model.root.getObjectByName("removable-storage-tray"))),"strip must clear the tray after lifting");}
   model.pose(1,1,1);assert.equal(model.materials.shellClear.transmission,1);assert.ok(model.shell.position.y>1);model.pose(0,0,0);assert.deepEqual(snapshot(),closed);
 });

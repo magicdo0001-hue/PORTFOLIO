@@ -9,7 +9,7 @@ import "./orbit.css";
 const partLabels = [
   [["折叠显示屏", "FOLDING DISPLAY"], ["透明收纳罩", "CLEAR STORAGE"]],
   [["细腻哑光 · PP", "SATIN FINISH / PP"], ["透亮边缘 · PET", "CLEAR EDGES / PET"]],
-  [["完整阅读视野", "FULL-HEIGHT VIEW"], ["折叠转轴", "FOLDING JOINT"]],
+  [["完整阅读视野", "FULL-HEIGHT VIEW"], ["柔性折叠区域", "FLEXIBLE DISPLAY"]],
   [["移开收纳上盖", "LIFT TO ACCESS"], ["三孔测试条", "THREE-WELL STRIP"]],
   [["铜线圈", "COPPER WINDING"], ["壳体分层", "LAYERED ENCLOSURE"]],
 ];
@@ -17,7 +17,7 @@ const calloutPositions=[[[.48,.21],[.84,.18]],[[.45,.20],[.84,.145]],[[.79,.18],
 const chapters = [
   { label: ["整体", "Form"], title: ["让关怀，\n回到日常。", "Care belongs\nat home."], body: ["一台设备，连接检测、读取与收纳。为家庭健康，留出一个自然的位置。", "Testing, reading and storage, brought together. A considered place for everyday health."], detail: ["一体之间，各有位置", "Together, with a place for everything"], note: ["倾斜屏幕与透明收纳并置。158 × 100 × 59 mm，让桌面上的每一处空间都有意义。", "An angled display beside clear storage. A considered 158 × 100 × 59 mm footprint."], tag: "A QUIETER KIND OF CARE" },
   { label: ["材质", "Material"], title: ["温和的触感。\n清晰的边界。", "Soft to touch.\nClear by design."], body: ["暖白壳体、深色玻璃与透明上盖。通过质感的差异，自然区分握持、读取和收纳。", "Warm ivory, dark glass and a clear cover. Material contrast gives every surface its own role."], detail: ["暖白 PP，与透明 PET", "Warm ivory PP. Clear PET."], note: ["漫反射的暖白外壳，搭配透亮的收纳上盖。柔和圆角与细分件缝保留清楚的轮廓。", "Satin ivory meets clear storage. Soft radii and fine seams preserve a precise silhouette."], tag: "COLOUR / MATERIAL / FINISH" },
-  { label: ["展开", "Unfold"], title: ["轻轻展开，\n看见全貌。", "Unfold.\nThe full picture."], body: ["倾斜短屏展开为完整长屏。从当下读数，到一段时间的变化，让信息随着动作展开。", "A compact angled screen unfolds into a full dashboard, from a quick reading to a longer view."], detail: ["同一块屏幕，两种阅读状态", "One display. Two reading states."], note: ["折叠转轴连接上下屏面，保留紧凑的日常姿态。屏幕内容为界面设计示意。", "A folding joint connects the two screen leaves. The dashboard is an illustrative interface."], tag: "INTERACTION / FOLDING DISPLAY" },
+  { label: ["展开", "Unfold"], title: ["轻轻展开，\n看见全貌。", "Unfold.\nThe full picture."], body: ["倾斜短屏展开为完整长屏。从当下读数，到一段时间的变化，让信息随着动作展开。", "A compact angled screen unfolds into a full dashboard, from a quick reading to a longer view."], detail: ["同一块屏幕，两种阅读状态", "One display. Two reading states."], note: ["连续屏面沿柔性区域弯折，展开后呈现完整竖屏。屏幕内容为界面设计示意。", "A continuous display curves through the fold and opens into a full-height view. The dashboard is an illustrative interface."], tag: "INTERACTION / FOLDING DISPLAY" },
   { label: ["操作", "Routine"], title: ["顺着动作，\n有序发生。", "A natural\nsequence of care."], body: ["取下上盖，移出测试条，沿插槽定位。将准备与操作，整理成一条清楚的路径。", "Lift the cover, take the strip and align it with the slot. A clear path from preparation to placement."], detail: ["三孔测试条，与专属收纳", "Three wells. Dedicated storage."], note: ["独立重建测试条孔位、黑色底托与活动件。动画展示取用和定位关系。", "Reconstructed wells, carrier and sliding detail. Motion illustrates access and positioning."], tag: "WORKFLOW / TEST STRIP" },
   { label: ["结构", "Inside"], title: ["向内一层，\n理解设计。", "Look inside.\nDesign, revealed."], body: ["外壳逐层抬起，支撑、线圈与电路空间显露。让不可见的结构，也成为设计的叙述。", "The shell lifts away to reveal supports, coil and circuit space. The unseen becomes part of the story."], detail: ["由外到内，层次清晰", "An assembly, revealed in layers"], note: ["根据工图与结构渲染重建。电子元件和拆解路径用于设计说明，不代表已验证电路。", "Rebuilt from drawings and structural renders. Electronics and assembly motion are design illustrations."], tag: "CONSTRUCTION / LAYER BY LAYER" },
 ] as const;

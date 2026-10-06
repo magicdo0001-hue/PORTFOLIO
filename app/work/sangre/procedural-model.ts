@@ -22,7 +22,7 @@ export function createSangreModel() {
   const grain=new Uint8Array(64*64*4);let seed=17;for(let i=0;i<64*64;i++){seed=(seed*1664525+1013904223)>>>0;const v=115+(seed>>>27);grain.set([v,v,v,255],i*4);}
   const microtexture=new T.DataTexture(grain,64,64);microtexture.wrapS=microtexture.wrapT=T.RepeatWrapping;microtexture.repeat.set(7,7);microtexture.needsUpdate=true;
   plastic.bumpMap=microtexture;plastic.bumpScale=.0015;shellClear.bumpMap=microtexture;shellClear.bumpScale=.0015;
-  const fullMaterial = displayMaterial.clone(); fullMaterial.name = "expanded-dashboard";
+  const fullMaterial = displayMaterial.clone(); fullMaterial.name = "expanded-dashboard";fullMaterial.transparent=true;fullMaterial.depthWrite=false;
   const shellMeshes: T.Mesh[] = [];
   const lidEdge=new T.LineBasicMaterial({color:0xd7e0df,transparent:true,opacity:.10,depthWrite:false});
   const shellEdge=lidEdge.clone();shellEdge.opacity=0;
@@ -87,19 +87,45 @@ export function createSangreModel() {
   plate(shell,arrow,.001,black,[.84,.636,.10],0);
 
   const display = group("folding-display"); display.position.set(-.68,.24,.85); display.rotation.x = -.9273;
-  box(display,1.45,1.50,.062,.045,black,[0,.75,0]);
-  const compactScreen = mesh(display,new T.PlaneGeometry(1.26,1.30),displayMaterial,[0,.75,.033]);
-  const bottomScreen = mesh(display,new T.PlaneGeometry(1.26,1.40),fullMaterial,[0,.80,.034]); bottomScreen.visible = false;
-  const uv = bottomScreen.geometry.getAttribute("uv"); for(let i=0;i<uv.count;i++) uv.setY(i,uv.getY(i)*.5);
-  const hinge = group("screen-hinge",display); hinge.position.y = 1.50;
-  const axle = cylinder(display,.042,1.37,black,[0,1.5,-.012]); axle.rotation.z = Math.PI/2;
+  box(display,1.45,1.38,.062,.035,black,[0,.69,0]);
+  const compactScreen = mesh(display,new T.PlaneGeometry(1.26,1.26),displayMaterial,[0,.75,.035]);
+  displayMaterial.transparent=true;displayMaterial.depthWrite=false;compactScreen.renderOrder=2;
+  // One UV surface bends through a finite radius, rather than splitting at a black joint.
+  const screenGeometry=new T.PlaneGeometry(1.26,2.80,1,160);
+  const fullScreen=mesh(display,screenGeometry,fullMaterial);fullScreen.name="continuous-foldable-screen";fullScreen.renderOrder=1;
+  const flexRimGeometry=new T.PlaneGeometry(1.45,.24,1,32);
+  const flexRim=mesh(display,flexRimGeometry,black);flexRim.name="flexible-display-surround";
+  const glassMaterial=new T.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.12,clearcoat:1,clearcoatRoughness:.09,transparent:true,opacity:.045,depthWrite:false});
+  const screenGlass=mesh(display,screenGeometry,glassMaterial);screenGlass.renderOrder=3;
+  fullScreen.castShadow=false;screenGlass.castShadow=false;compactScreen.castShadow=false;
+  const hinge = group("screen-hinge",display);
   const leaf = group("upper-screen-leaf",hinge);
-  box(leaf,1.45,1.50,.062,.045,black,[0,.75,0]);
-  const upperScreen = mesh(leaf,new T.PlaneGeometry(1.26,1.40),fullMaterial,[0,.70,.033]);
-  const topUv = upperScreen.geometry.getAttribute("uv"); for(let i=0;i<topUv.count;i++) topUv.setY(i,topUv.getY(i)*.5+.5);
-  hinge.rotation.x = -Math.PI;
-  // Thin black joint remains at the crease when the two leaves align.
-  box(display,1.28,.015,.008,.003,rubber,[0,1.5,.038]);
+  box(leaf,1.45,1.38,.062,.035,black,[0,.69,-.034]);
+  const axle=cylinder(display,.038,1.37,black,[0,1.5,-.018]);axle.rotation.z=Math.PI/2;
+  // ponytail: circular bend illustrates a flexible display; use measured hinge kinematics for engineering validation.
+  let lastFold=-1;
+  function foldScreen(unfold:number) {
+    if(unfold===lastFold)return;lastFold=unfold;
+    const angle=-Math.PI*(1-unfold),length=.24,start=1.38;
+    const arc=(t:number)=>Math.abs(angle)<.00001?[start+length*t,.034]:[start+length*Math.sin(angle*t)/angle,.034+length*(1-Math.cos(angle*t))/angle];
+    const end=arc(1),mid=arc(.5);
+    hinge.rotation.x=angle;hinge.position.set(0,end[0],end[1]);
+    axle.position.set(0,mid[0]+.052*Math.sin(angle/2),mid[1]-.052*Math.cos(angle/2));
+    const vertices=screenGeometry.getAttribute("position"),uv=screenGeometry.getAttribute("uv");
+    for(let i=0;i<vertices.count;i++){
+      const y=.1+uv.getY(i)*2.8;
+      const yz=y<=start?[y,.034]:y<start+length?arc((y-start)/length):[end[0]+(y-start-length)*Math.cos(angle),end[1]+(y-start-length)*Math.sin(angle)];
+      vertices.setXYZ(i,vertices.getX(i),yz[0],yz[1]);
+    }
+    const rimVertices=flexRimGeometry.getAttribute("position"),rimUv=flexRimGeometry.getAttribute("uv");
+    for(let i=0;i<rimVertices.count;i++){
+      const t=rimUv.getY(i),yz=arc(t);
+      rimVertices.setXYZ(i,rimVertices.getX(i),yz[0]+.003*Math.sin(angle*t),yz[1]-.003*Math.cos(angle*t));
+    }
+    for(const geometry of [screenGeometry,flexRimGeometry]){geometry.getAttribute("position").needsUpdate=true;geometry.computeVertexNormals();geometry.computeBoundingBox();geometry.computeBoundingSphere();}
+    displayMaterial.opacity=1-T.MathUtils.smoothstep(unfold,.04,.25);compactScreen.visible=displayMaterial.opacity>0;
+    fullMaterial.opacity=1-displayMaterial.opacity;fullScreen.visible=fullMaterial.opacity>0;
+  }
 
   const lid = group("clear-storage-cover"); lid.position.set(.86,.63,0);
   plate(lid,ring(1.29,1.87,.105,.034),.48,clear,[0,0,0],.01);
@@ -161,8 +187,8 @@ export function createSangreModel() {
   const spare=testStrip("stored-test-strip");spare.position.set(1.03,.8,-.04);spare.rotation.y=-.10;
 
   // Merge static meshes by material inside each moving group. Detail does not cost
-  // a draw call per pin, screw or component. The two display planes stay separate.
-  const keep = new Set<T.Object3D>([compactScreen,bottomScreen,upperScreen]);
+  // a draw call per pin, screw or component. The flexible display and moving hinge stay separate.
+  const keep = new Set<T.Object3D>([compactScreen,fullScreen,screenGlass,flexRim,axle]);
   root.traverse(object=>{
     if(!(object instanceof T.Group))return;
     const batches = new Map<T.Material,T.Mesh[]>();
@@ -184,8 +210,7 @@ export function createSangreModel() {
     display.position.set(-.68,.24+explode*5.8,.85-explode*.7);
     display.rotation.x=-.9273+unfold*.17;
     display.visible=explode<.9;
-    hinge.rotation.x=-Math.PI*(1-unfold);hinge.position.z=-.072*(1-unfold);
-    compactScreen.visible=unfold<.1;bottomScreen.visible=unfold>=.1;
+    foldScreen(unfold);
     const open=T.MathUtils.smoothstep(access,0,.40),lift=T.MathUtils.smoothstep(access,.40,.58),travel=T.MathUtils.smoothstep(access,.58,.86),settle=T.MathUtils.smoothstep(access,.86,1);
     lid.position.set(.86+open*.60,.63+open*.90+explode*5,-open*.90);
     lid.rotation.z=-open*.08;lid.visible=explode<.85;
@@ -203,5 +228,5 @@ export function createSangreModel() {
     retainer.visible=explode>.25;retainer.position.y=.23+explode*1.68;
   }
   pose(0,0,0);
-  return { root, base, shell, display, lid, strip, coil, marker, materials:{plastic,black,clear,shellClear,displayMaterial,fullMaterial}, pose };
+  return { root, base, shell, display, hinge, lid, strip, coil, marker, materials:{plastic,black,clear,shellClear,displayMaterial,fullMaterial}, pose };
 }
