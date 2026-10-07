@@ -5,8 +5,8 @@
 - Replace the homepage earbuds with the user's SANGRE CAD and KeyShot materials. Preserve the existing background, typography and scroll-loop language.
 - Keep Discover Space and independent `/specs` and `/preorder` contents and original models unchanged for this iteration.
 - Testing uses a labelled presentation cutaway: hide the clear cover to reveal the guide; do not invent its opening mechanism.
-- The recorded cartridge motion is a flat slide along its long axis, sample wells upward, with the red-marked end remaining outside.
-- The cartridge enters from the FRONT, alongside the display (-Z in the web model), toward the back. Rotate the exported cartridge around its own centre so the non-red end enters first; leave the red end exposed at the front lip, as in the user's insertion recording. Do not infer entry side from an arbitrary PCA sign.
+- The cartridge slides horizontally from the FRONT, alongside the display (-Z in the web model), toward the back, sample wells upward. Keep this confirmed travel direction.
+- Latest user correction: the FLAT end enters first; the BEVELED end stays outside. Preserve the source CAD orientation; the previous 180-degree rotation was wrong. Identify ends by actual geometry, not the red marker or an arbitrary PCA sign. Earlier red-end-outside wording was our mistaken inference and is superseded.
 - Use Design Taste Frontend for visual review, then iterate on rendered desktop and mobile evidence.
 - User CAD describes the enclosure and components. Display hinge interpolation is a presentation approximation. Screen readings are illustrative, not verified clinical functionality.
 - Match the engineering sheet's Front view and KeyShot render when placing UI. The 90-gloss `.012` surface is the back; the front screen is the thin 20-gloss `.016` surface. Rear cradle and port must never be mistaken for the front display.

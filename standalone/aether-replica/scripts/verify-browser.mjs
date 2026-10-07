@@ -79,7 +79,16 @@ try {
       for(const x of[bounds.min.x,bounds.max.x])for(const y of[bounds.min.y,bounds.max.y])for(const z of[bounds.min.z,bounds.max.z]){
         const v=new T.Vector3(x,y,z).project(s.camera);points.push([(v.x+1)*innerWidth/2,(1-v.y)*innerHeight/2]);
       }
+      // The flat leading end has a full-depth bottom; the outside bevel rises at the tip.
+      const body=s.device.getObjectByName('test-strip-4'),bodyBounds=box('test-strip-4');
+      const vertices=body.geometry.attributes.position,endBottom=[Infinity,Infinity];
+      for(let i=0;i<vertices.count;i++){
+        const v=new T.Vector3(vertices.getX(i),vertices.getY(i),vertices.getZ(i)).applyMatrix4(body.matrixWorld);
+        if(v.z>bodyBounds.max.z-.056)endBottom[0]=Math.min(endBottom[0],v.y);
+        if(v.z<bodyBounds.min.z+.056)endBottom[1]=Math.min(endBottom[1],v.y);
+      }
       return{body:{min:box('test-strip-4').min.toArray(),max:box('test-strip-4').max.toArray()},
+        endBottom,
         framed:points.every(([x,y])=>x>0&&x<innerWidth&&y>64&&y<innerHeight),
         red:box('test-strip-7').getCenter(new T.Vector3()).toArray(),
         wells:['test-strip-5','test-strip-6'].map(n=>box(n).getCenter(new T.Vector3()).toArray()),
@@ -91,7 +100,7 @@ try {
     await page.waitForTimeout(1450);const sliding=await cartridge();await snap('cartridge-sliding');
     await page.waitForTimeout(1600);const inserted=await cartridge();await snap('cartridge-inserted');
     check(entry.red[2]<sliding.red[2]&&sliding.red[2]<inserted.red[2]&&Math.abs(entry.red[1]-inserted.red[1])<1e-6&&sliding.framed&&inserted.framed,'Recorded gesture slides horizontally from front toward back without cropping');
-    check(inserted.wells.every(v=>v[2]>inserted.red[2])&&inserted.red[2]<inserted.front&&inserted.body.max[2]>inserted.front&&inserted.inserted===1&&inserted.scenes.every(v=>Math.abs(v-Math.PI)<1e-6),'Non-red end enters first; red end remains exposed; both looping scenes use the correction');
+    check(inserted.endBottom[0]+.05<inserted.endBottom[1]&&inserted.body.min[2]<inserted.front&&inserted.body.max[2]>inserted.front&&inserted.inserted===1&&inserted.scenes.every(v=>Math.abs(v)<1e-6),'Flat end enters first; beveled end remains outside; both looping scenes use the correction');
     await chapter(0);await page.evaluate(()=>{window.__sangre.bridge.ScrollController.isIdleScrollAllowed=true;});
    }
    await page.locator('#menu-toggle').click();await page.waitForTimeout(1400);await snap('menu');

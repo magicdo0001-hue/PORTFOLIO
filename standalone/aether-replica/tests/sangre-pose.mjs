@@ -8,7 +8,7 @@ assert(metadata.screenFront[1]>.6&&metadata.screenFront[2]<-.6,'UI must face the
 assert(metadata.screenCenter[2]<-.015,'UI belongs on the front slope, not the rear slope');
 assert(metadata.screenWidth>.075&&metadata.screenWidth<.08,'Use the 77.5 mm front panel, not the 88.5 mm rear panel');
 assert(metadata.travel[2]<-.99,'Cartridge must start outside the front (-Z) and slide inward');
-assert(metadata.stripEndOffset>0&&metadata.stripEndOffset<.02,'Keep the red end exposed at the front lip');
+assert(metadata.stripEndOffset>0&&metadata.stripEndOffset<.02,'Keep the beveled end exposed at the front lip');
 for(const p of [0,.125,.375]){
   const [yaw,pitch]=poseAt(p).camera;
   const view=[Math.sin(yaw)*Math.cos(pitch),Math.sin(pitch),Math.cos(yaw)*Math.cos(pitch)];

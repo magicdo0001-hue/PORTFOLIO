@@ -48,12 +48,7 @@ function installScene(scene, bridge, metadata, env) {
   const upper=device.getObjectByName('display-upper');
   const initialDisplay=display.position.clone(),initialStrip=strip.position.clone();
   const up=new T.Vector3(...metadata.screenUp),travel=new T.Vector3(...metadata.travel);
-  // The exported cartridge is reversed: the video keeps the red end at the front.
-  // Rotate around its own centre because CAD vertices contain their assembly offset.
-  device.updateMatrixWorld(true);
-  const stripCenter=device.worldToLocal(new T.Box3().setFromObject(strip).getCenter(new T.Vector3()));
-  strip.rotation.y=Math.PI;
-  initialStrip.add(stripCenter).sub(stripCenter.clone().applyAxisAngle(new T.Vector3(0,1,0),Math.PI));
+  // Keep the CAD orientation: the flat +Z end leads, the bevel stays outside at -Z.
   initialStrip.addScaledVector(travel,metadata.stripEndOffset);
   device.traverse(o=>{
     if(!o.isMesh)return;
