@@ -11,6 +11,8 @@ assert(metadata.travel[2]<-.99,'Cartridge must start outside the front (-Z) and 
 assert(metadata.stripEndOffset>0&&metadata.stripEndOffset<.02,'Keep the beveled end exposed at the front lip');
 const glb=readFileSync(new URL('../public/assets/sangre/sangre-display.glb',import.meta.url));
 const model=JSON.parse(glb.subarray(20,20+glb.readUInt32LE(12)).toString());
+assert(model.extensionsRequired.includes('KHR_draco_mesh_compression'),'Use the already-supported Draco decoder to reduce model transfer');
+assert(glb.length<3_000_000,'Keep the display GLB below 3 MB without dropping CAD parts');
 const assembly=model.nodes.findIndex(n=>n.name==='display-assembly'),members=new Set(),pending=[assembly];
 assert(assembly>=0,'Keep a complete display assembly separate from the ivory enclosure');
 while(pending.length){const i=pending.pop();members.add(i);pending.push(...(model.nodes[i].children||[]));}

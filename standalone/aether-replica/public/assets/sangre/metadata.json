@@ -29,5 +29,5 @@
   "geometry": "user CAD exterior/interior; presentation display rig",
   "folding": "presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation",
   "ui": "illustrative design UI, not validated clinical readings",
-  "bytes": 9519544
+  "bytes": 2301888
 }

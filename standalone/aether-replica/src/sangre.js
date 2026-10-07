@@ -196,7 +196,7 @@ function installScene(scene, bridge, metadata, env) {
 
 export function startSangre(screen) {
   window.__sangreEnabled=true;
-  let stopped=false;
+  let stopped=false,labels;
   const onReady=async()=>{
     try {
       const bridge=window.__AetherRuntime;
@@ -207,11 +207,12 @@ export function startSangre(screen) {
       const env=environment(T,gl.renderer.instance);
       gl.renderer.instance.shadowMap.enabled=true;
       for(const name of ['mainA','mainB'])installScene(gl.world.scenes[name],bridge,metadata,env);
-      const labels=document.createElement('div');labels.className='sangre-callouts';labels.setAttribute('aria-hidden','true');
+      labels=document.createElement('div');labels.className='sangre-callouts';labels.setAttribute('aria-hidden','true');
       labels.innerHTML='<div class="sangre-callout"><span>Clear storage cover</span><small>Consumables, kept in view.</small></div><div class="sangre-callout"><span>Slide in from the front</span><small>Cover omitted to reveal the guide.</small></div><div class="sangre-callout"><span>18650 battery</span><small>The power module.</small></div><div class="sangre-callout"><span>Photometer assembly</span><small>The sensing module in the CAD.</small></div><div class="sangre-callout"><span>Enclosure</span><small>Separate shells reveal the assembly.</small></div>';
       document.body.append(labels);
       const elements=[...labels.children];
       const update=()=>{
+        if(stopped)return;
         const current=gl.world.activeScenes.current;
         const home=!!current.sangre && !!document.querySelector('main[data-page="homepage"]');
         document.documentElement.dataset.sangrePage=home?'home':'original';
@@ -245,5 +246,5 @@ export function startSangre(screen) {
     }
   };
   window.addEventListener('aether:ready',onReady);
-  return()=>{stopped=true;window.removeEventListener('aether:ready',onReady);};
+  return()=>{stopped=true;labels?.remove();window.removeEventListener('aether:ready',onReady);};
 }

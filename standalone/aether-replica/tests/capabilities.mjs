@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { supportsWebGL2 } from '../src/capabilities.js';
+let released=0;
+globalThis.window={WebGL2RenderingContext:class {}};
+globalThis.document={createElement:()=>({getContext:()=>({getExtension:()=>({loseContext:()=>released++})})})};
+assert(supportsWebGL2());assert.equal(released,1,'Release the capability probe instead of consuming a GPU context');
+document.createElement=()=>({getContext:()=>null});assert.equal(supportsWebGL2(),false);
+document.createElement=()=>({getContext:()=>{throw new Error('Blocked context');}});assert.equal(supportsWebGL2(),false);
+window.WebGL2RenderingContext=undefined;assert.equal(supportsWebGL2(),false);
+console.log('PASS: WebGL2 probe, release, missing API, null context and blocked context');

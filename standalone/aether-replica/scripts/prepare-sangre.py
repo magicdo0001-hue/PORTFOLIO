@@ -195,7 +195,9 @@ for o in imported:
 kept.append(interior)
 bpy.ops.object.select_all(action='DESELECT')
 for o in kept:o.select_set(True)
-bpy.ops.export_scene.gltf(filepath=str(OUT/'sangre-display.glb'),export_format='GLB',use_selection=True,export_cameras=False,export_lights=False,export_animations=False,export_extras=True)
+bpy.ops.export_scene.gltf(filepath=str(OUT/'sangre-display.glb'),export_format='GLB',use_selection=True,export_cameras=False,export_lights=False,export_animations=False,export_extras=True,
+    export_draco_mesh_compression_enable=True,export_draco_mesh_compression_level=6,
+    export_draco_position_quantization=20,export_draco_normal_quantization=12,export_draco_texcoord_quantization=16)
 metadata={'source':'User KeyShot GLB and exploded CAD','travel':[travel.x,travel.z,-travel.y],'stripEndOffset':.012,'sampleLevelOffset':.0021,'screenWidth':width,'panelHeight':half_height,'compactHeight':compact_height,'screenUp':[up.x,up.z,-up.y],'screenFront':[normal.x,normal.z,-normal.y],'screenCenter':[screen_center.x,screen_center.z,-screen_center.y],'screenSource':'最终.016 front; 最终.012 rear retained without UI','geometry':'user CAD exterior/interior; presentation display rig','folding':'presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation','ui':'illustrative design UI, not validated clinical readings','bytes':(OUT/'sangre-display.glb').stat().st_size}
 (OUT/'metadata.json').write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding='utf-8')
 assert width>.03 and half_height>.02

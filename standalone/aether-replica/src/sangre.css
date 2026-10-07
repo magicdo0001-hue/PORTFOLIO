@@ -14,7 +14,14 @@ html[data-sangre-page="home"] #isSound .section__desc { position:fixed;left:7vw;
 html[data-sangre-page="home"] .nav__logo-w { text-transform:uppercase; }
 .sangre-load-error { position:fixed;inset:40% 20%;z-index:20;text-align:center;color:#edf7ff; }
 .sangre-load-error button { margin-top:20px;padding:12px 24px;border:1px solid #b7c7d7;border-radius:4px;background:#133153;color:inherit;cursor:pointer; }
+.sangre-startup { position:fixed;inset:0;z-index:19;background:#081321;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;color:#edf3fa;pointer-events:none;transition:opacity .45s ease,visibility .45s; }
+.sangre-startup .startup-title { margin:0 0 24px;font-size:clamp(48px,6vw,90px);line-height:1.05;letter-spacing:-.06em; }
+.sangre-startup img { width:100%;height:auto;max-height:76vh;object-fit:contain; }
+html.sangre-ready.is-ready .sangre-startup { opacity:0;visibility:hidden; }
+html.has-sangre-startup:not(.is-ready) .loader-w { visibility:hidden; }
 @media(max-width:767px) {
+  .sangre-startup { grid-template-columns:1fr;gap:24px;padding:100px 24px 40px;align-content:center; }
+  .sangre-startup img { max-height:42vh; }
   .sangre-callout { width:calc(100vw - 40px);max-width:none;text-align:center; }
   .sangre-callout small,.sangre-callout:before { display:none; }
   .sangre-callout span { font-size:13px; }
@@ -23,5 +30,6 @@ html[data-sangre-page="home"] .nav__logo-w { text-transform:uppercase; }
 }
 @media(max-width:767px) and (max-height:780px) { #isSound .section__title { position:relative;top:-20px; } }
 @media(prefers-reduced-motion:reduce) {
+  .sangre-startup { transition:none; }
   .sangre-callout { transition:none; }
 }
