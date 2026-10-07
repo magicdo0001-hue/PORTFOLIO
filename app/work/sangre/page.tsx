@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SangreOrbit from "./orbit";
 import {
   FactRail,
@@ -57,7 +58,7 @@ export default function SangrePage() {
         </aside>
         <div className="sangre-discovery__media">
           <figure>
-            <img
+            <Image unoptimized width={1586} height={992}
               src="/portfolio/sangre-form-studies.png"
               alt="SANGRE 外观形态与功能分区研究"
               loading="lazy"
@@ -65,7 +66,7 @@ export default function SangrePage() {
             <figcaption>形态研究 · 产品架构</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={2000} height={2000}
               src="/portfolio/sangre-volume-iteration.jpg"
               alt="SANGRE 机身体量与耗材区域迭代"
               loading="lazy"
@@ -73,7 +74,7 @@ export default function SangrePage() {
             <figcaption>体量迭代 · 细节研究</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={3648} height={2736}
               src="/portfolio/sangre-vacuum-forming.jpg"
               alt="SANGRE 实体模型制作与体量验证"
               loading="lazy"
@@ -85,7 +86,7 @@ export default function SangrePage() {
 
       <section className="sangre-prototype chapter">
         <div className="sangre-prototype__image">
-          <img
+          <Image unoptimized width={2400} height={1600}
             src="/portfolio/sangre-prototype.webp"
             alt="SANGRE 一比一功能原型"
           />
@@ -98,7 +99,7 @@ export default function SangrePage() {
             多轮实体模型用于验证屏幕角度、耗材接近性、试纸操作和收纳逻辑。每一次制造，都直接改变下一轮设计决策。
           </p>
           <figure>
-            <img
+            <Image unoptimized width={2000} height={2000}
               src="/portfolio/sangre-interaction-test.jpg"
               alt="用户操作 SANGRE 原型进行交互测试"
               loading="lazy"
@@ -112,13 +113,13 @@ export default function SangrePage() {
         <div className="shell">
           <p className="chapter-label">04 / 工程验证</p>
           <figure className="technical-proof__drawing">
-            <img
+            <Image unoptimized width={1352} height={939}
               src="/portfolio/sangre-drawing.webp"
               alt="SANGRE 技术图纸"
             />
           </figure>
           <figure className="technical-proof__exploded">
-            <img
+            <Image unoptimized width={1024} height={1024}
               src="/portfolio/sangre-exploded.jpg"
               alt="SANGRE 爆炸结构图"
             />

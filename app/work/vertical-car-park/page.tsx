@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProjectCityHero } from "../project-city/city-hero";
 import {
   FactRail,
@@ -56,7 +57,7 @@ export default function VerticalCarParkPage() {
           </p>
         </div>
         <figure className="arti64-context__wide">
-          <img
+          <Image unoptimized width={1280} height={720}
             src="/portfolio/arti64-collector-context.jpg"
             alt="收藏者桌面上并存的多种模型车收纳方式"
             loading="lazy"
@@ -75,7 +76,7 @@ export default function VerticalCarParkPage() {
         </div>
         <div className="shell arti64-process__grid">
           <figure className="arti64-process__printing" id="printing">
-            <img
+            <Image unoptimized width={1280} height={964}
               src="/portfolio/arti64-printing.jpg"
               alt="3D 打印机平台上的白色 Arti64 车架原型"
               loading="lazy"
@@ -97,7 +98,7 @@ export default function VerticalCarParkPage() {
             </div>
           </div>
           <figure className="arti64-process__production" id="production">
-            <img
+            <Image unoptimized width={1280} height={1700}
               src="/portfolio/arti64-production.jpg"
               alt="成批打印并分类整理的 Arti64 车架零件"
               loading="lazy"
@@ -126,14 +127,14 @@ export default function VerticalCarParkPage() {
           </dl>
         </div>
         <figure className="arti64-system__poster">
-          <img
+          <Image unoptimized width={1190} height={1586}
             src="/portfolio/arti64-poster.jpg"
             alt="Arti64 车架产品海报与组合定价"
             loading="lazy"
           />
         </figure>
         <figure className="arti64-system__market">
-          <img
+          <Image unoptimized width={1280} height={914}
             src="/portfolio/arti64-market-table.jpg"
             alt="Arti64 在线下活动中的产品、海报与价格陈列"
             loading="lazy"
@@ -145,14 +146,14 @@ export default function VerticalCarParkPage() {
       <section className="arti64-outcome chapter shell" id="display-system">
         <div className="arti64-outcome__media">
           <figure>
-            <img
+            <Image unoptimized width={1280} height={853}
               src="/portfolio/arti64-display-wall.jpg"
               alt="装满一比六十四模型车的 Arti64 模块化展示架"
               loading="lazy"
             />
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1280} height={1920}
               src="/portfolio/arti64-collection.jpg"
               alt="Arti64 模块化车架组成的模型车展示墙"
               loading="lazy"

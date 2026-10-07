@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProjectCityHero } from "../project-city/city-hero";
 import {
   FactRail,
@@ -91,7 +92,7 @@ export default function BatteryPackagingPage() {
           </dl>
         </div>
         <figure>
-          <img
+          <Image unoptimized width={1600} height={900}
             src="/portfolio/battery-museum-01.jpeg"
             alt="CR2032 纽扣电池包装的结构研究图"
           />
@@ -106,7 +107,7 @@ export default function BatteryPackagingPage() {
         </header>
         <div className="battery-safety__layout">
           <figure>
-            <img
+            <Image unoptimized width={1600} height={900}
               src="/portfolio/battery-museum-03.jpeg"
               alt="纽扣电池包装开启机制原型"
             />
@@ -127,14 +128,14 @@ export default function BatteryPackagingPage() {
       <section className="battery-circular chapter" id="circular">
         <div className="battery-circular__media">
           <figure>
-            <img
+            <Image unoptimized width={1600} height={900}
               src="/portfolio/battery-museum-04.jpeg"
               alt="CR2032 纽扣电池可回收包装方案"
             />
             <figcaption>模块化包装方案与材料连接关系</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1920} height={1080}
               src="/portfolio/battery-museum-05.jpeg"
               alt="纽扣电池包装的纸塑分离演示"
             />

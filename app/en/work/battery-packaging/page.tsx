@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProjectCityHero } from "../../../work/project-city/city-hero";
 import type { Metadata } from "next";
 import {
@@ -96,7 +97,7 @@ export default function BatteryPackagingEnglishPage() {
           </dl>
         </div>
         <figure>
-          <img
+          <Image unoptimized width={1600} height={900}
             src="/portfolio/battery-museum-01.jpeg"
             alt="Structural research for the CR2032 button-cell package"
           />
@@ -114,7 +115,7 @@ export default function BatteryPackagingEnglishPage() {
         </header>
         <div className="battery-safety__layout">
           <figure>
-            <img
+            <Image unoptimized width={1600} height={900}
               src="/portfolio/battery-museum-03.jpeg"
               alt="Prototype of the button-cell package opening mechanism"
             />
@@ -137,14 +138,14 @@ export default function BatteryPackagingEnglishPage() {
       <section className="battery-circular chapter" id="circular">
         <div className="battery-circular__media">
           <figure>
-            <img
+            <Image unoptimized width={1600} height={900}
               src="/portfolio/battery-museum-04.jpeg"
               alt="Recyclable CR2032 button-cell packaging concept"
             />
             <figcaption>Modular packaging and material connections</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1920} height={1080}
               src="/portfolio/battery-museum-05.jpeg"
               alt="Paper and PET separation demonstration"
             />

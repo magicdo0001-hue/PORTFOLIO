@@ -53,3 +53,6 @@ next-env.d.ts
 /public/rhine-lab/
 /RhineLabUI/node_modules/
 /RhineLabUI/dist/
+
+# TypeScript incremental caches
+*.tsbuildinfo

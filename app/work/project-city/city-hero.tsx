@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { cityProjects, type CityTheme } from "./city-data";
@@ -88,7 +90,7 @@ export function ProjectCityHero({ theme, locale = "zh" }: { theme: CityTheme; lo
         </div>
       </header>
       <div id="project-town" className={`uni-city__world is-${status}`} role="group" aria-label={overview.scene}>
-        <img className="uni-city__fallback" src={project.fallback} alt={overview.scene} fetchPriority="high" />
+        <Image unoptimized loading="eager" className="uni-city__fallback" src={project.fallback} alt={overview.scene} fetchPriority="high" />
         <div ref={host} className="uni-city__canvas" role="group" tabIndex={status === "ready" ? 0 : -1} aria-label={en ? "3D model. Select a building to focus. Drag to rotate, right-drag to pan, scroll to zoom. Arrow keys rotate, Shift and arrows pan, plus or minus zoom, Home returns to overview." : "3D 微缩模型。点击建筑聚焦。拖动旋转，右键拖动平移，滚轮缩放。方向键旋转，Shift 加方向键平移，加减号缩放，Home 返回全景。"} />
         <div className="uni-city__labels">
           {districts.map((item, index) => (

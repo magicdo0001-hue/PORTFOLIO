@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import Link from "next/link";
 import {
   type CSSProperties,
@@ -17,7 +19,7 @@ const projects = [
     type: "医疗产品",
     year: "2024",
     href: "/work/sangre",
-    image: "/portfolio/sangre-hero.webp",
+    image: { src: "/portfolio/sangre-hero.webp", width: 2000, height: 2000 },
   },
   {
     index: "02",
@@ -25,7 +27,7 @@ const projects = [
     type: "产品再设计",
     year: "2024",
     href: "/work/bambino",
-    image: "/portfolio/bambino-cutout.png",
+    image: { src: "/portfolio/bambino-cutout.png", width: 1672, height: 941 },
   },
   {
     index: "03",
@@ -33,7 +35,7 @@ const projects = [
     type: "数字产品",
     year: "2024",
     href: "/work/simple-uni-life",
-    image: "/portfolio/unilife-hero.webp",
+    image: { src: "/portfolio/unilife-hero.webp", width: 2287, height: 1137 },
   },
 ];
 
@@ -138,7 +140,7 @@ export default function InfiniteProjectMenu() {
               didDrag.current = false;
             }}
           >
-            <img src={project.image} alt="" draggable={false} />
+            <Image unoptimized loading="eager" src={project.image} alt="" draggable={false} />
             <span>
               {project.index} / {project.type}
             </span>

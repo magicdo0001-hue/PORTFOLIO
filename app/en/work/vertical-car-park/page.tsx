@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ProjectCityHero } from "../../../work/project-city/city-hero";
 import type { Metadata } from "next";
 import {
@@ -64,7 +65,7 @@ export default function VerticalCarParkEnglishPage() {
           </p>
         </div>
         <figure className="arti64-context__wide">
-          <img
+          <Image unoptimized width={1280} height={720}
             src="/portfolio/arti64-collector-context.jpg"
             alt="Multiple storage formats in a model-car collection"
             loading="lazy"
@@ -89,7 +90,7 @@ export default function VerticalCarParkEnglishPage() {
         </div>
         <div className="shell arti64-process__grid">
           <figure className="arti64-process__printing" id="printing">
-            <img
+            <Image unoptimized width={1280} height={964}
               src="/portfolio/arti64-printing.jpg"
               alt="White ARTI64 rack prototypes on a 3D-printer bed"
               loading="lazy"
@@ -113,7 +114,7 @@ export default function VerticalCarParkEnglishPage() {
             </div>
           </div>
           <figure className="arti64-process__production" id="production">
-            <img
+            <Image unoptimized width={1280} height={1700}
               src="/portfolio/arti64-production.jpg"
               alt="Batches of ARTI64 rack components prepared for assembly"
               loading="lazy"
@@ -148,14 +149,14 @@ export default function VerticalCarParkEnglishPage() {
           </dl>
         </div>
         <figure className="arti64-system__poster">
-          <img
+          <Image unoptimized width={1190} height={1586}
             src="/portfolio/arti64-poster.jpg"
             alt="ARTI64 product poster and bundle pricing"
             loading="lazy"
           />
         </figure>
         <figure className="arti64-system__market">
-          <img
+          <Image unoptimized width={1280} height={914}
             src="/portfolio/arti64-market-table.jpg"
             alt="ARTI64 products, posters and pricing at an in-person market"
             loading="lazy"
@@ -169,14 +170,14 @@ export default function VerticalCarParkEnglishPage() {
       <section className="arti64-outcome chapter shell" id="display-system">
         <div className="arti64-outcome__media">
           <figure>
-            <img
+            <Image unoptimized width={1280} height={853}
               src="/portfolio/arti64-display-wall.jpg"
               alt="ARTI64 modular display racks filled with 1:64 model cars"
               loading="lazy"
             />
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1280} height={1920}
               src="/portfolio/arti64-collection.jpg"
               alt="A model-car display wall assembled from ARTI64 modules"
               loading="lazy"

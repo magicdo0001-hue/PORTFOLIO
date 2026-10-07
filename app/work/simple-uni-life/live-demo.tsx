@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useState } from "react";
 
 const PRODUCT_URL = "https://simpleunilife.com/";
@@ -77,7 +79,7 @@ export function SimpleUniLifeLiveDemo({ locale = "zh" }: { locale?: "zh" | "en" 
 
         <div className="unilife-live__viewport">
           {!isActive && (
-            <img
+            <Image unoptimized width={2541} height={1220}
               className="unilife-live__poster"
               src="/portfolio/unilife-menu-search.png"
               alt={text.posterAlt}

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { districts, type DistrictId } from "./city-data";
@@ -84,7 +86,7 @@ export function UniLifeCityHero({ locale = "zh" }: { locale?: "zh" | "en" }) {
         </div>
       </header>
       <div id="unilife-town" className={`uni-city__world is-${status}`} role="group" aria-label={en ? "Interactive campus districts" : "可交互的校园街区"}>
-        <img className="uni-city__fallback" src="/portfolio/unilife-city-fallback.webp" alt={en ? "An isometric campus with a library, planning hall, student café and course pavilion" : "等距校园小城：课程图书馆、钟楼规划站、交流咖啡馆与选课导航台"} fetchPriority="high" />
+        <Image unoptimized width={1536} height={1024} loading="eager" className="uni-city__fallback" src="/portfolio/unilife-city-fallback.webp" alt={en ? "An isometric campus with a library, planning hall, student café and course pavilion" : "等距校园小城：课程图书馆、钟楼规划站、交流咖啡馆与选课导航台"} fetchPriority="high" />
         <div ref={host} className="uni-city__canvas" role="group" tabIndex={status === "ready" ? 0 : -1} aria-label={en ? "3D model. Select a building to focus. Drag to rotate, right-drag to pan, scroll to zoom. Arrow keys rotate, Shift and arrows pan, plus or minus zoom, Home returns to overview." : "3D 微缩模型。点击建筑聚焦。拖动旋转，右键拖动平移，滚轮缩放。方向键旋转，Shift 加方向键平移，加减号缩放，Home 返回全景。"} />
         <div className="uni-city__labels">
           {districts.map((item, index) => (

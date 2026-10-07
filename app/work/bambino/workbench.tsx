@@ -1,4 +1,6 @@
 "use client";
+
+import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { chapters, finishes, iterations, partLabels, type Finish, type Locale } from "./workbench-data";
@@ -85,13 +87,13 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
         <div ref={viewport} className="bw-canvas" tabIndex={0} aria-label={t("三维模型：拖动旋转，滚轮缩放；方向键旋转，加减键缩放，Home 重置", "3D model: drag to orbit, scroll to zoom. Arrow keys rotate, plus/minus zoom, Home resets.")} data-testid="model-viewport" data-status={status} data-model={chapter === 1 ? "original" : "v2"} data-explosion={chapter === 4 ? explosion.toFixed(2) : "0"} />
         {chapter === 3 && !reading && <LockingFilm locale={locale} />}
         {status !== "ready" && <div className="bw-loading" role="status">
-          <img src="/portfolio/bambino-cutout.png" alt="BAMBINO V2" />
+          <Image unoptimized width={1672} height={941} loading="eager" src="/portfolio/bambino-cutout.png" alt="BAMBINO V2" />
           <p>{status === "loading" ? t("正在准备三维工作台…", "Preparing the workbench…") : t("此设备暂时无法显示三维模型，项目内容仍可阅读。", "3D is unavailable on this device. The project remains readable.")}</p>
           {status === "error" && <button onClick={() => { setStatus("loading"); setRetry(value => value + 1); }}>{t("重新加载模型", "Retry 3D")}</button>}
         </div>}
         {chapter === 2 && iteration < 3 && <div className="bw-evidence-stage">
           {iterations.slice(0, 3).map((item, index) => <figure key={item.image} className={index === iteration ? "is-active" : ""} aria-hidden={index !== iteration}>
-            <img src={item.image} alt={en ? item.en : item.zh} />
+            <Image unoptimized width={item.imageWidth} height={item.imageHeight} src={item.image} alt={en ? item.en : item.zh} />
             <figcaption><span>0{index + 1} / 04</span>{t("真实原型记录", "PHYSICAL PROTOTYPE RECORD")}</figcaption>
           </figure>)}
         </div>}
@@ -114,7 +116,7 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
           <p className="bw-intro">{t("一台小型咖啡机，不该在锁定手柄时被自己推走。原有旋转动作将反力传给机身，使用者往往需要另一只手扶住机器。", "A compact espresso machine should not move away while the portafilter locks. The rotational action transfers a reaction to the body, often calling for a second hand to steady it.")}</p>
           <ol className="bw-observations"><li><span>01</span><div><h3>{t("旋转与机身位移", "Rotation and movement")}</h3><p>{t("观察施力方向与机身稳定性的关系。", "Observe how turning the handle affects body stability.")}</p></div></li><li><span>02</span><div><h3>{t("手部支撑位置", "A place for the thumb")}</h3><p>{t("寻找同一只手可以接触的反向支点。", "Find an opposing support reachable by the same hand.")}</p></div></li><li><span>03</span><div><h3>{t("状态如何被感知", "Legible physical states")}</h3><p>{t("让动作、结构位置与反馈对应。", "Connect the action to a clear physical state.")}</p></div></li></ol>
           <button className="bw-text-button" onClick={() => setFocus(value => !value)}>{focus ? t("查看原版整机", "View original body") : t("靠近原版冲煮头", "Inspect original group head")}<Arrow /></button>
-          <figure className="bw-reference"><img src="/bambino/original-reference.webp" alt={t("Breville Bambino 官方外观参考", "Official Breville Bambino reference")} loading="lazy" /><figcaption>{t("原版模型为外观示意。", "The original model is a form reference.")}<a href="https://www.breville.com/en-au/product/bes450" target="_blank" rel="noreferrer">{t("查看官方产品参考", "Official product reference")}</a></figcaption></figure>
+          <figure className="bw-reference"><Image unoptimized width={1100} height={1100} src="/bambino/original-reference.webp" alt={t("Breville Bambino 官方外观参考", "Official Breville Bambino reference")} loading="lazy" /><figcaption>{t("原版模型为外观示意。", "The original model is a form reference.")}<a href="https://www.breville.com/en-au/product/bes450" target="_blank" rel="noreferrer">{t("查看官方产品参考", "Official product reference")}</a></figcaption></figure>
         </section>
 
         <section id="read-iterations" hidden={!reading && chapter !== 2} className="bw-panel">
@@ -124,7 +126,7 @@ export default function BambinoWorkbench({ locale = "zh" }: { locale?: Locale })
           <div className="bw-finding" aria-live="polite"><span>{t("这一轮关注", "THIS STAGE")}</span><p>{en ? stage.enFinding : stage.zhFinding}</p></div>
           <button className="bw-primary" onClick={() => { if (iteration === 3) setIteration(0); setPlaying(value => !value); }} aria-pressed={playing}>{playing ? t("暂停演进", "Pause sequence") : t("播放演进过程", "Play the sequence")}<span aria-hidden="true">{playing ? "Ⅱ" : "▷"}</span></button>
           <p className="bw-note">{t("每一阶段保留真实原型证据；最终材质用于表达设计意图。", "Physical records document the iterations; final materials communicate the design intent.")}</p>
-          {reading && <div className="bw-reading-gallery">{iterations.map(item => <figure key={item.image}><img src={item.image} alt={en ? item.en : item.zh} loading="lazy" /><figcaption>{en ? item.enBody : item.zhBody}</figcaption></figure>)}</div>}
+          {reading && <div className="bw-reading-gallery">{iterations.map(item => <figure key={item.image}><Image unoptimized width={item.imageWidth} height={item.imageHeight} src={item.image} alt={en ? item.en : item.zh} loading="lazy" /><figcaption>{en ? item.enBody : item.zhBody}</figcaption></figure>)}</div>}
         </section>
 
         <section id="read-locking" hidden={!reading && chapter !== 3} className="bw-panel">

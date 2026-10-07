@@ -3,7 +3,7 @@ export type Locale = "zh" | "en";
 export type DistrictCopy = { name: string; feature: string; description: string; link: string };
 export type CityDistrict = { id: string; position: [number, number]; height: number; target: string; zh: DistrictCopy; en: DistrictCopy };
 export type CityProject = {
-  slug: string; title: string; brand: string; archive: string; fallback: string;
+  slug: string; title: string; brand: string; archive: string; fallback: { src: string; width: number; height: number };
   zh: { headline: [string, string]; intro: string; explore: string; scene: string };
   en: { headline: [string, string]; intro: string; explore: string; scene: string };
   districts: CityDistrict[];
@@ -11,7 +11,7 @@ export type CityProject = {
 
 export const cityProjects: Record<CityTheme, CityProject> = {
   battery: {
-    slug: "battery-packaging", title: "CR2032 PACKAGING", brand: "CR2032", archive: "X4-01", fallback: "/portfolio/battery-museum-02.jpeg",
+    slug: "battery-packaging", title: "CR2032 PACKAGING", brand: "CR2032", archive: "X4-01", fallback: { src: "/portfolio/battery-museum-02.jpeg", width: 1600, height: 900 },
     zh: { headline: ["安全取用，", "也为循环而设计。"], intro: "从儿童防护到单颗释放，再到纸塑分离。", explore: "探索安全园区", scene: "CR2032 循环安全园区" },
     en: { headline: ["Safety,", "one cell at a time."], intro: "Child protection, single-cell access and material separation.", explore: "Explore the campus", scene: "CR2032 circular safety campus" },
     districts: [
@@ -23,7 +23,7 @@ export const cityProjects: Record<CityTheme, CityProject> = {
     ],
   },
   arti64: {
-    slug: "vertical-car-park", title: "ARTI64", brand: "ARTI64", archive: "X5-01", fallback: "/portfolio/arti64-display-wall.jpg",
+    slug: "vertical-car-park", title: "ARTI64", brand: "ARTI64", archive: "X5-01", fallback: { src: "/portfolio/arti64-display-wall.jpg", width: 1280, height: 853 },
     zh: { headline: ["一辆小车，", "一个不断生长的世界。"], intro: "从展示单元出发，走进结构、制造与真实销售。", explore: "探索模型车工坊", scene: "ARTI64 模型车工坊" },
     en: { headline: ["A small car.", "A growing world."], intro: "From a display module to a working product system.", explore: "Explore the workshop", scene: "ARTI64 model-car maker district" },
     districts: [

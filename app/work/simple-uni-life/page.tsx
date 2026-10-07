@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   FactRail,
   ProjectEnd,
@@ -85,7 +86,7 @@ export default function SimpleUniLifePage() {
           </figure>
           <div className="unilife-friction-gallery" aria-label="用户研究场景">
             <figure>
-              <img
+              <Image unoptimized width={1672} height={941}
                 src="/portfolio/unilife-friction-search.png"
                 alt="留学生在多个课程网站和评价平台之间搜索信息"
                 loading="lazy"
@@ -93,7 +94,7 @@ export default function SimpleUniLifePage() {
               <figcaption>决策阻力</figcaption>
             </figure>
             <figure>
-              <img
+              <Image unoptimized width={1448} height={1086}
                 src="/portfolio/unilife-friction-paths.png"
                 alt="学生面对课程难度、时间冲突和评分信息做选择"
                 loading="lazy"
@@ -101,7 +102,7 @@ export default function SimpleUniLifePage() {
               <figcaption>相互冲突的信息</figcaption>
             </figure>
             <figure>
-              <img
+              <Image unoptimized width={1448} height={1086}
                 src="/portfolio/unilife-friction-social.png"
                 alt="学生被社交平台和群聊中的零散课程信息包围"
                 loading="lazy"
@@ -109,7 +110,7 @@ export default function SimpleUniLifePage() {
               <figcaption>碎片化的社交证据</figcaption>
             </figure>
             <figure>
-              <img
+              <Image unoptimized width={1448} height={1086}
                 src="/portfolio/unilife-friction-reviews.png"
                 alt="学生比较互相矛盾的匿名课程评价"
                 loading="lazy"
@@ -129,7 +130,7 @@ export default function SimpleUniLifePage() {
         </div>
         <div className="screen-rail__track">
           <figure id="course-search">
-            <img
+            <Image unoptimized width={907} height={1265}
               src="/portfolio/unilife-course-search.png"
               alt="Simple Uni Life 移动端课程搜索"
               loading="lazy"
@@ -137,7 +138,7 @@ export default function SimpleUniLifePage() {
             <figcaption>课程搜索 · 移动端</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1261} height={1215}
               src="/portfolio/unilife-structured-results.png"
               alt="Simple Uni Life 结构化课程结果"
               loading="lazy"
@@ -145,7 +146,7 @@ export default function SimpleUniLifePage() {
             <figcaption>结构化结果</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1253} height={1277}
               src="/portfolio/unilife-layer-04.png"
               alt="Simple Uni Life 课程决策详情页面"
               loading="lazy"
@@ -153,7 +154,7 @@ export default function SimpleUniLifePage() {
             <figcaption>课程决策页</figcaption>
           </figure>
           <figure id="course-structure">
-            <img
+            <Image unoptimized width={1256} height={1287}
               src="/portfolio/unilife-course-structure.png"
               alt="Simple Uni Life 课程结构详情界面"
               loading="lazy"

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
@@ -166,7 +168,7 @@ export function ProjectHero({
   period: string;
   role: string;
   lede: string;
-  image: string;
+  image: { src: string; width: number; height: number };
   tone: "sangre" | "bambino" | "unilife" | "battery" | "frame";
   locale?: "zh" | "en";
 }) {
@@ -195,7 +197,7 @@ export function ProjectHero({
             : undefined
         }
       />
-      <img
+      <Image unoptimized
         className="project-hero__image"
         src={image}
         alt={isEnglish ? `${title} project hero` : `${title} 项目主视觉`}

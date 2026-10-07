@@ -16,6 +16,7 @@ const eslintConfig = defineConfig([
     "public/rhine-lab/**",
     "tmp/**",
     "**/dist/**",
+    ".wrangler/**",
     // Imported minified runtime/decoder assets and reference captures are not maintained application source.
     "standalone/aether-replica/public/assets/vendor/**",
     "standalone/aether-replica/public/assets/draco/**",

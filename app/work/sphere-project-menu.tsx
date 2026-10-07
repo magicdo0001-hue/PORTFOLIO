@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -11,7 +13,7 @@ import {
   useState,
 } from "react";
 
-const sphereAsset = (path: string) => `${path}?v=20260804-clarity`;
+const sphereAsset = (path: string, width: number, height: number) => ({ src: `${path}?v=20260804-clarity`, width, height });
 
 const projects = [
   {
@@ -22,10 +24,10 @@ const projects = [
     year: "2024",
     href: "/work/sangre",
     images: [
-      sphereAsset("/portfolio/sangre-menu-01.jpg"),
-      sphereAsset("/portfolio/sangre-menu-02.jpg"),
-      sphereAsset("/portfolio/sangre-menu-03.png"),
-      sphereAsset("/portfolio/sangre-menu-04.jpg"),
+      sphereAsset("/portfolio/sangre-menu-01.jpg", 2000, 2000),
+      sphereAsset("/portfolio/sangre-menu-02.jpg", 2400, 1600),
+      sphereAsset("/portfolio/sangre-menu-03.png", 1586, 992),
+      sphereAsset("/portfolio/sangre-menu-04.jpg", 2000, 2000),
     ],
     description: "家庭慢病检测系统，从研究、交互到可验证原型。",
     descriptionEn: "A home chronic-care system shaped through research, interaction design, and a testable prototype.",
@@ -38,10 +40,10 @@ const projects = [
     year: "2024",
     href: "/work/bambino",
     images: [
-      sphereAsset("/portfolio/bambino-menu-01.jpg"),
-      sphereAsset("/portfolio/bambino-menu-02.jpg"),
-      sphereAsset("/portfolio/bambino-menu-03.jpg"),
-      sphereAsset("/portfolio/bambino-menu-04.jpg"),
+      sphereAsset("/portfolio/bambino-menu-01.jpg", 1600, 900),
+      sphereAsset("/portfolio/bambino-menu-02.jpg", 1600, 900),
+      sphereAsset("/portfolio/bambino-menu-03.jpg", 1600, 900),
+      sphereAsset("/portfolio/bambino-menu-04.jpg", 3648, 2736),
     ],
     description: "重新设计机械锁定与动态反馈，让操作更稳、更清楚。",
     descriptionEn: "A clearer mechanical lock and feedback system for safer, more confident operation.",
@@ -54,10 +56,10 @@ const projects = [
     year: "2024",
     href: "/work/simple-uni-life",
     images: [
-      sphereAsset("/portfolio/unilife-menu-01.png"),
-      sphereAsset("/portfolio/unilife-menu-02.png"),
-      sphereAsset("/portfolio/unilife-menu-03.png"),
-      sphereAsset("/portfolio/unilife-menu-04.png"),
+      sphereAsset("/portfolio/unilife-menu-01.png", 1448, 1086),
+      sphereAsset("/portfolio/unilife-menu-02.png", 1448, 1086),
+      sphereAsset("/portfolio/unilife-menu-03.png", 1261, 1215),
+      sphereAsset("/portfolio/unilife-menu-04.png", 1256, 1287),
     ],
     description: "把分散的课程信息转化为可比较、可行动的决策工具。",
     descriptionEn: "Turning fragmented course information into a comparable, actionable decision tool.",
@@ -349,7 +351,7 @@ export default function SphereProjectMenu({ locale = "zh" }: { locale?: "zh" | "
                   if (didDrag.current) event.preventDefault();
                 }}
               >
-                <img
+                <Image unoptimized loading="eager"
                   src={project.images[node.imageIndex]}
                   alt=""
                   draggable={false}

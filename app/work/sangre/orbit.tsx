@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { SangreScene } from "./orbit-scene";
@@ -98,7 +100,7 @@ export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" })
         <div><a className="sg-skip" href="#story">{t("研究与原型","Research & prototypes")} <span aria-hidden="true">↘</span></a><Link href={language?"/work/sangre":"/en/work/sangre"} hrefLang={language?"zh-CN":"en"} aria-label={t("Switch to English","切换至中文")}>{language?"中文":"EN"}</Link></div>
       </header>
       <div ref={host} className="sg-visual" role="img" aria-label={t("SANGRE 三维产品：暖白楔形机身、黑色折叠屏与透明收纳罩","SANGRE in 3D: an ivory wedge enclosure, black folding screen and clear storage cover")} />
-      {failed&&<img className="sg-fallback" src="/sangre/material-reference.jpg" alt={t("SANGRE 原始设计渲染","Original SANGRE design render")} />}
+      {failed&&<Image unoptimized width={1920} height={1200} loading="eager" className="sg-fallback" src="/sangre/material-reference.jpg" alt={t("SANGRE 原始设计渲染","Original SANGRE design render")} />}
       {chapters.map((item,index)=><div ref={el=>{copies.current[index]=el;}} className="sg-copy" data-copy={index} key={item.tag} aria-hidden={chapter!==index}>
         <p className="sg-eyebrow"><span>0{index+1} / 05</span>{item.tag}</p>
         <h2 aria-label={item.title[language].replace("\n"," ")}>{item.title[language].split("\n").map((line,i)=><span className="sg-title-line" aria-hidden="true" key={i}><span>{line}</span></span>)}</h2>
@@ -122,8 +124,8 @@ export default function SangreOrbit({ locale = "zh" }: { locale?: "zh" | "en" })
       {(!ready||failed)&&<div className="sg-status" role="status">{failed?t("三维展示暂不可用，已显示原始渲染。","3D is unavailable. Showing the original render."):t("正在准备三维展示…","Preparing the product view…")}{failed&&<button onClick={()=>{setFailed(false);setReady(false);setReload(v=>v+1);}}>{t("重试","Retry")}</button>}</div>}
       <dialog ref={reference} className="sg-reference" aria-label={t("原始渲染参考","Original design references")} onClick={e=>{if(e.target===e.currentTarget)reference.current?.close();}}>
         <button autoFocus onClick={()=>reference.current?.close()}>{t("关闭","Close")} ×</button>
-        <img src="/sangre/material-reference.jpg" alt={t("SANGRE 外观与展开状态原始渲染","Original SANGRE appearance and unfolded display render")} loading="lazy"/>
-        <img src="/sangre/structure-reference.jpg" alt={t("SANGRE 原始结构渲染","Original SANGRE structural render")} loading="lazy"/>
+        <Image unoptimized width={1920} height={1200} src="/sangre/material-reference.jpg" alt={t("SANGRE 外观与展开状态原始渲染","Original SANGRE appearance and unfolded display render")} loading="lazy"/>
+        <Image unoptimized width={2560} height={2560} src="/sangre/structure-reference.jpg" alt={t("SANGRE 原始结构渲染","Original SANGRE structural render")} loading="lazy"/>
         <p>{t("原始产品与结构渲染 · 材质与形态参考","ORIGINAL PRODUCT & STRUCTURAL RENDERS")}</p>
       </dialog>
     </div>

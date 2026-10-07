@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import {
   FactRail,
@@ -93,7 +94,7 @@ export default function SimpleUniLifeEnglishPage() {
           </figure>
           <div className="unilife-friction-gallery" aria-label="Research situations">
             <figure>
-              <img
+              <Image unoptimized width={1672} height={941}
                 src="/portfolio/unilife-friction-search.png"
                 alt="Student searching across multiple course and review websites"
                 loading="lazy"
@@ -101,7 +102,7 @@ export default function SimpleUniLifeEnglishPage() {
               <figcaption>Decision friction</figcaption>
             </figure>
             <figure>
-              <img
+              <Image unoptimized width={1448} height={1086}
                 src="/portfolio/unilife-friction-paths.png"
                 alt="Student weighing course difficulty, timetable and grading information"
                 loading="lazy"
@@ -109,7 +110,7 @@ export default function SimpleUniLifeEnglishPage() {
               <figcaption>Conflicting signals</figcaption>
             </figure>
             <figure>
-              <img
+              <Image unoptimized width={1448} height={1086}
                 src="/portfolio/unilife-friction-social.png"
                 alt="Student surrounded by fragmented course information from social platforms"
                 loading="lazy"
@@ -117,7 +118,7 @@ export default function SimpleUniLifeEnglishPage() {
               <figcaption>Fragmented social proof</figcaption>
             </figure>
             <figure>
-              <img
+              <Image unoptimized width={1448} height={1086}
                 src="/portfolio/unilife-friction-reviews.png"
                 alt="Student comparing contradictory anonymous course reviews"
                 loading="lazy"
@@ -137,7 +138,7 @@ export default function SimpleUniLifeEnglishPage() {
         </div>
         <div className="screen-rail__track">
           <figure id="course-search">
-            <img
+            <Image unoptimized width={907} height={1265}
               src="/portfolio/unilife-course-search.png"
               alt="Simple Uni Life mobile course search"
               loading="lazy"
@@ -145,7 +146,7 @@ export default function SimpleUniLifeEnglishPage() {
             <figcaption>Course search · Mobile</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1261} height={1215}
               src="/portfolio/unilife-structured-results.png"
               alt="Simple Uni Life structured course results"
               loading="lazy"
@@ -153,7 +154,7 @@ export default function SimpleUniLifeEnglishPage() {
             <figcaption>Structured results</figcaption>
           </figure>
           <figure>
-            <img
+            <Image unoptimized width={1253} height={1277}
               src="/portfolio/unilife-layer-04.png"
               alt="Simple Uni Life course decision page"
               loading="lazy"
@@ -161,7 +162,7 @@ export default function SimpleUniLifeEnglishPage() {
             <figcaption>Course decision page</figcaption>
           </figure>
           <figure id="course-structure">
-            <img
+            <Image unoptimized width={1256} height={1287}
               src="/portfolio/unilife-course-structure.png"
               alt="Simple Uni Life course structure interface"
               loading="lazy"

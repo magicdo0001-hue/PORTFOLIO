@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SangreOrbit from "../../../work/sangre/orbit";
 import type { Metadata } from "next";
 import { FactRail, ProjectEnd } from "../../../project-shell";
@@ -54,15 +55,15 @@ export default function EnglishSangrePage() {
         </aside>
         <div className="sangre-discovery__media">
           <figure>
-            <img src="/portfolio/sangre-form-studies.png" alt="SANGRE form and functional zoning studies" loading="lazy" />
+            <Image unoptimized width={1586} height={992} src="/portfolio/sangre-form-studies.png" alt="SANGRE form and functional zoning studies" loading="lazy" />
             <figcaption>Form studies · Product architecture</figcaption>
           </figure>
           <figure>
-            <img src="/portfolio/sangre-volume-iteration.jpg" alt="SANGRE volume and consumable-area iterations" loading="lazy" />
+            <Image unoptimized width={2000} height={2000} src="/portfolio/sangre-volume-iteration.jpg" alt="SANGRE volume and consumable-area iterations" loading="lazy" />
             <figcaption>Volume iteration · Detail study</figcaption>
           </figure>
           <figure>
-            <img src="/portfolio/sangre-vacuum-forming.jpg" alt="SANGRE physical model fabrication" loading="lazy" />
+            <Image unoptimized width={3648} height={2736} src="/portfolio/sangre-vacuum-forming.jpg" alt="SANGRE physical model fabrication" loading="lazy" />
             <figcaption>Physical build · Volume validation</figcaption>
           </figure>
         </div>
@@ -70,7 +71,7 @@ export default function EnglishSangrePage() {
 
       <section className="sangre-prototype chapter">
         <div className="sangre-prototype__image">
-          <img src="/portfolio/sangre-prototype.webp" alt="SANGRE functional 1:1 prototype" />
+          <Image unoptimized width={2400} height={1600} src="/portfolio/sangre-prototype.webp" alt="SANGRE functional 1:1 prototype" />
         </div>
         <div className="sangre-prototype__copy">
           <p className="chapter-label">03 / PROTOTYPE VALIDATION</p>
@@ -80,7 +81,7 @@ export default function EnglishSangrePage() {
             Successive physical models tested the screen angle, access to consumables, strip handling and storage logic. Every build directly informed the next design decision.
           </p>
           <figure>
-            <img src="/portfolio/sangre-interaction-test.jpg" alt="User testing the SANGRE prototype" loading="lazy" />
+            <Image unoptimized width={2000} height={2000} src="/portfolio/sangre-interaction-test.jpg" alt="User testing the SANGRE prototype" loading="lazy" />
             <figcaption>Interaction test · Workflow validation</figcaption>
           </figure>
         </div>
@@ -90,10 +91,10 @@ export default function EnglishSangrePage() {
         <div className="shell">
           <p className="chapter-label">04 / ENGINEERING VALIDATION</p>
           <figure className="technical-proof__drawing">
-            <img src="/portfolio/sangre-drawing.webp" alt="SANGRE technical drawing" />
+            <Image unoptimized width={1352} height={939} src="/portfolio/sangre-drawing.webp" alt="SANGRE technical drawing" />
           </figure>
           <figure className="technical-proof__exploded">
-            <img src="/portfolio/sangre-exploded.jpg" alt="Exploded view of SANGRE" />
+            <Image unoptimized width={1024} height={1024} src="/portfolio/sangre-exploded.jpg" alt="Exploded view of SANGRE" />
           </figure>
           <h2>
             Form follows
