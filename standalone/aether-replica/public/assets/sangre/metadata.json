@@ -1,0 +1,22 @@
+{
+  "source": "User KeyShot GLB and exploded CAD",
+  "travel": [
+    0.03342147544026375,
+    -0.0,
+    0.999441385269165
+  ],
+  "screenWidth": 0.08850000148197168,
+  "panelHeight": 0.06559493235038245,
+  "compactHeight": 0.04459999781101942,
+  "screenUp": [
+    0.0,
+    0.874523401260376,
+    -0.48498329520225525
+  ],
+  "geometry": "user CAD exterior/interior; presentation display rig",
+  "folding": "presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation",
+  "ui": "illustrative design UI, not validated clinical readings",
+  "bytes": 9231092,
+  "stripEndOffset": 0.04,
+  "sampleLevelOffset": 0.0021
+}

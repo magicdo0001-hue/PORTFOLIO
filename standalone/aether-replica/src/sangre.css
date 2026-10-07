@@ -1,0 +1,24 @@
+/* Existing Aether tokens and type remain the visual foundation. */
+html[data-sangre-page="home"] .gl__projected-point { display:none !important; }
+.sangre-callouts { position:fixed;inset:0;pointer-events:none;z-index:12; }
+html:not([data-sangre-page="home"]) .sangre-callouts { display:none; }
+.sangre-callout { position:absolute;left:0;top:0;max-width:220px;opacity:0;transition:opacity .45s ease;color:#edf7ff;font-family:inherit; }
+.sangre-callout.is-active { opacity:1; }
+.sangre-callout:before { content:"";display:block;width:42px;height:1px;margin-bottom:12px;background:#abd7ff;opacity:.6; }
+.sangre-callout span { display:block;font-size:15px;line-height:1.25;letter-spacing:-.025em; }
+.sangre-callout small { display:block;margin-top:6px;font-size:12px;line-height:1.4;color:#b7c7d7; }
+.sangre-callout:nth-child(6) { max-width:135px; }
+html[data-sangre-page="home"] .ae__btn-w { visibility:hidden;pointer-events:none; }
+html[data-sangre-page="home"] .section__desc { max-width:250px; }
+html[data-sangre-page="home"] .nav__logo-w { text-transform:uppercase; }
+.sangre-load-error { position:fixed;inset:40% 20%;z-index:20;text-align:center;color:#edf7ff; }
+.sangre-load-error button { margin-top:20px;padding:12px 24px;border:1px solid #b7c7d7;border-radius:4px;background:#133153;color:inherit;cursor:pointer; }
+@media(max-width:767px) {
+  .sangre-callout { width:calc(100vw - 40px);max-width:none;text-align:center; }
+  .sangre-callout small,.sangre-callout:before { display:none; }
+  .sangre-callout span { font-size:13px; }
+  html[data-sangre-page="home"] .section__desc { max-width:240px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .sangre-callout { transition:none; }
+}

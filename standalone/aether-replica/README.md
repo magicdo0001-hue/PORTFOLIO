@@ -1,46 +1,36 @@
-# Aether 1 独立复刻
+# SANGRE × Aether 展示原型
 
-本地预览：http://localhost:4190/
+本地预览：[打开页面](http://localhost:4190/)。主页现已替换为 SANGRE；Discover Space、`/specs`、`/preorder` 及其原始产品内容保留。
 
-三个页面：`/`、`/specs`、`/preorder`。原始视觉、模型、贴图、字体和声音保存在 `public/assets`，运行时无需请求原站资源。
+主页包括机身展示、屏幕展开、材质细节、插条剖视和内部爆炸五个章节。继续使用原字体、深蓝背景、菜单、声音与滚动循环；没有新增依赖。
 
-本任务依据用户在会话中确认的作者授权完成。作者为 OFF+BRAND，页面保留原作者署名与链接。公开可访问的打包文件不等于开源许可。
+## 运行和检查
 
-## 运行
-
-需要 Node.js 20+。依赖已在本机安装。
+依赖已安装，Node.js 20+。本机可用 `./start-preview.ps1` 启动。
 
 ```powershell
-npm install
 npm run dev
-```
-
-在本机也可运行 `./start-preview.ps1`，脚本直接调用已安装的 Vite。
-
-```powershell
 npm run build
-npm run preview
 npm test
+node tests/sangre-pose.mjs
+npm run test:sites
 ```
 
-测试要求预览已在 4190 端口运行，并且本机安装 Google Chrome。`npm test` 检查桌面、手机布局、菜单、声音、问答失败与重试、页面转场、规格内容和循环返回。带原站参考采集的完整对照：
+`npm test` 要求 4190 预览运行，并安装 Chrome；覆盖桌面／手机的章节导航、声音、保留页面和循环。`QA_DIR` 可指定截图输出目录。当前验收和证据见 `design-qa.md` 与 `REPORT.md`。
 
-```powershell
-node scripts/verify-browser.mjs --compare
-```
+## SANGRE 资产
 
-## 文件
+- `public/assets/sangre/`：从用户 KeyShot 场景筛出的机身、试纸条、CAD 内部组件与参考屏幕图。
+- `scripts/prepare-sangre.py`：用 Blender 从用户提供的原始 GLB 重建展示资产；源文件不改动。
+- `src/sangre.js`：复用原 Three.js 渲染器，添加独立产品镜头、预设姿态、屏幕折叠和插条节奏。
+- `src/sangre.css`：主页标注、手机适配和错误重试提示。
 
-- `index.html`、`specs.html`、`preorder.html`：三个页面的实际标记及本地样式链接。
-- `src/App.jsx`、`src/main.jsx`：一次性 React 挂载和作者运行时的启动。
-- `public/assets/vendor/aether-runtime.js`：保留作者的前端动画逻辑，改为同源资源地址，移除内联源码映射以减少传输。
-- `vite.config.mjs`：本地路径映射与未包含的私有 AI 接口响应。
-- `asset-manifest.json`：来源 URL、获取结果和本地路径。
-- `references/runtime-sources.json`：从原打包文件源码映射提取的作者模块，供阅读；不代表完整可重建的上游工程。
-- `qa/`：原站、本地截图和浏览器检查证据。
-- `design-qa.md`：视觉验收。
-- `REPORT.md`：任务汇报。
+插条章节以剖视显示路径，暂时隐藏透明罩；没有编造罩盖开启机构。屏幕展开是依据两个外观端点制作的展示动画，不代表精确铰链运动；屏幕数值是 UI 示意。
 
-原站私有 AI 服务没有包含在前端交付内。参考采集时原站该接口返回 502；本地明确返回 503，保留 Thinking → Error - Try Again → 重试的实际界面，不伪造生成式回答。
+## 原站资源
 
-生产文件在 `dist/client`。Vite 生产预览支持上述三个路径；如以后使用其他静态服务器，需要把 `/specs` 与 `/preorder` 分别映射到对应 HTML。此次交付仅运行本地预览。
+Aether 的原始资产依据用户在会话中确认的作者授权保存；作者为 OFF+BRAND，保留署名及链接。资源公开可访问不等于开源许可。`references/runtime-sources.json` 是供阅读的源码映射内容，不能作为完整上游工程。
+
+原站私有 AI 后端未包含。SANGRE 主页隐藏原 Ask Aether 入口；保留页面沿用原界面，未包含的接口仍返回明确的 503。
+
+生产输出为 `dist/client`；三个页面路径由现有 Vite 配置映射。Sites 包装、worker 和对应测试保持原样。本项目仍以独立本地原型预览，未将它接入个人主页。

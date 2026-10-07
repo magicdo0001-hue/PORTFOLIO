@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+import { startSangre } from './sangre.js';
+import './sangre.css';
 const scripts = ['/assets/vendor/e6417c516f861e.js', '/assets/vendor/f0195f84b6adfa.js', '/assets/vendor/cda587f07d4e13.js', '/assets/vendor/aether-runtime.js'];
 export function App({ markup }) {
   useEffect(() => {
     // The authored runtime owns the DOM after this single React mount.
     let cancelled = false;
+    const stopSangre = startSangre();
     (async () => {
       for (const src of scripts) {
         if (cancelled) return;
@@ -20,7 +23,7 @@ export function App({ markup }) {
       document.querySelector('.indicator__label').textContent = '[ Reload to retry ]';
       console.error(error);
     });
-    return () => { cancelled = true; };
+    return () => { cancelled = true; stopSangre(); };
   }, []);
   return <div id="aether-document" style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: markup }} />;
 }

@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
-const out = path.join(root, 'qa');
+const out = process.env.QA_DIR || path.join(root, 'qa');
 const compare = process.argv.includes('--compare');
 const local = process.env.LOCAL_URL || 'http://localhost:4190';
 const targets = compare ? [['reference','https://www.aether1.ai'], ['implementation',local]] : [['implementation',local]];
@@ -17,6 +17,7 @@ try {
  for (const [kind, base] of targets) {
   const dir = path.join(out,kind);await fs.mkdir(dir,{recursive:true});
   for (const [device, viewport] of [['desktop',{width:1440,height:900}],['mobile',{width:390,height:844}]]) {
+   const sangre=kind==='implementation';
    if (kind === 'reference' && process.argv.includes('--resume') && await fs.stat(path.join(dir, `${device}-results.json`)).then(() => true, () => false)) { all.push(JSON.parse(await fs.readFile(path.join(dir, `${device}-results.json`), 'utf8')));console.log('REUSE',kind,device);continue; }
    const page = await browser.newPage({viewport,deviceScaleFactor:1});
    await page.addInitScript(() => { let seed=14817;Math.random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;}; });
@@ -28,20 +29,24 @@ try {
    const check = (condition,message) => {assert(condition,`${kind}/${device}: ${message}`);record.assertions.push(message);};
    await page.goto(base+'/',{waitUntil:'domcontentloaded'});await page.locator('html.is-ready').waitFor({timeout:60000});await page.waitForTimeout(4000);await snap('home');
    check(await page.locator('canvas').count()===1,'WebGL canvas loaded');
-   check((await page.locator('h1').first().innerText()).replace(/\s/g,'')==='SoundWithoutBoundaries','Homepage heading');
+   check((await page.locator('h1').first().innerText()).replace(/\s/g,'')===(sangre?'Health,infocus.':'SoundWithoutBoundaries'),'Homepage heading');
+   if(sangre){await page.locator('html.sangre-ready').waitFor();check(await page.evaluate(()=>!!window.__sangre.bridge.gl.world.activeScenes.current.sangre),'SANGRE installed');check(await page.evaluate(()=>!window.__sangre.bridge.gl.world.activeScenes.current.caseModel.visible),'Homepage earbuds hidden');}
    await page.locator('#menu-toggle').click();await page.waitForTimeout(1400);await snap('menu');
    await page.locator('.nav__link[data-anchor="1"]').click();await page.waitForTimeout(4200);await snap('sound');
    for (const [anchor,name] of [['2','craft'],['4','controls'],['5','power']]) {await page.locator('#menu-toggle').click();await page.waitForTimeout(650);await page.locator(`.nav__link[data-anchor="${anchor}"]`).click();await page.waitForTimeout(4200);await snap(name);}
    const limit=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);
    for(const [progress,name] of [[.375,'internal'],[.81,'core']]){await page.evaluate(y=>window.scrollTo(0,y),limit*progress);await page.waitForTimeout(4200);await snap(name);}
    if(device==='desktop') {await page.locator('.sound-w').click();await page.waitForTimeout(800);check(await page.locator('.sound-w').getAttribute('aria-label')==='Mute audio','Sound enabled');await snap('sound-enabled');await page.locator('.sound-w').click();await page.waitForTimeout(500);check(await page.locator('.sound-w').getAttribute('aria-label')==='Play audio','Sound muted');}
+   if(!sangre){
    await page.locator('[data-ai="button"]').click();await page.waitForTimeout(1000);await snap('ask-open');
    await page.locator('[data-ai="question"]').press('Enter');await page.waitForTimeout(500);check(!(await page.locator('html.has-ai-thinking').count()),'Empty question prevented');
    await page.locator('[data-ai="question"]').fill('What materials are used?');await page.locator('[data-ai="question"]').press('Enter');await page.locator('html.has-ai-error').waitFor({timeout:65000});await page.waitForTimeout(800);await snap('ask-error');check((await page.locator('[data-ai="buttonLabel"]').innerText()).includes('Error'),'Unavailable AI error surfaced');
    await page.locator('[data-ai="button"]').click();await page.waitForTimeout(900);check(await page.locator('[data-ai="question"]').isVisible(),'AI retry reopens input');
    await page.mouse.click(20,viewport.height*.6);await page.waitForTimeout(900);
+   }
    await page.locator('#menu-toggle').click();await page.waitForTimeout(800);await page.locator('.nav__link[href="/specs"]').click();await page.waitForURL(base+'/specs');await page.locator('main[data-page="specs"]').waitFor();await page.waitForTimeout(4500);await snap('specs-top');
    check((await page.locator('body').innerText()).includes('£399'),'Specs content and price');
+   if(sangre)check(await page.evaluate(()=>document.documentElement.dataset.sangrePage==='original'&&!window.__sangre.bridge.gl.world.activeScenes.current.sangre),'Discover content retains original scene');
    const maxY=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);
    for(let y=Math.min(viewport.height*.72,maxY),i=1;true;y=Math.min(maxY,y+viewport.height*.72),i++){await page.evaluate(y=>window.scrollTo(0,y),y);await page.waitForTimeout(2200);await snap(`specs-${i}`);if(y===maxY)break;}
    await page.locator('.specs__cta').click();await page.waitForURL(base+'/preorder');await page.locator('main[data-page="easter-egg"]').waitFor();await page.waitForTimeout(4000);await snap('preorder');
