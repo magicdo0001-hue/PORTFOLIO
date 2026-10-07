@@ -38,7 +38,41 @@ try {
     const center=new T.Box3().setFromObject(pixels).getCenter(new T.Vector3());
     return center.z<0&&normal.z<-.6&&normal.y>.6&&normal.dot(s.camera.position.clone().sub(center).normalize())>.6;
    }),'Homepage UI is on the CAD front slope and faces the camera');
+   if(sangre){
+    const screen=page.locator('.screen-live');
+    const chapter=async progress=>{await page.evaluate(p=>{const b=window.__sangre.bridge;b.ScrollController.isIdleScrollAllowed=false;b.Scroll.scrollTo(p*b.Scroll.limit,{immediate:true,force:true});},progress);await page.waitForTimeout(2600);};
+    await chapter(.05);await snap('screen-compact');
+    check(await screen.evaluate(el=>el.hidden&&el.inert),'Compact close-up has no hidden interactive controls');
+    await chapter(.087);await snap('screen-unfolding');
+    await chapter(.125);await snap('screen-expanded');
+    check(await screen.evaluate(el=>!el.hidden&&!el.inert&&el.getBoundingClientRect().height>innerHeight*.5),'Screen close-up is readable and interactive');
+    check(await page.locator('.screen-mirror').evaluateAll(els=>els.every(el=>el.inert)),'Mirrored halves do not duplicate keyboard controls');
+    await screen.getByRole('button',{name:'Month',exact:true}).click();
+    check((await screen.locator('.screen-metric').first().innerText()).includes('364.3'),'Time range updates chart readings');await snap('screen-month');
+    await screen.getByRole('button',{name:'View Blood sugar details'}).click();
+    check((await screen.locator('.screen-detail-value').innerText()).includes('10.04'),'Metric opens its matching detail');
+    await screen.getByRole('button',{name:'Week',exact:true}).focus();await page.keyboard.press('Enter');
+    check((await screen.locator('.screen-detail-value').innerText()).includes('9.96'),'Keyboard changes detail time range');await snap('screen-detail');
+    await screen.getByRole('button',{name:'Settings',exact:true}).click();await screen.getByLabel('Trend labels').selectOption('short');
+    await screen.getByRole('button',{name:'Overview',exact:true}).click();
+    check((await screen.locator('.screen-metric').nth(1).innerText()).includes('GLU'),'Display preference updates the dashboard');
+    await screen.getByRole('button',{name:'Start demo test',exact:true}).click();await screen.getByRole('button',{name:'Run demo test',exact:true}).click();
+    await screen.getByRole('button',{name:'Cancel demo',exact:true}).click();await page.waitForTimeout(3500);
+    check(await screen.locator('.screen-test').getAttribute('data-run')==='idle','Cancellation stops the demo timer');
+    await screen.getByRole('button',{name:'Run demo test',exact:true}).click();await snap('screen-scanning');
+    await screen.getByRole('button',{name:'View saved reading',exact:true}).waitFor({timeout:7000});await screen.getByRole('button',{name:'View saved reading',exact:true}).click();
+    check(await screen.locator('.screen-history>button').count()===4,'Completed demo adds exactly one history entry');await snap('screen-history');
+    await screen.locator('.screen-history>button').first().click();
+    check((await screen.locator('.screen-detail-value').innerText()).includes('9.88')&&(await screen.locator('.screen-detail>p').first().innerText()).includes('Just now'),'Saved entry opens the corresponding reading');
+    await screen.getByRole('button',{name:'Settings',exact:true}).click();await screen.getByRole('button',{name:'Reset demo',exact:true}).click();
+    await screen.getByRole('button',{name:'History',exact:true}).click();check(await screen.locator('.screen-history>button').count()===3,'Reset restores the original demo data');
+    await screen.getByRole('button',{name:'Overview',exact:true}).click();
+    await page.mouse.move(viewport.width*.5,viewport.height*.4);await page.mouse.wheel(0,850);await page.waitForTimeout(1500);
+    check(await page.evaluate(()=>window.__sangre.bridge.gl.world.activeScenes.current.sangre.progress)>.125,'Dashboard gestures continue page scrolling');
+    await chapter(0);await page.evaluate(()=>{window.__sangre.bridge.ScrollController.isIdleScrollAllowed=true;});
+   }
    await page.locator('#menu-toggle').click();await page.waitForTimeout(1400);await snap('menu');
+   if(sangre)check(await page.locator('.sangre-screen-overlay').evaluate(el=>el.hidden),'Screen overlay hides while the menu is open');
    await page.locator('.nav__link[data-anchor="1"]').click();await page.waitForTimeout(4200);await snap('sound');
    for (const [anchor,name] of [['2','craft'],['4','controls'],['5','power']]) {await page.locator('#menu-toggle').click();await page.waitForTimeout(650);await page.locator(`.nav__link[data-anchor="${anchor}"]`).click();await page.waitForTimeout(4200);await snap(name);}
    const limit=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);

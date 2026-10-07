@@ -17,7 +17,8 @@ export function poseAt(progress) {
   const a=keys[index],b=keys[Math.min(index+1,keys.length-1)],t=smooth(a[0],b[0],p);
   const camera=a.slice(1).map((v,i)=>v+(b[i+1]-v)*t);
   camera[0]+=Math.PI; // The reference Front view faces -Z in the exported GLB.
-  return {camera, unfold:smooth(.025,.115,p)*(1-smooth(.22,.31,p)),
+  return {camera, unfold:smooth(.055,.115,p)*(1-smooth(.22,.31,p)),
+    closeup:smooth(.018,.052,p)*(1-smooth(.20,.255,p)),
     explode:smooth(.655,.79,p)*(1-smooth(.88,.97,p)),
     inserted:smooth(.46,.60,p), stripVisible:p>.425&&p<.66};
 }
@@ -117,7 +118,8 @@ function installScene(scene, bridge, metadata, env) {
     const d=Math.max(distance,12.2+12.8*pose.explode)*(mobile?(p>.10&&p<.23?1.08:1.18+.20*pose.explode):1);
     const pointer=mobile||reduced?0:gl.world.mouse.eased.camera.value.x*.055;
     camera.position.set(Math.sin(yaw+pointer)*Math.cos(pitch)*d,Math.sin(pitch)*d,Math.cos(yaw+pointer)*Math.cos(pitch)*d);
-    camera.lookAt(mobile?pose.explode*1.1:tx,ty+(mobile?.2:0),0);
+    const look=new T.Vector3(mobile?pose.explode*1.1:tx,ty+(mobile?.2:0),0);
+    camera.lookAt(look);
     camera.aspect=gl.sizes.width/gl.sizes.height;camera.fov=mobile?45:34;camera.updateProjectionMatrix();
     device.position.set(0,mobile?0:-.35,0);
     const e=pose.explode,u=pose.unfold;
@@ -129,6 +131,20 @@ function installScene(scene, bridge, metadata, env) {
     // Blender's local screen height exports as Z and the screen normal as Y.
     display.scale.z=metadata.compactHeight/metadata.panelHeight+(1-metadata.compactHeight/metadata.panelHeight)*u;
     upper.rotation.x=-Math.PI*(1-u);upper.position.y=-.0025*(1-u);
+    if(pose.closeup>0){
+      device.updateMatrixWorld(true);
+      const lower=device.getObjectByName('display-lower-pixels'),upperPixels=device.getObjectByName('display-upper-pixels');
+      const center=new T.Box3().setFromObject(lower).getCenter(new T.Vector3());
+      if(u>.5)center.lerp(new T.Box3().setFromObject(upperPixels).getCenter(new T.Vector3()),smooth(.5,1,u)*.5);
+      const normal=new T.Vector3(...metadata.screenFront);
+      const screenHeight=(metadata.compactHeight+(metadata.panelHeight*2-metadata.compactHeight)*u)*28;
+      // Readable screen framing holds while the physical upper half opens.
+      const tangent=Math.tan(camera.fov*Math.PI/360);
+      const closeDistance=Math.max(screenHeight/(2*tangent*(mobile?.61:.73)),metadata.screenWidth*28/(2*tangent*camera.aspect*(mobile?.86:.34)));
+      camera.position.lerp(center.clone().addScaledVector(normal,closeDistance),pose.closeup);
+      camera.lookAt(look.lerp(center,pose.closeup));
+      camera.setViewOffset(gl.sizes.width,gl.sizes.height,-gl.sizes.width*(mobile?0:.12)*pose.closeup,gl.sizes.height*.02*pose.closeup,gl.sizes.width,gl.sizes.height);
+    }else camera.clearViewOffset();
     ui.forEach(x=>{x.value=smooth(.24,.85,u);});
     strip.visible=pose.stripVisible;
     // A presentation cutaway makes the supplied internal cartridge path visible, without inventing a lid mechanism.
@@ -146,7 +162,7 @@ function installScene(scene, bridge, metadata, env) {
   return scene.sangre;
 }
 
-export function startSangre() {
+export function startSangre(screen) {
   window.__sangreEnabled=true;
   let stopped=false;
   const onReady=async()=>{
@@ -160,22 +176,25 @@ export function startSangre() {
       gl.renderer.instance.shadowMap.enabled=true;
       for(const name of ['mainA','mainB'])installScene(gl.world.scenes[name],bridge,metadata,env);
       const labels=document.createElement('div');labels.className='sangre-callouts';labels.setAttribute('aria-hidden','true');
-      labels.innerHTML='<div class="sangre-callout"><span>Foldable display</span><small>A fuller view, in one movement.</small></div><div class="sangre-callout"><span>Clear storage cover</span><small>Consumables, kept in view.</small></div><div class="sangre-callout"><span>Slide to insert</span><small>Cover omitted to reveal the guide.</small></div><div class="sangre-callout"><span>18650 battery</span><small>The power module.</small></div><div class="sangre-callout"><span>Photometer assembly</span><small>The sensing module in the CAD.</small></div><div class="sangre-callout"><span>Enclosure</span><small>Separate shells reveal the assembly.</small></div>';
+      labels.innerHTML='<div class="sangre-callout"><span>Clear storage cover</span><small>Consumables, kept in view.</small></div><div class="sangre-callout"><span>Slide to insert</span><small>Cover omitted to reveal the guide.</small></div><div class="sangre-callout"><span>18650 battery</span><small>The power module.</small></div><div class="sangre-callout"><span>Photometer assembly</span><small>The sensing module in the CAD.</small></div><div class="sangre-callout"><span>Enclosure</span><small>Separate shells reveal the assembly.</small></div>';
       document.body.append(labels);
       const elements=[...labels.children];
       const update=()=>{
         const current=gl.world.activeScenes.current;
         const home=!!current.sangre && !!document.querySelector('main[data-page="homepage"]');
         document.documentElement.dataset.sangrePage=home?'home':'original';
-        if(!home)return;
+        if(!home){screen?.current?.hide();return;}
+        const enabled=!gl.world.isTransitioning&&!document.documentElement.classList.contains('has-menu-open');
+        if(enabled)screen?.current?.update(current.sangre,bridge,true);
+        else screen?.current?.hide(current.sangre);
         const p=current.sangre.progress,mobile=gl.sizes.width<768;
         elements.forEach((element,i)=>{
-          const active=(i===0?p>.10&&p<.22:i===1?p>.27&&p<.43:i===2?p>.44&&p<.64:p>.69&&p<.88&&(!mobile||i===3))&&(!mobile||i!==2||current.sangre.pose?.inserted>.95);
+          const active=(i===0?p>.27&&p<.43:i===1?p>.44&&p<.64:p>.69&&p<.88&&(!mobile||i===2))&&(!mobile||i!==1||current.sangre.pose?.inserted>.95);
           element.classList.toggle('is-active',active&&!gl.world.isTransitioning);
           if(!active)return;
-          const rightSide=i===0||i===2||i===4;
+          const rightSide=i===1||i===3;
           const left=mobile?20:(rightSide?gl.sizes.width*.72:gl.sizes.width*.28);
-          const top=mobile?gl.sizes.height*(i>=3?.77:.72):(i===3?gl.sizes.height*.36:i===4?gl.sizes.height*.70:i===5?gl.sizes.height*.22:gl.sizes.height*.76);
+          const top=mobile?gl.sizes.height*(i>=2?.77:.72):(i===2?gl.sizes.height*.36:i===3?gl.sizes.height*.70:i===4?gl.sizes.height*.22:gl.sizes.height*.76);
           element.style.transform=`translate3d(${left}px,${top}px,0)`;
         });
       };

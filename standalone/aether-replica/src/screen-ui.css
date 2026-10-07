@@ -1,0 +1,74 @@
+/* The user's KeyShot dashboard: white cards, coral navigation, four metric colors. */
+.sangre-screen-overlay { position:fixed;inset:0;z-index:11;pointer-events:none; }
+.sangre-screen-overlay[hidden],.screen-surface[hidden] { display:none; }
+.screen-surface { position:absolute;left:0;top:0;width:600px;overflow:hidden;transform-origin:0 0;backface-visibility:hidden;background:#f0f1f1; }
+.screen-mirror-1 .device-ui { transform:translateY(calc(-1 * var(--screen-shift,0px))); }
+.screen-mirror-0 .device-ui { transform:translateY(var(--screen-reveal,0px)); }
+.is-interactive .screen-mirror { visibility:hidden; }
+.screen-live { pointer-events:auto; }
+.device-ui { width:600px;height:var(--screen-height,510px);display:flex;flex-direction:column;background:#f0f1f1;color:#263138;font-family:Manrope,Arial,sans-serif;letter-spacing:-.6px;text-align:left; }
+.device-ui * { box-sizing:border-box; }
+.device-ui button,.device-ui select { font:inherit;color:inherit;cursor:pointer;letter-spacing:inherit; }
+.device-ui button { border:0;background:none;text-align:left;padding:0; }
+.device-ui button:focus-visible,.device-ui select:focus-visible { outline:4px solid #b64629;outline-offset:-4px; }
+.screen-header { flex:none;height:calc(52px + var(--screen-extension) * 28px);display:flex;align-items:center;justify-content:space-between;padding:0 24px; }
+.screen-header strong { font-size:34px;font-weight:800; }
+.screen-header>span { font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px;letter-spacing:1px; }
+.screen-status-dot { width:8px;height:8px;border-radius:50%;background:#f77555; }
+.screen-content { flex:1;min-height:0;padding:0 20px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin; }
+.screen-periods { height:calc(58px + var(--screen-extension) * 56px);display:grid;grid-template-columns:repeat(4,1fr);align-items:stretch;gap:4px; }
+.screen-periods button { font-size:28px;text-align:center;position:relative;border-radius:8px;color:#656c70;font-weight:600; }
+.screen-periods button[aria-pressed="true"] { color:#263138; }
+.screen-periods button[aria-pressed="true"]:after { content:"";position:absolute;width:7px;height:7px;bottom:calc(4px + var(--screen-extension) * 6px);left:calc(50% - 3px);background:#f77555;border-radius:50%; }
+.screen-metrics { display:grid;grid-template-columns:repeat(2,1fr);gap:12px; }
+.device-ui .screen-metric { background:#fff;border-radius:26px;padding:15px 18px;display:flex;flex-direction:column;height:calc(var(--screen-half) * .3 + var(--screen-extension) * 33px);min-height:126px;transition:background .18s; }
+.device-ui .screen-metric:hover { background:#fdf9f7; }
+.screen-metric-heading { display:flex;align-items:center;justify-content:space-between;font-size:26px;font-weight:750;white-space:nowrap; }
+.screen-metric-dot { width:22px;height:22px;flex:none;border-radius:50%;background:var(--metric-color);border:6px solid color-mix(in srgb,var(--metric-color),white 65%); }
+.screen-chart { width:100%;height:100%;min-height:0;flex:1;margin:5px 0;overflow:visible; }
+.screen-chart rect { transform-origin:bottom;animation:screen-bar .65s both; }
+.screen-ring-track,.screen-ring { fill:none;stroke-width:9; }
+.screen-ring-track { stroke:#e5e6e6; }
+.screen-ring { stroke-linecap:round;transform:rotate(-90deg);transform-origin:100px 55px;animation:screen-ring .75s ease both; }
+.screen-gauge-value { font-size:22px;fill:#263138;font-weight:750; }
+.screen-gauge-unit { font-size:20px;fill:#6f777b; }
+.screen-line { stroke-dasharray:100;animation:screen-line .7s ease both; }
+.screen-metric-value { font-size:27px;font-weight:750;white-space:nowrap; }
+.screen-metric-value small,.screen-detail-value small { font-size:24px;color:#667177;font-weight:550; }
+.screen-extension { margin-top:18px;opacity:var(--screen-extension);transform:translateY(calc(22px * (1 - var(--screen-extension)))); }
+.device-ui .screen-next { display:grid;width:100%;grid-template-columns:1fr 1fr;align-items:center;gap:10px 16px;background:#fff;border-radius:26px;padding:22px; }
+.screen-next>span:first-child { grid-column:1/-1;font-size:15px;letter-spacing:1.2px;color:#6f777b; }
+.screen-next>strong { font-size:24px; }
+.screen-next .screen-start { background:#f77555;color:#fff;border-radius:12px;padding:16px;font-size:21px;display:flex;justify-content:space-between;gap:12px; }
+.screen-lipids { padding:16px 6px 4px; }
+.screen-lipids>span { display:block;font-size:19px;color:#727b80;margin-bottom:8px; }
+.screen-lipids>div { display:flex;justify-content:space-between;font-size:23px;border-bottom:1px solid #dce0e1;padding:10px 0; }
+.screen-footer { flex:none;margin-top:auto;position:relative;background:#f0f1f1; }
+.screen-footer nav { display:grid;grid-template-columns:repeat(4,1fr);height:calc(48px + var(--screen-extension) * 62px);border-top:1px solid #dce0e1; }
+.screen-footer nav button { text-align:center;font-size:26px;font-weight:650; }
+.screen-footer nav button[aria-current="page"] { color:#b74c32; }
+.screen-footer>span { display:block;text-align:center;font-size:14px;color:#707a80;padding-bottom:12px; }
+.screen-detail,.screen-history,.screen-test,.screen-settings { padding:12px 10px; }
+.device-ui .screen-back { font-size:25px;color:#b74c32;padding:18px 0; }
+.screen-detail p,.screen-history>p,.screen-test p,.screen-settings p { font-size:23px;line-height:1.5;color:#68747b;margin:18px 0; }
+.screen-detail-value { display:block;font-size:66px;letter-spacing:-2px;margin:34px 0; }
+.screen-chart.is-large { height:190px;margin:28px 0; }
+.device-ui .screen-history>button { width:100%;display:flex;justify-content:space-between;align-items:center;padding:30px 0;border-bottom:1px solid #d6dbdd;font-size:26px; }
+.screen-history small { display:block;font-size:19px;color:#6e7b83;margin-top:8px; }
+.screen-history strong { text-align:right; }
+.screen-test { text-align:center;padding-top:42px; }
+.screen-test-label { font-size:17px;letter-spacing:2px;color:#6e7b83; }
+.screen-scanner { display:flex;justify-content:center;gap:18px;background:#e0e5e6;border-radius:14px;position:relative;overflow:hidden;padding:28px;margin:44px 32px; }
+.screen-scanner>span { width:45px;height:45px;border-radius:50%;background:#fff;border:7px solid #cbd3d6; }
+.screen-scanner.is-running:after { content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#f7755566,transparent);animation:screen-scan 1.1s infinite; }
+.screen-test h2 { font-size:32px;letter-spacing:-1px;line-height:1.25; }
+.screen-test progress { width:100%;height:10px;accent-color:#f77555;margin:24px 0; }
+.device-ui .screen-primary { background:#f77555;border-radius:16px;padding:26px 32px;color:#fff;font-size:26px;text-align:center;width:100%; }
+.screen-settings label { display:flex;flex-direction:column;gap:18px;font-size:28px;margin-top:34px; }
+.screen-settings select { width:100%;padding:22px;border:1px solid #aebac1;border-radius:12px;background:white;font-size:26px; }
+.screen-live .screen-back,.screen-live .screen-primary,.screen-live select { min-height:110px; }
+@keyframes screen-bar { from { transform:scaleY(.1);opacity:.3; } }
+@keyframes screen-ring { from { stroke-dasharray:0 100; } }
+@keyframes screen-line { from { stroke-dashoffset:100; } to { stroke-dashoffset:0; } }
+@keyframes screen-scan { from { transform:translateX(-100%); } to { transform:translateX(100%); } }
+@media(prefers-reduced-motion:reduce) { .device-ui *,.device-ui *:after { animation:none!important;transition:none!important; } }
