@@ -42,7 +42,22 @@ try {
    await page.locator('.nav__link[data-anchor="1"]').click();await page.waitForTimeout(4200);await snap('sound');
    for (const [anchor,name] of [['2','craft'],['4','controls'],['5','power']]) {await page.locator('#menu-toggle').click();await page.waitForTimeout(650);await page.locator(`.nav__link[data-anchor="${anchor}"]`).click();await page.waitForTimeout(4200);await snap(name);}
    const limit=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);
-   for(const [progress,name] of [[.375,'internal'],[.81,'core']]){await page.evaluate(y=>window.scrollTo(0,y),limit*progress);await page.waitForTimeout(4200);await snap(name);}
+   for(const [progress,name] of [[.375,'internal'],[.81,'core']]){
+    await page.evaluate(y=>window.scrollTo(0,y),limit*progress);await page.waitForTimeout(4200);await snap(name);
+    if(sangre&&name==='core')check(await page.evaluate(()=>{
+     const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
+     const objects=[...s.device.getObjectByName('interior').children,s.display];
+     const rects=Object.fromEntries(objects.map(o=>{
+      const box=new T.Box3().setFromObject(o),points=[];
+      for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){
+       const v=new T.Vector3(x,y,z).project(s.camera);points.push([(v.x+1)*innerWidth/2,(1-v.y)*innerHeight/2]);
+      }
+      return[o.name,{left:Math.min(...points.map(v=>v[0])),right:Math.max(...points.map(v=>v[0])),top:Math.min(...points.map(v=>v[1])),bottom:Math.max(...points.map(v=>v[1]))}];
+     }));
+     return Object.values(rects).every(r=>r.left>=8&&r.right<=innerWidth-8&&r.top>=64&&r.bottom<=innerHeight*(innerWidth<768?.76:.99))&&
+      ['storage-cover','upper-shell','photometer','lower-shell'].every((name,i)=>rects['internal-'+name].bottom+6<rects['internal-'+['upper-shell','photometer','lower-shell','pads'][i]].top);
+    }),'Exploded layers have visible gaps and all parts fit the viewport');
+   }
    if(device==='desktop') {await page.locator('.sound-w').click();await page.waitForTimeout(800);check(await page.locator('.sound-w').getAttribute('aria-label')==='Mute audio','Sound enabled');await snap('sound-enabled');await page.locator('.sound-w').click();await page.waitForTimeout(500);check(await page.locator('.sound-w').getAttribute('aria-label')==='Play audio','Sound muted');}
    if(!sangre){
    await page.locator('[data-ai="button"]').click();await page.waitForTimeout(1000);await snap('ask-open');

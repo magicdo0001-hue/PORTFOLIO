@@ -9,6 +9,7 @@
 - Use Design Taste Frontend for visual review, then iterate on rendered desktop and mobile evidence.
 - User CAD describes the enclosure and components. Display hinge interpolation is a presentation approximation. Screen readings are illustrative, not verified clinical functionality.
 - Match the engineering sheet's Front view and KeyShot render when placing UI. The 90-gloss `.012` surface is the back; the front screen is the thin 20-gloss `.016` surface. Rear cradle and port must never be mistaken for the front display.
+- Exploded view should clearly separate the lid, upper enclosure, sensing assembly, lower enclosure and feet, with display and battery separated to the side. Check the whole explosion interval at desktop and phone sizes; a larger gap must not crop components or obscure captions.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
