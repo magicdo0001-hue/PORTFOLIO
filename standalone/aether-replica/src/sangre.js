@@ -63,6 +63,18 @@ function environment(T, renderer) {
 
 function installScene(scene, bridge, metadata, env) {
   const {THREE:T,gl}=bridge;
+  const theme=getComputedStyle(document.documentElement);
+  const colors={COLOR_BASE:theme.getPropertyValue('--sangre-scene').trim(),COLOR_HIGHLIGHT:theme.getPropertyValue('--sangre-highlight').trim(),COLOR_LIGHT:theme.getPropertyValue('--sangre-light').trim(),COLOR_DASH:theme.getPropertyValue('--sangre-accent').trim()};
+  scene.scene.background.set(colors.COLOR_BASE);
+  // LineMaterial binds these controller uniforms inside onBeforeCompile.
+  scene.circles?.uniforms.COLOR_DASH.value.set(colors.COLOR_DASH);
+  scene.scene.traverse(object=>{
+    for(const [name,color] of Object.entries(colors))object.material?.uniforms?.[name]?.value?.set(color);
+    if(object.material?.uniforms?.COLOR_BASE){
+      object.material.fragmentShader=object.material.fragmentShader.replace('vec3(0.5, 0.75, 1.0)','COLOR_LIGHT').replaceAll('* uLightIntensity','* uLightIntensity * 0.3');
+      object.material.needsUpdate=true;
+    }
+  });
   const device=gl.assets.models.sangre.scene.clone(true);
   device.name='sangre-product';device.scale.setScalar(28);
   const exterior=device.getObjectByName('exterior'),interior=device.getObjectByName('interior');
@@ -123,7 +135,7 @@ function installScene(scene, bridge, metadata, env) {
   keyLight.shadow.mapSize.set(1024,1024);keyLight.shadow.camera.left=-5;keyLight.shadow.camera.right=5;
   keyLight.shadow.camera.top=6;keyLight.shadow.camera.bottom=-4;keyLight.shadow.camera.near=.1;keyLight.shadow.camera.far=30;
   keyLight.shadow.normalBias=.018;keyLight.shadow.bias=-.0003;
-  const rim=new T.DirectionalLight('#b5d9f5',1.0);rim.position.set(5,3,5);
+  const rim=new T.DirectionalLight('#dbe4d8',1.0);rim.position.set(5,3,5);
   productScene.add(keyLight,rim);scene.renderTarget.samples=4;
   scene.caseModel.visible=false;scene.tube.visible=false;
   // Keep the authored camera for the background; overlay the product with its own camera.

@@ -47,15 +47,17 @@
 }
 
 .project--sangre {
-  --project-accent: #86bd22;
-  --project-accent-ink: #182104;
-  --project-ink: #121712;
-  --project-paper: #f0f2ed;
-  --project-surface: #dce1d9;
-  --project-surface-strong: #c8d0c5;
-  --project-dark: #0c120e;
-  --project-muted: #606a61;
+  --project-accent: #4d6e54;
+  --project-accent-ink: #eef1ec;
+  --project-ink: #1c241f;
+  --project-paper: #eef1ec;
+  --project-surface: #dfe5dc;
+  --project-surface-strong: #cbd5c9;
+  --project-dark: #161b18;
+  --project-muted: #5b675e;
 }
+
+.project--sangre .project-brief--dark { --project-accent:#afc8ad; }
 
 .project--bambino {
   --project-accent: #a8ed2d;

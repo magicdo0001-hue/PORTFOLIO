@@ -1,12 +1,34 @@
-/* Existing Aether tokens and type remain the visual foundation. */
+/* Charcoal and sage frame the supplied ivory hardware without recoloring it. */
+:root {
+  --sangre-bg:#161b18;
+  --sangre-text:#eef1ec;
+  --sangre-muted:#b8c2b8;
+  --sangre-accent:#afc8ad;
+  --sangre-scene:#303833;
+  --sangre-highlight:#46524a;
+  --sangre-light:#76907c;
+  --color-bg:var(--sangre-bg);
+  --color-brand:var(--sangre-bg);
+  --color-text:var(--sangre-text);
+  --color-white:var(--sangre-text);
+  --color-light-blue:var(--sangre-accent);
+  --color-blue:var(--sangre-accent);
+}
+body:after { background:#0c120f; }
+.indicator__icon { color:var(--sangre-accent); }
+.sound__svg path { stroke:var(--sangre-text); }
+html.has-menu-open .navigation { background-color:#1d261f!important; }
+html.has-menu-open .nav__item { opacity:.78!important; }
+html.has-menu-open .nav__item:has(.is-active) { opacity:1!important; }
+html.has-menu-open .nav__link:hover,.nav__link.is-active { animation:none;background:none;color:var(--sangre-accent); }
 html[data-sangre-page="home"] .gl__projected-point { display:none !important; }
 .sangre-callouts { position:fixed;inset:0;pointer-events:none;z-index:12; }
 html:not([data-sangre-page="home"]) .sangre-callouts { display:none; }
-.sangre-callout { position:absolute;left:0;top:0;max-width:220px;opacity:0;transition:opacity .45s ease;color:#edf7ff;font-family:inherit; }
+.sangre-callout { position:absolute;left:0;top:0;max-width:220px;opacity:0;transition:opacity .45s ease;color:var(--sangre-text);font-family:inherit; }
 .sangre-callout.is-active { opacity:1; }
-.sangre-callout:before { content:"";display:block;width:42px;height:1px;margin-bottom:12px;background:#abd7ff;opacity:.6; }
+.sangre-callout:before { content:"";display:block;width:42px;height:1px;margin-bottom:12px;background:var(--sangre-accent);opacity:.6; }
 .sangre-callout span { display:block;font-size:15px;line-height:1.25;letter-spacing:-.025em; }
-.sangre-callout small { display:block;margin-top:6px;font-size:12px;line-height:1.4;color:#b7c7d7; }
+.sangre-callout small { display:block;margin-top:6px;font-size:12px;line-height:1.4;color:var(--sangre-muted); }
 .sangre-callout:nth-child(5) { max-width:135px; }
 html[data-sangre-page="home"] .ae__btn-w { visibility:hidden;pointer-events:none; }
 html[data-sangre-page="home"] .section__desc { max-width:250px; }
@@ -14,9 +36,9 @@ html[data-sangre-page="home"] #isSound .section__desc { position:fixed;left:7vw;
 html[data-sangre-page="home"] .nav__logo-w { text-transform:uppercase; }
 .indicator-w { min-height:44px; }
 .indicator-w .indicator__label { font-size:13px; }
-.sangre-load-error { position:fixed;inset:40% 20%;z-index:20;text-align:center;color:#edf7ff; }
-.sangre-load-error button { margin-top:20px;padding:12px 24px;border:1px solid #b7c7d7;border-radius:4px;background:#133153;color:inherit;cursor:pointer; }
-.sangre-startup { visibility:visible;position:fixed;inset:0;z-index:19;background:#081321;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;color:#edf3fa;pointer-events:none;transition:opacity .45s ease,visibility .45s; }
+.sangre-load-error { position:fixed;inset:40% 20%;z-index:20;text-align:center;color:var(--sangre-text); }
+.sangre-load-error button { margin-top:20px;padding:12px 24px;border:1px solid var(--sangre-accent);border-radius:4px;background:var(--sangre-scene);color:inherit;cursor:pointer; }
+.sangre-startup { visibility:visible;position:fixed;inset:0;z-index:19;background:var(--sangre-bg);display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;color:var(--sangre-text);pointer-events:none;transition:opacity .45s ease,visibility .45s; }
 .sangre-startup .startup-title { margin:0 0 24px;font-size:clamp(48px,6vw,90px);line-height:1.05;letter-spacing:-.06em; }
 .sangre-startup img { width:100%;height:auto;max-height:76vh;object-fit:contain; }
 html.sangre-ready.is-ready .sangre-startup { opacity:0;visibility:hidden; }

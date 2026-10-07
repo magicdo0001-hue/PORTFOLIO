@@ -31,6 +31,11 @@ try {
    check(await page.locator('canvas').count()===1,'WebGL canvas loaded');
    check((await page.locator('h1').first().innerText()).replace(/\s/g,'')===(sangre?'Health,infocus.':'SoundWithoutBoundaries'),'Homepage heading');
    if(sangre){await page.locator('html.sangre-ready').waitFor();check(await page.evaluate(()=>!!window.__sangre.bridge.gl.world.activeScenes.current.sangre),'SANGRE installed');check(await page.evaluate(()=>!window.__sangre.bridge.gl.world.activeScenes.current.caseModel.visible),'Homepage earbuds hidden');}
+   if(sangre)check(await page.evaluate(()=>['mainA','mainB'].every(name=>{
+    const scene=window.__sangre.bridge.gl.world.scenes[name];const rings=[];
+    scene.scene.traverse(object=>{if(object.material?.uniforms?.COLOR_DASH)rings.push(object.material.uniforms.COLOR_DASH.value.getHexString());});
+    return scene.scene.background.getHexString()==='303833'&&(name!=='mainA'||(rings.length===6&&scene.circles.uniforms.COLOR_DASH.value.getHexString()==='afc8ad'))&&rings.every(color=>color==='afc8ad');
+   })),'Both loop scenes use charcoal, and the six homepage rings use sage');
    if(sangre)check(await page.evaluate(()=>{
     const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
     const pixels=s.device.getObjectByName('display-lower-pixels'),n=pixels.geometry.attributes.normal;

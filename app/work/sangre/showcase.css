@@ -1,11 +1,11 @@
-.sangre-showcase { position:relative;min-height:100dvh;height:100dvh;background:#081321; }
+.sangre-showcase { --sangre-bg:#161b18;--sangre-text:#eef1ec;--sangre-accent:#afc8ad;position:relative;min-height:100dvh;height:100dvh;background:var(--sangre-bg); }
 .sangre-showcase iframe { display:block;width:100%;height:100%;border:0; }
-.sangre-showcase__skip { position:absolute;left:20px;top:20px;z-index:2;padding:12px 20px;background:#081321;color:#edf3fa;transform:translateY(-180%); }
-.sangre-showcase__skip:focus { transform:none;outline:2px solid #abd7ff; }
-.sangre-showcase__poster { position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;background:#081321;color:#edf3fa;pointer-events:none;transition:opacity .35s ease,visibility .35s; }
+.sangre-showcase__skip { position:absolute;left:20px;top:20px;z-index:2;padding:12px 20px;background:var(--sangre-bg);color:var(--sangre-text);transform:translateY(-180%); }
+.sangre-showcase__skip:focus { transform:none;outline:2px solid var(--sangre-accent); }
+.sangre-showcase__poster { position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;background:var(--sangre-bg);color:var(--sangre-text);pointer-events:none;transition:opacity .35s ease,visibility .35s; }
 .sangre-showcase__title { margin:0 0 24px;font-size:clamp(48px,6vw,90px);line-height:1.05;letter-spacing:-.06em; }
 .sangre-showcase__poster img { width:100%;height:auto;max-height:76dvh;object-fit:contain; }
-.sangre-showcase__poster a { display:inline-flex;align-items:center;min-height:44px;margin-top:24px;border-bottom:1px solid #abd7ff;pointer-events:auto; }
+.sangre-showcase__poster a { display:inline-flex;align-items:center;min-height:44px;margin-top:24px;border-bottom:1px solid var(--sangre-accent);pointer-events:auto; }
 .sangre-showcase[data-status="ready"] .sangre-showcase__poster { opacity:0;visibility:hidden; }
 .sangre-case-study { display:none; }
 .sangre-case-study:target { display:block; }

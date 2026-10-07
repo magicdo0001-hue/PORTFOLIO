@@ -4,6 +4,7 @@
 
 - Replace the homepage earbuds with the user's SANGRE CAD and KeyShot materials. Preserve the existing background, typography and scroll-loop language.
 - Latest instruction (2026-10-08): integrate this SANGRE showcase into `/work/sangre` and `/en/work/sangre`. Remove the previous Discover/Specs/Preorder content; Discover opens the original localized portfolio case study at `#story`. This supersedes all earlier Discover preservation instructions.
+- Palette update (2026-10-08): use charcoal, silver-white and muted sage for the SANGRE showcase, including its loading/fallback states, WebGL background and rings. The case study uses the same sage family with darker text accents for contrast. This supersedes the original blue-background preservation; retain the supplied hardware CMF and reference dashboard colors.
 - Testing uses a labelled presentation cutaway: hide the clear cover to reveal the guide; do not invent its opening mechanism.
 - The cartridge slides horizontally from the FRONT, alongside the display (-Z in the web model), toward the back, sample wells upward. Keep this confirmed travel direction.
 - Latest user correction: the FLAT end enters first; the BEVELED end stays outside. Preserve the source CAD orientation; the previous 180-degree rotation was wrong. Identify ends by actual geometry, not the red marker or an arbitrary PCA sign. Earlier red-end-outside wording was our mistaken inference and is superseded.
