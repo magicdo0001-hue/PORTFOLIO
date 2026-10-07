@@ -51,3 +51,12 @@ Cloudflare 配置位于 `wrangler.jsonc`。如果以后需要数据库，可在�
 - 独立构建生成 public/rhine-lab，iframe 隔离其全局样式、事件和渲染环境；模型、音频、导出文档的 URL 仅在构建时加上子路径，原文件不改写。
 - 父项目的 TypeScript 和 ESLint 已排除 RhineLabUI；子项目在构建时独立进行 TypeScript 检查。生成目录和嵌套 node_modules 不提交。
 - 移动端保留原版横向画布，可将设备横屏查看。
+
+## SANGRE 新版详情
+
+`/work/sangre` 和 `/en/work/sangre` 使用新版五章产品展示，保留实时屏幕、折叠、前方插条和爆炸结构。Discover 入口进入同路径的 `#story` 标准案例，返回产品展示会保留当前交互状态。旧耳机规格、预购和私有 AI 内容已移除。
+
+- `npm run dev`／`npm run build` 自动使用根项目现有依赖，将原型构建到 `public/sangre-showcase/`；`npm run build:sangre` 可单独构建。
+- 生成目录不提交，Cloudflare 构建时自动生成并发布。运行时、模型、贴图与声音的资源地址在输出中添加子路径。
+- 主站直接输出已有产品渲染占位，模型准备完成后淡出；阅读模式暂停隐藏渲染器，直接进入案例时原生懒加载避免启动隐藏的 3D 展示。
+- 技术和视觉验收记录在 `standalone/aether-replica/REPORT.md` 与 `design-qa.md`。

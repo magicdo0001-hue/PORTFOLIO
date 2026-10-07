@@ -24,10 +24,10 @@ try {
    const record={kind,device,viewport,states:[],errors:[],external:[],failed:[],assertions:[]};
    page.on('pageerror',e=>record.errors.push(e.message));
    page.on('console',m=>{if(m.type()==='error')record.errors.push(m.text());});
-   page.on('response',r=>{if(r.status()>=400)record.failed.push({url:r.url(),status:r.status()});if(/^https?:/.test(r.url())&&!r.url().startsWith(base))record.external.push(r.url());});
+   page.on('response',r=>{if(r.status()>=400)record.failed.push({url:r.url(),status:r.status()});if(/^https?:/.test(r.url())&&new URL(r.url()).origin!==new URL(base).origin)record.external.push(r.url());});
    const snap = async name => {await page.screenshot({path:path.join(dir,`${device}-${name}.png`)});record.states.push({name,url:page.url(),y:await page.evaluate(()=>scrollY),height:await page.evaluate(()=>document.documentElement.scrollHeight),styles:await styles(page)});};
    const check = (condition,message) => {assert(condition,`${kind}/${device}: ${message}`);record.assertions.push(message);};
-   await page.goto(base+'/',{waitUntil:'domcontentloaded'});await page.locator('html.is-ready').waitFor({timeout:60000});await page.waitForTimeout(4000);await snap('home');
+   await page.goto(base.includes('.html')?base:base+'/',{waitUntil:'domcontentloaded'});await page.locator('html.is-ready').waitFor({timeout:60000});await page.waitForTimeout(4000);await snap('home');
    check(await page.locator('canvas').count()===1,'WebGL canvas loaded');
    check((await page.locator('h1').first().innerText()).replace(/\s/g,'')===(sangre?'Health,infocus.':'SoundWithoutBoundaries'),'Homepage heading');
    if(sangre){await page.locator('html.sangre-ready').waitFor();check(await page.evaluate(()=>!!window.__sangre.bridge.gl.world.activeScenes.current.sangre),'SANGRE installed');check(await page.evaluate(()=>!window.__sangre.bridge.gl.world.activeScenes.current.caseModel.visible),'Homepage earbuds hidden');}
@@ -159,6 +159,7 @@ try {
    await page.locator('[data-ai="button"]').click();await page.waitForTimeout(900);check(await page.locator('[data-ai="question"]').isVisible(),'AI retry reopens input');
    await page.mouse.click(20,viewport.height*.6);await page.waitForTimeout(900);
    }
+   if(!sangre){
    await page.locator('#menu-toggle').click();await page.waitForTimeout(800);await page.locator('.nav__link[href="/specs"]').click();await page.waitForURL(base+'/specs');await page.locator('main[data-page="specs"]').waitFor();await page.waitForTimeout(4500);await snap('specs-top');
    check((await page.locator('body').innerText()).includes('£399'),'Specs content and price');
    if(sangre)check(await page.evaluate(()=>document.documentElement.dataset.sangrePage==='original'&&!window.__sangre.bridge.gl.world.activeScenes.current.sangre),'Discover content retains original scene');
@@ -170,6 +171,10 @@ try {
    check(await page.locator('.preorder__footer-link').count()===7,'All footer links');
    await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await page.waitForTimeout(1000);await snap('preorder-footer');
    await page.locator('.nav__logo-w').filter({visible:true}).first().click();await page.waitForURL(base+'/');await page.waitForTimeout(4500);await snap('home-return');
+   }else{
+    check((await page.locator('.indicator-w').getAttribute('href')).endsWith('/work/sangre#story'),'Discover opens the portfolio case study');
+    check(await page.locator('a[href="/specs"],a[href="/preorder"],.modal-w,.ae__btn-w').count()===0,'Obsolete Discover, preorder and private AI content removed');
+   }
    await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await page.waitForTimeout(7000);await snap('loop-return');check(await page.evaluate(()=>scrollY)<500,'End of page loops back to homepage');
    if(kind==='implementation'){check(record.external.length===0,'No external runtime asset or analytics requests');check(record.failed.every(r=>r.url.endsWith('/api/agent')),'No failed local asset requests');check(record.errors.every(e=>/503|Submission failed|HTTP 503|original private AI/.test(e)),'No unexpected browser errors');}
    await fs.writeFile(path.join(dir,`${device}-results.json`),JSON.stringify(record,null,2));all.push(record);

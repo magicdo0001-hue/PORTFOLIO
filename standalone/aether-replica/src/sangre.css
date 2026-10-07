@@ -12,9 +12,11 @@ html[data-sangre-page="home"] .ae__btn-w { visibility:hidden;pointer-events:none
 html[data-sangre-page="home"] .section__desc { max-width:250px; }
 html[data-sangre-page="home"] #isSound .section__desc { position:fixed;left:7vw;top:54vh;width:240px; }
 html[data-sangre-page="home"] .nav__logo-w { text-transform:uppercase; }
+.indicator-w { min-height:44px; }
+.indicator-w .indicator__label { font-size:13px; }
 .sangre-load-error { position:fixed;inset:40% 20%;z-index:20;text-align:center;color:#edf7ff; }
 .sangre-load-error button { margin-top:20px;padding:12px 24px;border:1px solid #b7c7d7;border-radius:4px;background:#133153;color:inherit;cursor:pointer; }
-.sangre-startup { position:fixed;inset:0;z-index:19;background:#081321;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;color:#edf3fa;pointer-events:none;transition:opacity .45s ease,visibility .45s; }
+.sangre-startup { visibility:visible;position:fixed;inset:0;z-index:19;background:#081321;display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:8vw;color:#edf3fa;pointer-events:none;transition:opacity .45s ease,visibility .45s; }
 .sangre-startup .startup-title { margin:0 0 24px;font-size:clamp(48px,6vw,90px);line-height:1.05;letter-spacing:-.06em; }
 .sangre-startup img { width:100%;height:auto;max-height:76vh;object-fit:contain; }
 html.sangre-ready.is-ready .sangre-startup { opacity:0;visibility:hidden; }

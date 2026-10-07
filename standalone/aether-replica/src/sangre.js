@@ -1,5 +1,5 @@
 // SANGRE uses the author's renderer, background, audio and loop transitions.
-// Only the two homepage product scenes are adapted; specs / Discover Space stay authored.
+// The two product scenes use SANGRE CAD; Discover now opens the portfolio case study.
 // The authored runtime owns the DOM and WebGL singleton; its scene edits need a full reload.
 if(import.meta.hot)import.meta.hot.accept(()=>location.reload());
 const clamp = x => Math.max(0, Math.min(1, x));

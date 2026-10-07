@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "RhineLabUI/**",
     "public/rhine-lab/**",
+    "public/sangre-showcase/**",
     "tmp/**",
     "**/dist/**",
     ".wrangler/**",

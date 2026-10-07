@@ -2,14 +2,14 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render(path = "/") {
+async function render(path = "/", host) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
     new Request(`http://localhost${path}`, {
-      headers: { accept: "text/html" },
+      headers: { accept: "text/html", ...(host ? { host } : {}) },
     }),
     {
       ASSETS: {
@@ -180,6 +180,26 @@ test("renders the archive homepage and five distinct case studies", async () => 
   ];
 
   const localizedPages = [html, workHtml];
+
+  for (const locale of ["", "/en"]) {
+    const page = await render(`${locale}/work/sangre`);
+    const content = await page.text();
+    assert.match(content, /data-src="\/sangre-showcase\/index.html\?lang=(?:zh|en)"/);
+    assert.match(content, /class="sangre-case-study" id="story"/);
+    assert.match(content, /href="#showcase"/);
+    assert.match(content, /sangre-showcase__poster/);
+    assert.match(content, /loading="lazy" data-src="\/sangre-showcase\//);
+    assert.doesNotMatch(content, /sangre-orbit|href="\/specs"|href="\/preorder"/);
+  }
+  for (const [host, protocol] of [["127.0.0.1:4175", "http"], ["[::1]:4175", "http"], ["portfolio.example", "https"]]) {
+    const localPage = await (await render("/work/sangre", host)).text();
+    assert.ok(localPage.includes(`${protocol}://${host}/favicon.svg`));
+  }
+  const showcase = await readFile(new URL("../public/sangre-showcase/index.html", import.meta.url), "utf8");
+  assert.match(showcase, /\/sangre-showcase\/assets\//);
+  for (const oldPage of ["specs.html", "preorder.html"]) {
+    await assert.rejects(access(new URL(`../public/sangre-showcase/${oldPage}`, import.meta.url)));
+  }
 
   for (const [path, expected, expectedAssets] of cases) {
     const caseResponse = await render(path);

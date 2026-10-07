@@ -21,14 +21,6 @@ html.sangre-static body { position:static; }
 .static-footer { display:flex;flex-wrap:wrap;gap:24px;align-items:center;padding:32px 0;border-top:1px solid #ffffff26;font-size:13px; }
 .static-footer p { margin:0 auto 0 0; }
 .static-footer button { min-height:44px;padding:10px 16px;background:transparent;border:1px solid #b7c7d7;color:inherit;font:inherit;cursor:pointer; }
-.static-authored .s { height:auto;min-height:0;padding:48px 0; }
-.static-authored .c,.static-authored .section-w { display:block;position:static;width:100%;height:auto;padding:0; }
-.static-authored .section__title,.static-authored .section__desc,.static-authored .specs__price,.static-authored .specs__details { position:static;opacity:1;transform:none; }
-.static-authored [data-text] { opacity:1;transform:none; }
-.static-authored .section__title,.static-authored .section__desc,.static-authored .preorder__title { mask-image:none; }
-.static-authored h1 { white-space:normal;overflow-wrap:anywhere; }
-.static-authored h1 br { display:initial; }
-.static-authored .s.is--specs-intro { min-height:0; }
 @media(max-width:767px) {
   .static-project { padding:0 20px; }
   .static-nav { align-items:flex-start;padding:22px 0;gap:16px; }

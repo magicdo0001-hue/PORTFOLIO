@@ -1,19 +1,28 @@
 import Image from "next/image";
-import SangreOrbit from "../../../work/sangre/orbit";
+import Link from "next/link";
+import SangreShowcase from "../../../work/sangre/showcase";
 import type { Metadata } from "next";
 import { FactRail, ProjectEnd } from "../../../project-shell";
 
 export const metadata: Metadata = {
   title: "SANGRE | Wenhou Yan",
-  description: "A home cardiovascular monitoring device developed from research through a functional 1:1 prototype.",
+  description: "A home cardiovascular monitoring concept developed from research through a physical 1:1 interaction prototype.",
 };
 
 export default function EnglishSangrePage() {
   return (
     <main className="project project--sangre project--en" lang="en">
-      <SangreOrbit locale="en" />
+      <SangreShowcase locale="en" />
 
-      <section className="project-brief" id="story">
+      <div className="sangre-case-study" id="story">
+        <header className="sangre-case-nav">
+          <Link href="/en" aria-label="SANGRE, back to portfolio">SANGRE</Link>
+          <nav aria-label="Case study navigation">
+            <a href="#showcase">Product experience</a>
+            <a href="/work/sangre#story" hrefLang="zh-CN">中</a>
+          </nav>
+        </header>
+      <section className="project-brief">
         <div className="shell">
           <p className="chapter-label">01 / PROJECT OVERVIEW</p>
           <h2>
@@ -21,9 +30,10 @@ export default function EnglishSangrePage() {
             <br />
             It needs <span>less friction.</span>
           </h2>
-          <p>
+          <div className="sangre-case-intro"><p>
             SANGRE combines a lipid panel, blood glucose and uric acid testing in one compact desktop device. Test strips, sampling tools, result reading and storage become one continuous workflow.
           </p>
+          <p>The physical 1:1 interaction prototype validates handling and structure. On-screen readings are demonstration data.</p></div>
         </div>
       </section>
 
@@ -71,12 +81,12 @@ export default function EnglishSangrePage() {
 
       <section className="sangre-prototype chapter">
         <div className="sangre-prototype__image">
-          <Image unoptimized width={2400} height={1600} src="/portfolio/sangre-prototype.webp" alt="SANGRE functional 1:1 prototype" />
+          <Image unoptimized width={2400} height={1600} src="/portfolio/sangre-prototype.webp" alt="SANGRE physical 1:1 interaction prototype" />
         </div>
         <div className="sangre-prototype__copy">
           <p className="chapter-label">03 / PROTOTYPE VALIDATION</p>
           <span className="display-number">1:1</span>
-          <h2>From volume studies to a fully operable prototype.</h2>
+          <h2>From volume studies to a fully operable interaction prototype.</h2>
           <p>
             Successive physical models tested the screen angle, access to consumables, strip handling and storage logic. Every build directly informed the next design decision.
           </p>
@@ -105,6 +115,7 @@ export default function EnglishSangrePage() {
       </section>
 
       <ProjectEnd nextHref="/en/work/bambino" nextIndex="02" nextTitle="BAMBINO V2" locale="en" />
+      </div>
     </main>
   );
 }

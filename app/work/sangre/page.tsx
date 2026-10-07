@@ -1,5 +1,6 @@
 import Image from "next/image";
-import SangreOrbit from "./orbit";
+import Link from "next/link";
+import SangreShowcase from "./showcase";
 import {
   FactRail,
   ProjectEnd,
@@ -7,15 +8,23 @@ import {
 
 export const metadata = {
   title: "SANGRE | 严文厚",
-  description: "家庭心血管监测设备：从研究、结构到一比一功能原型。",
+  description: "家庭心血管监测设备设计：从研究、结构到一比一实体交互原型。",
 };
 
 export default function SangrePage() {
   return (
     <main className="project project--sangre">
-      <SangreOrbit />
+      <SangreShowcase />
 
-      <section className="project-brief" id="story">
+      <div className="sangre-case-study" id="story">
+        <header className="sangre-case-nav">
+          <Link href="/" aria-label="SANGRE，返回作品集">SANGRE</Link>
+          <nav aria-label="案例导航">
+            <a href="#showcase">产品展示</a>
+            <a href="/en/work/sangre#story" hrefLang="en">EN</a>
+          </nav>
+        </header>
+      <section className="project-brief">
         <div className="shell">
           <p className="chapter-label">01 / 项目概要</p>
           <h2>
@@ -23,10 +32,11 @@ export default function SangrePage() {
             <br />
             不是更多设备，而是<span>更少负担。</span>
           </h2>
-          <p>
+          <div className="sangre-case-intro"><p>
             SANGRE 将血脂四项、血糖与尿酸检测整合进紧凑的桌面设备，
             把试纸、采血组件、结果读取与收纳组织成一条连续流程。
           </p>
+          <p>1:1 实体交互原型用于验证操作与结构；网页读数为界面演示数据。</p></div>
         </div>
       </section>
 
@@ -88,13 +98,13 @@ export default function SangrePage() {
         <div className="sangre-prototype__image">
           <Image unoptimized width={2400} height={1600}
             src="/portfolio/sangre-prototype.webp"
-            alt="SANGRE 一比一功能原型"
+            alt="SANGRE 一比一实体交互原型"
           />
         </div>
         <div className="sangre-prototype__copy">
           <p className="chapter-label">03 / 原型验证</p>
           <span className="display-number">1:1</span>
-          <h2>从体量模型，到可完整操作的功能原型。</h2>
+          <h2>从体量模型，到可完整操作的交互原型。</h2>
           <p>
             多轮实体模型用于验证屏幕角度、耗材接近性、试纸操作和收纳逻辑。每一次制造，都直接改变下一轮设计决策。
           </p>
@@ -137,6 +147,7 @@ export default function SangrePage() {
         nextIndex="02"
         nextTitle="BAMBINO V2"
       />
+      </div>
     </main>
   );
 }

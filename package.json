@@ -6,8 +6,8 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "predev": "node scripts/build-rhine-lab.mjs",
-    "prebuild": "node scripts/build-rhine-lab.mjs",
+    "predev": "node scripts/build-rhine-lab.mjs && node scripts/build-sangre.mjs",
+    "prebuild": "node scripts/build-rhine-lab.mjs && node scripts/build-sangre.mjs",
     "build:rhine": "node scripts/build-rhine-lab.mjs",
     "dev": "vinext dev --hostname 127.0.0.1 --port 4175",
     "build": "vinext build",
@@ -17,7 +17,8 @@
     "test": "npm run build && node --test tests/rendered-html.test.mjs tests/sangre-timeline.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --max-warnings 0",
     "typecheck": "wrangler types .wrangler/worker-configuration.d.ts --env-interface CloudflareEnv && tsc --noEmit && tsc --project tsconfig.worker.json",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "build:sangre": "node scripts/build-sangre.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",

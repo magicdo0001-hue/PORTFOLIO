@@ -79,18 +79,27 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     setPhase("idle"); progress = 0;
     if (!disposed) archive.contentDocument?.querySelector<HTMLButtonElement>(".read-file")?.focus({ preventScroll: true });
   }
-  function close() {
+  function close(restoreHistory = false) {
     if (phase === "idle" || phase === "closing") return;
     generation++;
     if (project) project.inert = true;
     if (status) status.hidden = true;
     bridge?.suspend(false); measure(); setPhase("closing");
-    animate(0, 1400 * progress, () => cleanup());
+    animate(0, 1400 * progress, () => {
+      // Remove the project iframe and its fragment history before going back.
+      // Otherwise Back can traverse a child reading mode without closing the portal.
+      cleanup();
+      if (restoreHistory && history.state?.[marker]) {
+        const state = { ...history.state }; delete state[marker];
+        history.replaceState(state, "", location.pathname + location.search);
+        history.back();
+      }
+    });
   }
   function requestClose() {
     if (phase === "idle" || phase === "closing") return;
     if (navigator.userActivation.isActive) bridge?.unlockAudio();
-    if (ownsHistory && history.state?.[marker]) history.back();
+    if (ownsHistory && history.state?.[marker]) close(true);
     else {
       const state = { ...history.state }; delete state[marker];
       history.replaceState(state, "", location.pathname + location.search); close();
@@ -179,6 +188,10 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     }
   }
   const message = (event: MessageEvent) => {
+    if (event.origin === location.origin && event.source === project?.contentWindow && event.data?.type === "sangre-navigate" &&
+        (event.data.href === "/" || event.data.href === "/en")) {
+      requestClose(); return;
+    }
     if (event.origin !== location.origin || event.source !== archive.contentWindow || event.data?.type !== "rhine-open-project" || typeof event.data.href !== "string") return;
     void open(event.data.href);
   };

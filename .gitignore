@@ -56,3 +56,6 @@ next-env.d.ts
 
 # TypeScript incremental caches
 *.tsbuildinfo
+
+# Generated SANGRE showcase build
+/public/sangre-showcase/
