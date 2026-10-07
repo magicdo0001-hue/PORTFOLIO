@@ -66,6 +66,9 @@ function installScene(scene, bridge, metadata, env) {
   const theme=getComputedStyle(document.documentElement);
   const colors={COLOR_BASE:theme.getPropertyValue('--sangre-scene').trim(),COLOR_HIGHLIGHT:theme.getPropertyValue('--sangre-highlight').trim(),COLOR_LIGHT:theme.getPropertyValue('--sangre-light').trim(),COLOR_DASH:theme.getPropertyValue('--sangre-accent').trim()};
   scene.scene.background.set(colors.COLOR_BASE);
+  const indicator=gl.world.renderPlane.mesh.material.uniforms;
+  indicator.COLOR_BLUE.value.set(colors.COLOR_DASH);
+  indicator.COLOR_LIGHT_BLUE.value.set(theme.getPropertyValue('--sangre-text').trim());
   // LineMaterial binds these controller uniforms inside onBeforeCompile.
   scene.circles?.uniforms.COLOR_DASH.value.set(colors.COLOR_DASH);
   scene.scene.traverse(object=>{

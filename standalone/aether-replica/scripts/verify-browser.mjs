@@ -34,7 +34,7 @@ try {
    if(sangre)check(await page.evaluate(()=>['mainA','mainB'].every(name=>{
     const scene=window.__sangre.bridge.gl.world.scenes[name];const rings=[];
     scene.scene.traverse(object=>{if(object.material?.uniforms?.COLOR_DASH)rings.push(object.material.uniforms.COLOR_DASH.value.getHexString());});
-    return scene.scene.background.getHexString()==='303833'&&(name!=='mainA'||(rings.length===6&&scene.circles.uniforms.COLOR_DASH.value.getHexString()==='afc8ad'))&&rings.every(color=>color==='afc8ad');
+    return window.__sangre.bridge.gl.world.renderPlane.mesh.material.uniforms.COLOR_BLUE.value.getHexString()==='afc8ad'&&scene.scene.background.getHexString()==='303833'&&(name!=='mainA'||(rings.length===6&&scene.circles.uniforms.COLOR_DASH.value.getHexString()==='afc8ad'))&&rings.every(color=>color==='afc8ad');
    })),'Both loop scenes use charcoal, and the six homepage rings use sage');
    if(sangre)check(await page.evaluate(()=>{
     const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
