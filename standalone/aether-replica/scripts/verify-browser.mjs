@@ -38,6 +38,13 @@ try {
     const center=new T.Box3().setFromObject(pixels).getCenter(new T.Vector3());
     return center.z<0&&normal.z<-.6&&normal.y>.6&&normal.dot(s.camera.position.clone().sub(center).normalize())>.6;
    }),'Homepage UI is on the CAD front slope and faces the camera');
+   const connected=()=>page.evaluate(()=>{
+    const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
+    const frame=s.device.getObjectByName('display-lower-bezel'),hinge=s.device.getObjectByName('exterior-18'),rear=s.device.getObjectByName('exterior-12');
+    const bounds=o=>new T.Box3().setFromObject(o).expandByScalar(.00001);
+    return frame.userData.screenSourcePart==='014'&&hinge.parent===s.display&&rear.parent===s.display&&bounds(frame).intersectsBox(bounds(hinge))&&bounds(hinge).intersectsBox(bounds(rear));
+   });
+   if(sangre)check(await connected(),'Original CAD front frame, hinge and rear screen are connected in one assembly');
    if(sangre){
     const screen=page.locator('.screen-live');
     const chapter=async progress=>{await page.evaluate(p=>{const b=window.__sangre.bridge;b.ScrollController.isIdleScrollAllowed=false;b.Scroll.scrollTo(p*b.Scroll.limit,{immediate:true,force:true});},progress);await page.waitForTimeout(2600);};
@@ -45,6 +52,7 @@ try {
     check(await screen.evaluate(el=>el.hidden&&el.inert),'Compact close-up has no hidden interactive controls');
     await chapter(.087);await snap('screen-unfolding');
     await chapter(.125);await snap('screen-expanded');
+    check(await connected(),'Screen connection remains intact with the tall screen unfolded');
     check(await screen.evaluate(el=>!el.hidden&&!el.inert&&el.getBoundingClientRect().height>innerHeight*.5),'Screen close-up is readable and interactive');
     check(await page.locator('.screen-mirror').evaluateAll(els=>els.every(el=>el.inert)),'Mirrored halves do not duplicate keyboard controls');
     await screen.getByRole('button',{name:'Month',exact:true}).click();
@@ -123,6 +131,7 @@ try {
      return Object.values(rects).every(r=>r.left>=8&&r.right<=innerWidth-8&&r.top>=64&&r.bottom<=innerHeight*(innerWidth<768?.76:.99))&&
       ['storage-cover','upper-shell','photometer','lower-shell'].every((name,i)=>rects['internal-'+name].bottom+6<rects['internal-'+['upper-shell','photometer','lower-shell','pads'][i]].top);
     }),'Exploded layers have visible gaps and all parts fit the viewport');
+    if(sangre&&name==='core')check(await connected(),'The complete front/rear display stays connected in the exploded view');
    }
    if(device==='desktop') {await page.locator('.sound-w').click();await page.waitForTimeout(800);check(await page.locator('.sound-w').getAttribute('aria-label')==='Mute audio','Sound enabled');await snap('sound-enabled');await page.locator('.sound-w').click();await page.waitForTimeout(500);check(await page.locator('.sound-w').getAttribute('aria-label')==='Play audio','Sound muted');}
    if(!sangre){

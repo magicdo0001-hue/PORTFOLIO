@@ -9,6 +9,16 @@ assert(metadata.screenCenter[2]<-.015,'UI belongs on the front slope, not the re
 assert(metadata.screenWidth>.075&&metadata.screenWidth<.08,'Use the 77.5 mm front panel, not the 88.5 mm rear panel');
 assert(metadata.travel[2]<-.99,'Cartridge must start outside the front (-Z) and slide inward');
 assert(metadata.stripEndOffset>0&&metadata.stripEndOffset<.02,'Keep the beveled end exposed at the front lip');
+const glb=readFileSync(new URL('../public/assets/sangre/sangre-display.glb',import.meta.url));
+const model=JSON.parse(glb.subarray(20,20+glb.readUInt32LE(12)).toString());
+const assembly=model.nodes.findIndex(n=>n.name==='display-assembly'),members=new Set(),pending=[assembly];
+assert(assembly>=0,'Keep a complete display assembly separate from the ivory enclosure');
+while(pending.length){const i=pending.pop();members.add(i);pending.push(...(model.nodes[i].children||[]));}
+for(const source of ['005','008','010','012','014','018','020','026','028','030']){
+  const i=model.nodes.findIndex(n=>n.extras?.screenSourcePart===source);
+  assert(i>=0&&members.has(i),`Original display part ${source} must move with the display`);
+}
+assert.equal(model.nodes.find(n=>n.name==='display-lower-bezel').extras.screenSourcePart,'014','Use the CAD front frame, including its rear connecting lip');
 for(const p of [0,.125,.375]){
   const [yaw,pitch]=poseAt(p).camera;
   const view=[Math.sin(yaw)*Math.cos(pitch),Math.sin(pitch),Math.cos(yaw)*Math.cos(pitch)];

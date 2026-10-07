@@ -30,9 +30,10 @@ def group(name):
 
 root = group('sangre')
 exterior = group('exterior'); exterior.parent = root
+assembly = group('display-assembly'); assembly.parent = root
 strip = group('test-strip'); strip.parent = root
 flat = group('flat-source'); flat.parent = root
-kept = [root, exterior, strip, flat]
+kept = [root, exterior, assembly, strip, flat]
 screen = None
 folded_bezel = None
 for source, target in [(main, exterior), (strip_source, strip), (flat_source, flat)]:
@@ -55,6 +56,10 @@ for source, target in [(main, exterior), (strip_source, strip), (flat_source, fl
             screen = o; o.name = 'folded-screen-source'
         if source == main and '20光泽' in material_name and original_name.endswith('.014'):
             folded_bezel = o
+        # These adjoining black CAD parts belong to the whole display, not the ivory enclosure.
+        if source == main and original_name.endswith(('.005','.008','.010','.012','.014','.016','.018','.020','.026','.028','.030')):
+            o.parent = assembly
+            o['screenSourcePart'] = original_name.rsplit('.',1)[-1]
         if '白色坚硬' in material_name:
             o.name = 'outer-shell'
         elif '40光泽' in material_name:
@@ -92,8 +97,7 @@ _, flat_axes = np.linalg.eigh(np.cov(flat_coords.T))
 flat_projected = flat_coords @ flat_axes
 half_height = float((flat_projected.max(0)-flat_projected.min(0)).max() * .5)
 screen.hide_render = True
-if folded_bezel:
-    folded_bezel.hide_render = True
+assert folded_bezel is not None, 'Keep the original front frame and its hinge connection'
 
 def material(name, color, rough=.3, metal=0):
     m = bpy.data.materials.new(name); m.diffuse_color = (*color, 1)
@@ -111,7 +115,7 @@ def mesh_object(name, vertices, faces, mat, parent):
     return o
 
 bezel_mat = material('Display graphite', (.008, .012, .016), .25)
-display = group('display-rig'); display.parent = root
+display = group('display-rig'); display.parent = assembly
 display.location = screen_center + up * (compact_height * .5)
 display.rotation_euler = Matrix((right, up, normal)).transposed().to_euler()
 kept.append(display)
@@ -121,9 +125,10 @@ for upper in [False, True]:
     y0, y1 = (0, half_height) if upper else (-half_height, 0)
     # The supplied front surface determines dimensions and tilt. The finite thickness keeps edge highlights visible.
     verts = [(x,y,z) for z in [-.002,0] for y in [y0,y1] for x in [-width*.5,width*.5]]
-    box = mesh_object(panel.name+'-bezel', verts, [(0,2,3,1),(4,5,7,6),(0,1,5,4),(2,6,7,3),(0,4,6,2),(1,3,7,5)], bezel_mat, panel)
-    bevel = box.modifiers.new('Display edge', 'BEVEL'); bevel.width = .0018; bevel.segments = 3
-    bpy.context.view_layer.objects.active = box; bpy.ops.object.modifier_apply(modifier=bevel.name)
+    if upper:
+        box = mesh_object(panel.name+'-bezel', verts, [(0,2,3,1),(4,5,7,6),(0,1,5,4),(2,6,7,3),(0,4,6,2),(1,3,7,5)], bezel_mat, panel)
+        bevel = box.modifiers.new('Display edge', 'BEVEL'); bevel.width = .0018; bevel.segments = 3
+        bpy.context.view_layer.objects.active = box; bpy.ops.object.modifier_apply(modifier=bevel.name)
     # UI texture is inserted by the existing runtime loader, including the folded/expanded transition.
     pad=.0035; px0=-width*.5+pad;px1=width*.5-pad
     py0=y0 if upper else y0+pad;py1=y1-pad if upper else y1
@@ -136,6 +141,17 @@ for upper in [False, True]:
     panels.append(panel)
 panels[1].rotation_euler.x = math.pi
 display.scale.y = compact_height / half_height
+# Reuse the complete CAD front frame; its rear lip meets the original hinge/rear pieces.
+# Compensate the rig's compact scale so its assembled vertices remain exactly at their source positions.
+bpy.context.view_layer.update()
+to_panel = panels[0].matrix_world.inverted()
+source_frame = [v.co.copy() for v in folded_bezel.data.vertices]
+for v in folded_bezel.data.vertices:
+    v.co = to_panel @ v.co
+folded_bezel.parent = panels[0]; folded_bezel.matrix_basis = Matrix.Identity(4)
+folded_bezel.name = 'display-lower-bezel'
+bpy.context.view_layer.update()
+assert max((folded_bezel.matrix_world @ v.co - p).length for v,p in zip(folded_bezel.data.vertices,source_frame)) < 1e-7
 
 # Infer only a straight translation from the recorded gesture. No latch or dosing animation is invented.
 strip_points=np.array([tuple(v.co) for o in strip.children for v in o.data.vertices])
@@ -144,7 +160,7 @@ values, vectors=np.linalg.eigh(np.cov(strip_points.T)); travel=Vector(vectors[:,
 # travel points OUT toward the user's hand; insertion moves against it.
 if travel.y<0:travel=-travel
 
-excluded = {o for o in bpy.data.objects if o not in kept or o in [screen, folded_bezel] or o.parent == flat or o == flat}
+excluded = {o for o in bpy.data.objects if o not in kept or o == screen or o.parent == flat or o == flat}
 kept = [o for o in kept if o not in excluded]
 for o in list(bpy.data.objects):
     if o in excluded:

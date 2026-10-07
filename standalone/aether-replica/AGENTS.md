@@ -12,6 +12,7 @@
 - Match the engineering sheet's Front view and KeyShot render when placing UI. The 90-gloss `.012` surface is the back; the front screen is the thin 20-gloss `.016` surface. Rear cradle and port must never be mistaken for the front display.
 - Exploded view should clearly separate the lid, upper enclosure, sensing assembly, lower enclosure and feet, with display and battery separated to the side. Check the whole explosion interval at desktop and phone sizes; a larger gap must not crop components or obscure captions.
 - Screen presentation must include a close-up, real animated controls and a compact-to-tall content extension. Match `1-1.png` and `3-2.jpg`; use live DOM projected onto the front screen, with only one accessible interactive surface. Demo tests and readings are illustrative; preserve page scrolling and keep the surrounding Discover content unchanged.
+- The left black front/rear frames, hinge and adjoining support/electronics form ONE display assembly. Keep the original `.014` front frame and its connection to `.018`/`.020`; never replace it with an isolated rectangle or leave rear pieces in the enclosure during explosion. Move the complete screen assembly together and check its connection folded, unfolding and exploded.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 

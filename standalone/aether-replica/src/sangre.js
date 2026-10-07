@@ -44,9 +44,10 @@ function installScene(scene, bridge, metadata, env) {
   const device=gl.assets.models.sangre.scene.clone(true);
   device.name='sangre-product';device.scale.setScalar(28);
   const exterior=device.getObjectByName('exterior'),interior=device.getObjectByName('interior');
-  const strip=device.getObjectByName('test-strip'),display=device.getObjectByName('display-rig');
+  const strip=device.getObjectByName('test-strip'),display=device.getObjectByName('display-assembly');
+  const rig=device.getObjectByName('display-rig');
   const upper=device.getObjectByName('display-upper');
-  const initialDisplay=display.position.clone(),initialStrip=strip.position.clone();
+  const initialDisplay=display.position.clone(),initialRig=rig.position.clone(),initialStrip=strip.position.clone();
   const up=new T.Vector3(...metadata.screenUp),travel=new T.Vector3(...metadata.travel);
   // Keep the CAD orientation: the flat +Z end leads, the bevel stays outside at -Z.
   initialStrip.addScaledVector(travel,metadata.stripEndOffset);
@@ -130,10 +131,11 @@ function installScene(scene, bridge, metadata, env) {
     exterior.visible=e<.10;interior.visible=e>=.10;
     internal.forEach(({o,initial,displacement})=>o.position.copy(initial).addScaledVector(displacement,e));
     // ponytail: supplied display endpoints have different sizes; use a CAD hinge rig if engineering accuracy is needed.
-    display.position.copy(initialDisplay).addScaledVector(up,(metadata.panelHeight-metadata.compactHeight)*u);
+    display.position.copy(initialDisplay);
     display.position.x+=e*(mobile?.095:.140);display.position.y+=e*.005;display.position.z-=e*.075;
     // Blender's local screen height exports as Z and the screen normal as Y.
-    display.scale.z=metadata.compactHeight/metadata.panelHeight+(1-metadata.compactHeight/metadata.panelHeight)*u;
+    rig.position.copy(initialRig).addScaledVector(up,(metadata.panelHeight-metadata.compactHeight)*u);
+    rig.scale.z=metadata.compactHeight/metadata.panelHeight+(1-metadata.compactHeight/metadata.panelHeight)*u;
     upper.rotation.x=-Math.PI*(1-u);upper.position.y=-.0025*(1-u);
     if(pose.closeup>0){
       device.updateMatrixWorld(true);
