@@ -77,6 +77,21 @@ try {
     await screen.getByRole('button',{name:'Overview',exact:true}).click();
     await page.mouse.move(viewport.width*.5,viewport.height*.4);await page.mouse.wheel(0,850);await page.waitForTimeout(1500);
     check(await page.evaluate(()=>window.__sangre.bridge.gl.world.activeScenes.current.sangre.progress)>.125,'Dashboard gestures continue page scrolling');
+    for(const p of [.42,.64,.69,.64,.42,0]){
+      await chapter(p);await snap(`parts-fade-${record.states.length}`);
+      check(await page.evaluate(()=>{
+        const {bridge}=window.__sangre,s=bridge.gl.world.activeScenes.current.sangre;
+        const i=s.pose.interiorOpacity,exterior=1-i;
+        const coverMaterials=new Set();for(const name of ['storage-lid','storage-tray'])s.device.getObjectByName(name).traverse(o=>{if(o.isMesh)coverMaterials.add(o.material);});
+        return [['exterior',exterior],['interior',i],['test-strip',s.pose.stripOpacity],['storage-lid',exterior*s.pose.coverOpacity],['storage-tray',exterior*s.pose.coverOpacity]].every(([name,alpha])=>{
+          const root=s.device.getObjectByName(name),materials=[];root.traverse(o=>{if(o.isMesh)materials.push(o.material);});
+          return root.visible===(alpha>0)&&materials.length>0&&materials.every(m=>{
+            const value=alpha*(name==='exterior'&&coverMaterials.has(m)?s.pose.coverOpacity:1);
+            return Math.abs(m.opacity-value)<1e-6&&(!(value>0&&value<1)||(m.transparent&&!m.depthWrite));
+          });
+        })&&bridge.gl.world.scenes.mainA.sangre.strip.children[0].material!==bridge.gl.world.scenes.mainB.sangre.strip.children[0].material;
+      }),`CAD parts fade with scroll progress in both directions (${p}), with independent looping materials`);
+    }
     await chapter(.5);
     await page.evaluate(()=>{const {gl}=window.__sangre.bridge;gl.world.activeScenes.current.sangre.started=gl.time.elapsed;});
     await page.waitForTimeout(100);
@@ -117,7 +132,9 @@ try {
    for (const [anchor,name] of [['2','craft'],['4','controls'],['5','power']]) {await page.locator('#menu-toggle').click();await page.waitForTimeout(650);await page.locator(`.nav__link[data-anchor="${anchor}"]`).click();await page.waitForTimeout(4200);await snap(name);}
    const limit=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);
    for(const [progress,name] of [[.375,'internal'],[.81,'core']]){
-    await page.evaluate(y=>window.scrollTo(0,y),limit*progress);await page.waitForTimeout(4200);await snap(name);
+    if(sangre)await page.evaluate(p=>{const b=window.__sangre.bridge;b.ScrollController.isIdleScrollAllowed=false;b.Scroll.scrollTo(p*b.Scroll.limit,{immediate:true,force:true});},progress);
+    else await page.evaluate(y=>window.scrollTo(0,y),limit*progress);
+    await page.waitForTimeout(4200);await snap(name);
     if(sangre&&name==='core')check(await page.evaluate(()=>{
      const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
      const objects=[...s.device.getObjectByName('interior').children,s.display];
@@ -128,11 +145,12 @@ try {
       }
       return[o.name,{left:Math.min(...points.map(v=>v[0])),right:Math.max(...points.map(v=>v[0])),top:Math.min(...points.map(v=>v[1])),bottom:Math.max(...points.map(v=>v[1]))}];
      }));
-     return Object.values(rects).every(r=>r.left>=8&&r.right<=innerWidth-8&&r.top>=64&&r.bottom<=innerHeight*(innerWidth<768?.76:.99))&&
+     return Math.abs(s.progress-.81)<.003&&Object.values(rects).every(r=>r.left>=8&&r.right<=innerWidth-8&&r.top>=64&&r.bottom<=innerHeight*(innerWidth<768?.76:.99))&&
       ['storage-cover','upper-shell','photometer','lower-shell'].every((name,i)=>rects['internal-'+name].bottom+6<rects['internal-'+['upper-shell','photometer','lower-shell','pads'][i]].top);
     }),'Exploded layers have visible gaps and all parts fit the viewport');
     if(sangre&&name==='core')check(await connected(),'The complete front/rear display stays connected in the exploded view');
    }
+   if(sangre)await page.evaluate(()=>{window.__sangre.bridge.ScrollController.isIdleScrollAllowed=true;});
    if(device==='desktop') {await page.locator('.sound-w').click();await page.waitForTimeout(800);check(await page.locator('.sound-w').getAttribute('aria-label')==='Mute audio','Sound enabled');await snap('sound-enabled');await page.locator('.sound-w').click();await page.waitForTimeout(500);check(await page.locator('.sound-w').getAttribute('aria-label')==='Play audio','Sound muted');}
    if(!sangre){
    await page.locator('[data-ai="button"]').click();await page.waitForTimeout(1000);await snap('ask-open');

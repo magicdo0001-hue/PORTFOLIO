@@ -17,10 +17,32 @@ export function poseAt(progress) {
   const a=keys[index],b=keys[Math.min(index+1,keys.length-1)],t=smooth(a[0],b[0],p);
   const camera=a.slice(1).map((v,i)=>v+(b[i+1]-v)*t);
   camera[0]+=Math.PI; // The reference Front view faces -Z in the exported GLB.
+  const explode=smooth(.655,.79,p)*(1-smooth(.88,.97,p));
   return {camera, unfold:smooth(.055,.115,p)*(1-smooth(.22,.31,p)),
     closeup:smooth(.018,.052,p)*(1-smooth(.20,.255,p)),
-    explode:smooth(.655,.79,p)*(1-smooth(.88,.97,p)),
-    inserted:smooth(.46,.60,p), stripVisible:p>.425&&p<.66};
+    explode, interiorOpacity:smooth(.02,.36,explode),
+    inserted:smooth(.46,.60,p), stripOpacity:smooth(.41,.45,p)*(1-smooth(.62,.66,p)),
+    coverOpacity:1-smooth(.395,.43,p)*(1-smooth(.63,.665,p))};
+}
+
+function fadeGroup(root, excluded=[]) {
+  const materials=[];
+  root.traverse(o=>{
+    if(!o.isMesh||excluded.includes(o))return;
+    for(const material of Array.isArray(o.material)?o.material:[o.material]){
+      materials.push({material,opacity:material.opacity,alphaTest:material.alphaTest,
+        transparent:material.transparent,depthWrite:material.depthWrite});
+    }
+  });
+  return alpha=>{
+    root.visible=alpha>0;
+    for(const {material,opacity,alphaTest,transparent,depthWrite} of materials){
+      const fading=alpha>0&&alpha<1,blended=transparent||fading;
+      if(material.transparent!==blended){material.transparent=blended;material.needsUpdate=true;}
+      material.depthWrite=fading?false:depthWrite;
+      material.opacity=opacity*alpha;material.alphaTest=alphaTest*alpha;
+    }
+  };
 }
 
 function environment(T, renderer) {
@@ -77,6 +99,9 @@ function installScene(scene, bridge, metadata, env) {
     pixels.material.customProgramCacheKey=()=>`sangre-ui-${offset}`;
     pixels.castShadow=false;
   }
+  const covers=['storage-lid','storage-tray'].map(name=>device.getObjectByName(name));
+  const fadeExterior=fadeGroup(exterior,covers),fadeInterior=fadeGroup(interior),fadeStrip=fadeGroup(strip);
+  const fadeCovers=covers.map(cover=>fadeGroup(cover));
   const internal=[];
   interior.children.forEach(o=>{
     const initial=o.position.clone();
@@ -128,7 +153,8 @@ function installScene(scene, bridge, metadata, env) {
     camera.aspect=gl.sizes.width/gl.sizes.height;camera.fov=mobile?45:34;camera.updateProjectionMatrix();
     device.position.set(0,mobile?0:-.35,0);
     const e=pose.explode,u=pose.unfold;
-    exterior.visible=e<.10;interior.visible=e>=.10;
+    const exteriorOpacity=1-pose.interiorOpacity;
+    fadeExterior(exteriorOpacity);fadeInterior(pose.interiorOpacity);
     internal.forEach(({o,initial,displacement})=>o.position.copy(initial).addScaledVector(displacement,e));
     // ponytail: supplied display endpoints have different sizes; use a CAD hinge rig if engineering accuracy is needed.
     display.position.copy(initialDisplay);
@@ -152,9 +178,9 @@ function installScene(scene, bridge, metadata, env) {
       camera.setViewOffset(gl.sizes.width,gl.sizes.height,-gl.sizes.width*(mobile?0:.12)*pose.closeup,gl.sizes.height*.02*pose.closeup,gl.sizes.width,gl.sizes.height);
     }else camera.clearViewOffset();
     ui.forEach(x=>{x.value=smooth(.24,.85,u);});
-    strip.visible=pose.stripVisible;
+    fadeStrip(pose.stripOpacity);
     // A presentation cutaway makes the supplied internal cartridge path visible, without inventing a lid mechanism.
-    for(const name of ['storage-lid','storage-tray'])device.getObjectByName(name).visible=!pose.stripVisible;
+    fadeCovers.forEach(fade=>fade(exteriorOpacity*pose.coverOpacity));
     let insertion=reduced?1:pose.inserted;
     // The recorded gesture plays once when the Testing chapter settles, then holds its inserted end state.
     if(p>.47&&p<.54&&!reduced){

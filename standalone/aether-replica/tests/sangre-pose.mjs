@@ -33,14 +33,23 @@ assert.equal(poseAt(.375).closeup,0);
 assert.equal(poseAt(.375).unfold,0);
 assert.equal(poseAt(.81).explode,1);
 assert.equal(poseAt(1).explode,0);
-assert.equal(poseAt(.5).stripVisible,true);
-assert.equal(poseAt(.7).stripVisible,false);
+assert.equal(poseAt(.5).stripOpacity,1);
+assert.equal(poseAt(.7).stripOpacity,0);
+assert.equal(poseAt(.5).coverOpacity,0);
+assert.equal(poseAt(0).coverOpacity,1);
+assert.equal(poseAt(.81).interiorOpacity,1);
+assert.equal(poseAt(1).interiorOpacity,0);
 assert.equal(poseAt(.64).inserted,1);
 assert.deepEqual(poseAt(0).camera,poseAt(1).camera);
+let previous;
 for(let p=-.1;p<=1.1;p+=.001){
   const pose=poseAt(p);
   assert(pose.camera.every(Number.isFinite));
-  for(const key of ['unfold','closeup','explode','inserted'])assert(pose[key]>=0&&pose[key]<=1);
+  for(const key of ['unfold','closeup','explode','inserted','stripOpacity','coverOpacity','interiorOpacity']){
+    assert(pose[key]>=0&&pose[key]<=1);
+    if(previous&&key.endsWith('Opacity'))assert(Math.abs(pose[key]-previous[key])<.08,`${key} must fade continuously through both scroll directions`);
+  }
+  previous=pose;
 }
 for(const quad of [[[20,30],[620,30],[620,1030],[20,1030]],[[55,32],[580,75],[645,1000],[12,865]]]){
   const matrix=quadMatrix(quad,600,1000);
