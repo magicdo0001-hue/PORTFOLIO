@@ -69,6 +69,29 @@ try {
     await screen.getByRole('button',{name:'Overview',exact:true}).click();
     await page.mouse.move(viewport.width*.5,viewport.height*.4);await page.mouse.wheel(0,850);await page.waitForTimeout(1500);
     check(await page.evaluate(()=>window.__sangre.bridge.gl.world.activeScenes.current.sangre.progress)>.125,'Dashboard gestures continue page scrolling');
+    await chapter(.5);
+    await page.evaluate(()=>{const {gl}=window.__sangre.bridge;gl.world.activeScenes.current.sangre.started=gl.time.elapsed;});
+    await page.waitForTimeout(100);
+    const cartridge=()=>page.evaluate(()=>{
+      const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
+      const box=name=>new T.Box3().setFromObject(s.device.getObjectByName(name));
+      const bounds=box('test-strip'),points=[];
+      for(const x of[bounds.min.x,bounds.max.x])for(const y of[bounds.min.y,bounds.max.y])for(const z of[bounds.min.z,bounds.max.z]){
+        const v=new T.Vector3(x,y,z).project(s.camera);points.push([(v.x+1)*innerWidth/2,(1-v.y)*innerHeight/2]);
+      }
+      return{body:{min:box('test-strip-4').min.toArray(),max:box('test-strip-4').max.toArray()},
+        framed:points.every(([x,y])=>x>0&&x<innerWidth&&y>64&&y<innerHeight),
+        red:box('test-strip-7').getCenter(new T.Vector3()).toArray(),
+        wells:['test-strip-5','test-strip-6'].map(n=>box(n).getCenter(new T.Vector3()).toArray()),
+        front:box('outer-shell').min.z,inserted:s.pose.inserted,
+        scenes:['mainA','mainB'].map(n=>bridge.gl.world.scenes[n].sangre.strip.rotation.y)};
+    });
+    const entry=await cartridge();await snap('cartridge-entry');
+    check(entry.body.max[2]<entry.front&&entry.inserted===0&&entry.framed,'Cartridge starts entirely outside the front opening and stays in frame');
+    await page.waitForTimeout(1450);const sliding=await cartridge();await snap('cartridge-sliding');
+    await page.waitForTimeout(1600);const inserted=await cartridge();await snap('cartridge-inserted');
+    check(entry.red[2]<sliding.red[2]&&sliding.red[2]<inserted.red[2]&&Math.abs(entry.red[1]-inserted.red[1])<1e-6&&sliding.framed&&inserted.framed,'Recorded gesture slides horizontally from front toward back without cropping');
+    check(inserted.wells.every(v=>v[2]>inserted.red[2])&&inserted.red[2]<inserted.front&&inserted.body.max[2]>inserted.front&&inserted.inserted===1&&inserted.scenes.every(v=>Math.abs(v-Math.PI)<1e-6),'Non-red end enters first; red end remains exposed; both looping scenes use the correction');
     await chapter(0);await page.evaluate(()=>{window.__sangre.bridge.ScrollController.isIdleScrollAllowed=true;});
    }
    await page.locator('#menu-toggle').click();await page.waitForTimeout(1400);await snap('menu');

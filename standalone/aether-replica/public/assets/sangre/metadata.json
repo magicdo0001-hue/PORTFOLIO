@@ -1,11 +1,11 @@
 {
   "source": "User KeyShot GLB and exploded CAD",
   "travel": [
-    0.03342147544026375,
-    -0.0,
-    0.999441385269165
+    -0.03342147544026375,
+    0.0,
+    -0.999441385269165
   ],
-  "stripEndOffset": 0.04,
+  "stripEndOffset": 0.012,
   "sampleLevelOffset": 0.0021,
   "screenWidth": 0.07750000152770861,
   "panelHeight": 0.06559493235038245,

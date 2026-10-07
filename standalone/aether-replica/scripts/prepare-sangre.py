@@ -140,7 +140,9 @@ display.scale.y = compact_height / half_height
 # Infer only a straight translation from the recorded gesture. No latch or dosing animation is invented.
 strip_points=np.array([tuple(v.co) for o in strip.children for v in o.data.vertices])
 values, vectors=np.linalg.eigh(np.cov(strip_points.T)); travel=Vector(vectors[:, -1]);travel.z=0;travel.normalize()
-if travel.y>0:travel=-travel
+# The recording enters from the screen/front side (native +Y, Web -Z).
+# travel points OUT toward the user's hand; insertion moves against it.
+if travel.y<0:travel=-travel
 
 excluded = {o for o in bpy.data.objects if o not in kept or o in [screen, folded_bezel] or o.parent == flat or o == flat}
 kept = [o for o in kept if o not in excluded]
@@ -178,7 +180,7 @@ kept.append(interior)
 bpy.ops.object.select_all(action='DESELECT')
 for o in kept:o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(OUT/'sangre-display.glb'),export_format='GLB',use_selection=True,export_cameras=False,export_lights=False,export_animations=False,export_extras=True)
-metadata={'source':'User KeyShot GLB and exploded CAD','travel':[travel.x,travel.z,-travel.y],'stripEndOffset':.040,'sampleLevelOffset':.0021,'screenWidth':width,'panelHeight':half_height,'compactHeight':compact_height,'screenUp':[up.x,up.z,-up.y],'screenFront':[normal.x,normal.z,-normal.y],'screenCenter':[screen_center.x,screen_center.z,-screen_center.y],'screenSource':'最终.016 front; 最终.012 rear retained without UI','geometry':'user CAD exterior/interior; presentation display rig','folding':'presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation','ui':'illustrative design UI, not validated clinical readings','bytes':(OUT/'sangre-display.glb').stat().st_size}
+metadata={'source':'User KeyShot GLB and exploded CAD','travel':[travel.x,travel.z,-travel.y],'stripEndOffset':.012,'sampleLevelOffset':.0021,'screenWidth':width,'panelHeight':half_height,'compactHeight':compact_height,'screenUp':[up.x,up.z,-up.y],'screenFront':[normal.x,normal.z,-normal.y],'screenCenter':[screen_center.x,screen_center.z,-screen_center.y],'screenSource':'最终.016 front; 最终.012 rear retained without UI','geometry':'user CAD exterior/interior; presentation display rig','folding':'presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation','ui':'illustrative design UI, not validated clinical readings','bytes':(OUT/'sangre-display.glb').stat().st_size}
 (OUT/'metadata.json').write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding='utf-8')
 assert width>.03 and half_height>.02
 assert len([o for o in interior.children if o.type=='MESH'])>=7

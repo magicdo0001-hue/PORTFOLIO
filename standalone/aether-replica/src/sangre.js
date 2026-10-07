@@ -48,6 +48,12 @@ function installScene(scene, bridge, metadata, env) {
   const upper=device.getObjectByName('display-upper');
   const initialDisplay=display.position.clone(),initialStrip=strip.position.clone();
   const up=new T.Vector3(...metadata.screenUp),travel=new T.Vector3(...metadata.travel);
+  // The exported cartridge is reversed: the video keeps the red end at the front.
+  // Rotate around its own centre because CAD vertices contain their assembly offset.
+  device.updateMatrixWorld(true);
+  const stripCenter=device.worldToLocal(new T.Box3().setFromObject(strip).getCenter(new T.Vector3()));
+  strip.rotation.y=Math.PI;
+  initialStrip.add(stripCenter).sub(stripCenter.clone().applyAxisAngle(new T.Vector3(0,1,0),Math.PI));
   initialStrip.addScaledVector(travel,metadata.stripEndOffset);
   device.traverse(o=>{
     if(!o.isMesh)return;
@@ -115,10 +121,13 @@ function installScene(scene, bridge, metadata, env) {
     const pose=poseAt(reduced?[0,.125,.375,.5,.81].reduce((a,b)=>Math.abs(b-p)<Math.abs(a-p)?b:a):p);
     const [yaw,pitch,distance,tx,ty]=pose.camera;
     // Keep spread parts framed while the camera returns to the assembled view.
-    const d=Math.max(distance,12.2+12.8*pose.explode)*(mobile?(p>.10&&p<.23?1.08:1.18+.20*pose.explode):1);
+    const testing=mobile?smooth(.395,.425,p)*(1-smooth(.66,.70,p)):0;
+    const d=Math.max(distance,12.2+12.8*pose.explode)*(mobile?(p>.10&&p<.23?1.08:1.18+.20*pose.explode):1)+8.2*testing;
     const pointer=mobile||reduced?0:gl.world.mouse.eased.camera.value.x*.055;
     camera.position.set(Math.sin(yaw+pointer)*Math.cos(pitch)*d,Math.sin(pitch)*d,Math.cos(yaw+pointer)*Math.cos(pitch)*d);
     const look=new T.Vector3(mobile?pose.explode*1.1:tx,ty+(mobile?.2:0),0);
+    // Include the cartridge outside the front lip, not only the assembled enclosure.
+    look.x-=.8*testing;look.z-=.65*testing;
     camera.lookAt(look);
     camera.aspect=gl.sizes.width/gl.sizes.height;camera.fov=mobile?45:34;camera.updateProjectionMatrix();
     device.position.set(0,mobile?0:-.35,0);
@@ -176,7 +185,7 @@ export function startSangre(screen) {
       gl.renderer.instance.shadowMap.enabled=true;
       for(const name of ['mainA','mainB'])installScene(gl.world.scenes[name],bridge,metadata,env);
       const labels=document.createElement('div');labels.className='sangre-callouts';labels.setAttribute('aria-hidden','true');
-      labels.innerHTML='<div class="sangre-callout"><span>Clear storage cover</span><small>Consumables, kept in view.</small></div><div class="sangre-callout"><span>Slide to insert</span><small>Cover omitted to reveal the guide.</small></div><div class="sangre-callout"><span>18650 battery</span><small>The power module.</small></div><div class="sangre-callout"><span>Photometer assembly</span><small>The sensing module in the CAD.</small></div><div class="sangre-callout"><span>Enclosure</span><small>Separate shells reveal the assembly.</small></div>';
+      labels.innerHTML='<div class="sangre-callout"><span>Clear storage cover</span><small>Consumables, kept in view.</small></div><div class="sangre-callout"><span>Slide in from the front</span><small>Cover omitted to reveal the guide.</small></div><div class="sangre-callout"><span>18650 battery</span><small>The power module.</small></div><div class="sangre-callout"><span>Photometer assembly</span><small>The sensing module in the CAD.</small></div><div class="sangre-callout"><span>Enclosure</span><small>Separate shells reveal the assembly.</small></div>';
       document.body.append(labels);
       const elements=[...labels.children];
       const update=()=>{
