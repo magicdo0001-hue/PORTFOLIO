@@ -31,6 +31,13 @@ try {
    check(await page.locator('canvas').count()===1,'WebGL canvas loaded');
    check((await page.locator('h1').first().innerText()).replace(/\s/g,'')===(sangre?'Health,infocus.':'SoundWithoutBoundaries'),'Homepage heading');
    if(sangre){await page.locator('html.sangre-ready').waitFor();check(await page.evaluate(()=>!!window.__sangre.bridge.gl.world.activeScenes.current.sangre),'SANGRE installed');check(await page.evaluate(()=>!window.__sangre.bridge.gl.world.activeScenes.current.caseModel.visible),'Homepage earbuds hidden');}
+   if(sangre)check(await page.evaluate(()=>{
+    const {bridge}=window.__sangre,T=bridge.THREE,s=bridge.gl.world.activeScenes.current.sangre;
+    const pixels=s.device.getObjectByName('display-lower-pixels'),n=pixels.geometry.attributes.normal;
+    const normal=new T.Vector3(n.getX(0),n.getY(0),n.getZ(0)).transformDirection(pixels.matrixWorld);
+    const center=new T.Box3().setFromObject(pixels).getCenter(new T.Vector3());
+    return center.z<0&&normal.z<-.6&&normal.y>.6&&normal.dot(s.camera.position.clone().sub(center).normalize())>.6;
+   }),'Homepage UI is on the CAD front slope and faces the camera');
    await page.locator('#menu-toggle').click();await page.waitForTimeout(1400);await snap('menu');
    await page.locator('.nav__link[data-anchor="1"]').click();await page.waitForTimeout(4200);await snap('sound');
    for (const [anchor,name] of [['2','craft'],['4','controls'],['5','power']]) {await page.locator('#menu-toggle').click();await page.waitForTimeout(650);await page.locator(`.nav__link[data-anchor="${anchor}"]`).click();await page.waitForTimeout(4200);await snap(name);}

@@ -49,9 +49,11 @@ for source, target in [(main, exterior), (strip_source, strip), (flat_source, fl
         original_name = o.name
         o.name = target.name + '-' + str(i)
         material_name = mesh.materials[0].name if mesh.materials else ''
-        if source == main and '90光泽' in material_name:
+        # The 90-gloss plane is the rear panel (engineering drawing: Back view).
+        # The thin .016 panel faces the front; .014 is its original graphite bezel.
+        if source == main and '20光泽' in material_name and original_name.endswith('.016'):
             screen = o; o.name = 'folded-screen-source'
-        if source == main and '20光泽' in material_name and original_name.endswith('.010'):
+        if source == main and '20光泽' in material_name and original_name.endswith('.014'):
             folded_bezel = o
         if '白色坚硬' in material_name:
             o.name = 'outer-shell'
@@ -69,11 +71,12 @@ for source, target in [(main, exterior), (strip_source, strip), (flat_source, fl
             bpy.ops.object.modifier_apply(modifier=mod.name)
         kept.append(o)
 
-assert screen is not None, 'Expected the folded screen material from the supplied KeyShot scene'
+assert screen is not None, 'Expected the front display surface from the supplied KeyShot scene'
 # Make a local coordinate frame from the actual screen surface, rather than guess its orientation.
 coords = np.array([tuple(v.co) for v in screen.data.vertices])
 _, eig = np.linalg.eigh(np.cov(coords.T))
-normal = Vector(eig[:, 0]); normal *= 1 if normal.z > 0 else -1
+normal = Vector(eig[:, 0]); normal *= 1 if normal.y > 0 else -1
+assert normal.y > .6 and normal.z > .6, 'Front display must face native +Y/up, not the rear -Y panel'
 right = Vector((1, 0, 0)); right = (right - normal * right.dot(normal)).normalized()
 up = normal.cross(right).normalized()
 if up.z < 0:
@@ -88,7 +91,6 @@ flat_coords = np.array([tuple(v.co) for v in flat_pixels.data.vertices])
 _, flat_axes = np.linalg.eigh(np.cov(flat_coords.T))
 flat_projected = flat_coords @ flat_axes
 half_height = float((flat_projected.max(0)-flat_projected.min(0)).max() * .5)
-screen.data.materials[0].name = 'Original folded glass'
 screen.hide_render = True
 if folded_bezel:
     folded_bezel.hide_render = True
@@ -119,11 +121,12 @@ for upper in [False, True]:
     y0, y1 = (0, half_height) if upper else (-half_height, 0)
     # The supplied front surface determines dimensions and tilt. The finite thickness keeps edge highlights visible.
     verts = [(x,y,z) for z in [-.002,0] for y in [y0,y1] for x in [-width*.5,width*.5]]
-    box = mesh_object(panel.name+'-bezel', verts, [(0,1,3,2),(4,6,7,5),(0,4,5,1),(2,3,7,6),(0,2,6,4),(1,5,7,3)], bezel_mat, panel)
+    box = mesh_object(panel.name+'-bezel', verts, [(0,2,3,1),(4,5,7,6),(0,1,5,4),(2,6,7,3),(0,4,6,2),(1,3,7,5)], bezel_mat, panel)
     bevel = box.modifiers.new('Display edge', 'BEVEL'); bevel.width = .0018; bevel.segments = 3
     bpy.context.view_layer.objects.active = box; bpy.ops.object.modifier_apply(modifier=bevel.name)
     # UI texture is inserted by the existing runtime loader, including the folded/expanded transition.
-    pad=.0035; px0=-width*.5+pad;px1=width*.5-pad;py0=y0+pad;py1=y1-pad
+    pad=.0035; px0=-width*.5+pad;px1=width*.5-pad
+    py0=y0 if upper else y0+pad;py1=y1-pad if upper else y1
     pixels = mesh_object(panel.name+'-pixels', [(px0,py0,.0001),(px1,py0,.0001),(px1,py1,.0001),(px0,py1,.0001)], [(0,1,2,3)], material(panel.name+'-UI',(1,1,1),.8), panel)
     uv = pixels.data.uv_layers.new(name='UVMap')
     for polygon in pixels.data.polygons:
@@ -175,7 +178,7 @@ kept.append(interior)
 bpy.ops.object.select_all(action='DESELECT')
 for o in kept:o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(OUT/'sangre-display.glb'),export_format='GLB',use_selection=True,export_cameras=False,export_lights=False,export_animations=False,export_extras=True)
-metadata={'source':'User KeyShot GLB and exploded CAD','travel':[travel.x,travel.z,-travel.y],'stripEndOffset':.040,'sampleLevelOffset':.0021,'screenWidth':width,'panelHeight':half_height,'compactHeight':compact_height,'screenUp':[up.x,up.z,-up.y],'geometry':'user CAD exterior/interior; presentation display rig','folding':'presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation','ui':'illustrative design UI, not validated clinical readings','bytes':(OUT/'sangre-display.glb').stat().st_size}
+metadata={'source':'User KeyShot GLB and exploded CAD','travel':[travel.x,travel.z,-travel.y],'stripEndOffset':.040,'sampleLevelOffset':.0021,'screenWidth':width,'panelHeight':half_height,'compactHeight':compact_height,'screenUp':[up.x,up.z,-up.y],'screenFront':[normal.x,normal.z,-normal.y],'screenCenter':[screen_center.x,screen_center.z,-screen_center.y],'screenSource':'最终.016 front; 最终.012 rear retained without UI','geometry':'user CAD exterior/interior; presentation display rig','folding':'presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation','ui':'illustrative design UI, not validated clinical readings','bytes':(OUT/'sangre-display.glb').stat().st_size}
 (OUT/'metadata.json').write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding='utf-8')
 assert width>.03 and half_height>.02
 assert len([o for o in interior.children if o.type=='MESH'])>=7

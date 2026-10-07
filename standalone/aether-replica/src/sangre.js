@@ -6,7 +6,7 @@ const clamp = x => Math.max(0, Math.min(1, x));
 const smooth = (a, b, x) => { const t=clamp((x-a)/(b-a)); return t*t*(3-2*t); };
 const keys = [
   [0,.48,.38,13.2,-.55,0], [.125,-.12,.30,15.8,0,1.0],
-  [.25,.58,.26,15.0,-.45,.45], [.375,1.15,.32,13.7,0,.15],
+  [.25,.58,.26,15.0,-.45,.45], [.375,.65,.34,13.7,0,.15],
   [.5,-.60,.64,12.2,.45,-.15], [.64,-.45,.62,12.6,.3,-.1],
   [.742,.38,.38,17.8,0,.8], [.81,.70,.40,17.5,0,.9],
   [.94,.42,.36,14.5,-.45,0], [1,.48,.38,13.2,-.55,0],
@@ -16,6 +16,7 @@ export function poseAt(progress) {
   const index=Math.max(0,keys.findIndex((k,i)=>i<keys.length-1 && p>=k[0] && p<=keys[i+1][0]));
   const a=keys[index],b=keys[Math.min(index+1,keys.length-1)],t=smooth(a[0],b[0],p);
   const camera=a.slice(1).map((v,i)=>v+(b[i+1]-v)*t);
+  camera[0]+=Math.PI; // The reference Front view faces -Z in the exported GLB.
   return {camera, unfold:smooth(.025,.115,p)*(1-smooth(.22,.31,p)),
     explode:smooth(.655,.79,p)*(1-smooth(.88,.97,p)),
     inserted:smooth(.46,.60,p), stripVisible:p>.425&&p<.66};
@@ -80,7 +81,7 @@ function installScene(scene, bridge, metadata, env) {
     if(o.name.endsWith('upper-shell'))displacement.set(0,.075,0);
     else if(o.name.endsWith('retainer'))displacement.set(0,.10,0);
     else if(o.name.endsWith('storage-cover'))displacement.set(.025,.12,0);
-    else if(o.name.endsWith('battery'))displacement.set(.012,.029,.028);
+    else if(o.name.endsWith('battery'))displacement.set(.110,.100,.028);
     else if(o.name.endsWith('photometer'))displacement.set(.047,.027,.022);
     else if(o.name.endsWith('pads'))displacement.set(0,-.018,0);
     else if(o.name.endsWith('switch'))displacement.set(-.025,.01,0);
@@ -89,11 +90,11 @@ function installScene(scene, bridge, metadata, env) {
   const camera=new T.PerspectiveCamera(34,gl.sizes.width/gl.sizes.height,.03,150);
   const productScene=new T.Scene();productScene.add(camera,device);
   productScene.environment=env.texture;productScene.environmentIntensity=.65;
-  const keyLight=new T.DirectionalLight('#f5f3ea',2.2);keyLight.position.set(4,8,7);keyLight.castShadow=true;
+  const keyLight=new T.DirectionalLight('#f5f3ea',2.2);keyLight.position.set(-4,8,-7);keyLight.castShadow=true;
   keyLight.shadow.mapSize.set(1024,1024);keyLight.shadow.camera.left=-5;keyLight.shadow.camera.right=5;
   keyLight.shadow.camera.top=6;keyLight.shadow.camera.bottom=-4;keyLight.shadow.camera.near=.1;keyLight.shadow.camera.far=30;
   keyLight.shadow.normalBias=.018;keyLight.shadow.bias=-.0003;
-  const rim=new T.DirectionalLight('#b5d9f5',1.0);rim.position.set(-5,3,-5);
+  const rim=new T.DirectionalLight('#b5d9f5',1.0);rim.position.set(5,3,5);
   productScene.add(keyLight,rim);scene.renderTarget.samples=4;
   scene.caseModel.visible=false;scene.tube.visible=false;
   // Keep the authored camera for the background; overlay the product with its own camera.
@@ -111,10 +112,10 @@ function installScene(scene, bridge, metadata, env) {
     const p=scene.sangre.progress,mobile=gl.sizes.width<768;
     const pose=poseAt(reduced?[0,.125,.375,.5,.81].reduce((a,b)=>Math.abs(b-p)<Math.abs(a-p)?b:a):p);
     const [yaw,pitch,distance,tx,ty]=pose.camera;
-    const d=distance*(mobile?(p>.10&&p<.23||p>.69&&p<.88?1.08:1.18):1);
+    const d=distance*(mobile?(p>.69&&p<.88?1.28:p>.10&&p<.23?1.08:1.18):1);
     const pointer=mobile||reduced?0:gl.world.mouse.eased.camera.value.x*.055;
     camera.position.set(Math.sin(yaw+pointer)*Math.cos(pitch)*d,Math.sin(pitch)*d,Math.cos(yaw+pointer)*Math.cos(pitch)*d);
-    camera.lookAt(mobile?0:tx,ty+(mobile?.2:0),0);
+    camera.lookAt(mobile?pose.explode*.7:tx,ty+(mobile?.2:0),0);
     camera.aspect=gl.sizes.width/gl.sizes.height;camera.fov=mobile?45:34;camera.updateProjectionMatrix();
     device.position.set(0,mobile?0:-.35,0);
     const e=pose.explode,u=pose.unfold;
@@ -122,7 +123,7 @@ function installScene(scene, bridge, metadata, env) {
     internal.forEach(({o,initial,displacement})=>o.position.copy(initial).addScaledVector(displacement,e));
     // ponytail: supplied display endpoints have different sizes; use a CAD hinge rig if engineering accuracy is needed.
     display.position.copy(initialDisplay).addScaledVector(up,(metadata.panelHeight-metadata.compactHeight)*u);
-    display.position.x-=e*.080;display.position.y+=e*.013;display.position.z-=e*.018;
+    display.position.x+=e*.100;display.position.y+=e*.013;display.position.z-=e*.018;
     // Blender's local screen height exports as Z and the screen normal as Y.
     display.scale.z=metadata.compactHeight/metadata.panelHeight+(1-metadata.compactHeight/metadata.panelHeight)*u;
     upper.rotation.x=-Math.PI*(1-u);upper.position.y=-.0025*(1-u);
@@ -172,7 +173,7 @@ export function startSangre() {
           if(!active)return;
           const rightSide=i===0||i===2||i===4;
           const left=mobile?20:(rightSide?gl.sizes.width*.72:gl.sizes.width*.28);
-          const top=mobile?gl.sizes.height*.72:(i===3?gl.sizes.height*.64:i===4?gl.sizes.height*.70:i===5?gl.sizes.height*.22:gl.sizes.height*.76);
+          const top=mobile?gl.sizes.height*.72:(i===3?gl.sizes.height*.36:i===4?gl.sizes.height*.70:i===5?gl.sizes.height*.22:gl.sizes.height*.76);
           element.style.transform=`translate3d(${left}px,${top}px,0)`;
         });
       };

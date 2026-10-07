@@ -1,5 +1,16 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { poseAt } from '../src/sangre.js';
+
+const metadata=JSON.parse(readFileSync(new URL('../public/assets/sangre/metadata.json',import.meta.url)));
+assert(metadata.screenFront[1]>.6&&metadata.screenFront[2]<-.6,'UI must face the front/up, as in the engineering Front view');
+assert(metadata.screenCenter[2]<-.015,'UI belongs on the front slope, not the rear slope');
+assert(metadata.screenWidth>.075&&metadata.screenWidth<.08,'Use the 77.5 mm front panel, not the 88.5 mm rear panel');
+for(const p of [0,.125,.375]){
+  const [yaw,pitch]=poseAt(p).camera;
+  const view=[Math.sin(yaw)*Math.cos(pitch),Math.sin(pitch),Math.cos(yaw)*Math.cos(pitch)];
+  assert(view.reduce((dot,v,i)=>dot+v*metadata.screenFront[i],0)>.4,'Presentation camera must see the front display');
+}
 
 assert.equal(poseAt(0).unfold,0);
 assert.equal(poseAt(.125).unfold,1);
@@ -15,4 +26,4 @@ for(let p=-.1;p<=1.1;p+=.001){
   assert(pose.camera.every(Number.isFinite));
   for(const key of ['unfold','explode','inserted'])assert(pose[key]>=0&&pose[key]<=1);
 }
-console.log('PASS: folded / expanded / cartridge / exploded / loop poses');
+console.log('PASS: source front surface / front cameras / folded / expanded / cartridge / exploded / loop poses');

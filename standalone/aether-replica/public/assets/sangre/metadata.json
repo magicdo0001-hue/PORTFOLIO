@@ -5,18 +5,29 @@
     -0.0,
     0.999441385269165
   ],
-  "screenWidth": 0.08850000148197168,
+  "stripEndOffset": 0.04,
+  "sampleLevelOffset": 0.0021,
+  "screenWidth": 0.07750000152770861,
   "panelHeight": 0.06559493235038245,
-  "compactHeight": 0.04459999781101942,
+  "compactHeight": 0.0631999927572906,
   "screenUp": [
-    0.0,
-    0.874523401260376,
-    -0.48498329520225525
+    -0.0,
+    0.6684722900390625,
+    0.7437370419502258
   ],
+  "screenFront": [
+    5.5162608703085425e-08,
+    0.7437370419502258,
+    -0.6684722900390625
+  ],
+  "screenCenter": [
+    0.02955925278365612,
+    0.003371031954884529,
+    -0.017436083406209946
+  ],
+  "screenSource": "最终.016 front; 最终.012 rear retained without UI",
   "geometry": "user CAD exterior/interior; presentation display rig",
   "folding": "presentation interpolation between differently sized supplied folded/flat end states, not manufacturing hinge simulation",
   "ui": "illustrative design UI, not validated clinical readings",
-  "bytes": 9231092,
-  "stripEndOffset": 0.04,
-  "sampleLevelOffset": 0.0021
+  "bytes": 9517500
 }
