@@ -328,6 +328,7 @@ function setMode(next: Mode) {
   if (next !== "boot") {
     saveArchiveSession();
     bootSequence.reset();
+    $(".callout-rule").style.removeProperty("transform");
     $(".file-title").firstChild!.textContent = "FILE NUMBER: ";
     $("#stage").dataset.boot = "done";
     $("#cinema-caption").textContent = "";
@@ -802,6 +803,13 @@ const ease = (t: number) => {
   return t * t * (3 - 2 * t);
 };
 function bootFrame(t: number) {
+  // End normal startup at the scan boundary; retain original timing for reference reviews.
+  if (t >= 17.76 && BOOT_START === 14.48 && !reviewParams.has("time") && !reviewParams.has("review")) {
+    setMode("archive");
+    scene.restoreArchive();
+    audio.play("array");
+    return undefined;
+  }
   audio.updateBoot(t, frozenTime !== null);
   const motion = bootSequence.update(t);
   let step: string = motion.step;
