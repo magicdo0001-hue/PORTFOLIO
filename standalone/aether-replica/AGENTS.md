@@ -2,6 +2,8 @@
 
 ## SANGRE adaptation (2026-10-07)
 
+- Typography update (2026-10-08): share the portfolio's `shared/typography.css`: MiSans for body/UI, Manrope for Latin display headings (MiSans for Chinese glyphs), Azeret Mono for numeric labels. Validate desktop/mobile typography with design-taste-frontend. This supersedes the earlier instruction to preserve all original typefaces; keep the established composition, palette and motion.
+
 - Replace the homepage earbuds with the user's SANGRE CAD and KeyShot materials. Preserve the existing background, typography and scroll-loop language.
 - Latest instruction (2026-10-08): integrate this SANGRE showcase into `/work/sangre` and `/en/work/sangre`. Remove the previous Discover/Specs/Preorder content; Discover opens the original localized portfolio case study at `#story`. This supersedes all earlier Discover preservation instructions.
 - Palette update (2026-10-08): use charcoal, silver-white and muted sage for the SANGRE showcase, including its loading/fallback states, WebGL background and rings. The case study uses the same sage family with darker text accents for contrast. This supersedes the original blue-background preservation; retain the supplied hardware CMF and reference dashboard colors.

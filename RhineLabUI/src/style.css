@@ -1,37 +1,11 @@
-@font-face {
-  font-family: "MiSans";
-  src: url("/fonts/MiSans-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "MiSans";
-  src: url("/fonts/MiSans-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "MiSans";
-  src: url("/fonts/MiSans-Demibold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "MiSans";
-  src: url("/fonts/MiSans-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import "../../shared/typography.css";
+
 * {
   box-sizing: border-box;
 }
 :root {
   font-family:
-    "MiSans", "Mi Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    var(--site-font-body);
   color: #e8eee2;
   background: #0d110e;
   font-synthesis: none;
@@ -532,6 +506,7 @@ button {
   letter-spacing: 1.7px;
 }
 .archive-counter > div {
+  font-family: var(--site-font-data);
   font-size: 58px;
   line-height: 1.1;
   margin-top: 16px;
@@ -549,6 +524,11 @@ button {
   font-size: 22px;
   color: #a6b69d;
 }
+#column-index, #selected-code, #selected-lane, #hover-prefix, #hover-code, .viewer-index {
+  font-family: var(--site-font-data);
+  font-variant-numeric: tabular-nums;
+}
+.file-title { font-family: var(--site-font-display); }
 .archive-navigation {
   position: absolute;
   left: 504px;

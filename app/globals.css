@@ -22,7 +22,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: Arial, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: var(--site-font-body);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
@@ -33,6 +33,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; }
 figure, h1, h2, h3, p { margin: 0; }
 button { font: inherit; }
+:where(h1, h2, h3) { font-family: var(--site-font-display); }
 :where(a, button, [tabindex]):focus-visible {
   outline: 2px solid var(--acid);
   outline-offset: 4px;
@@ -426,11 +427,14 @@ figcaption {
   max-width: 12ch;
   font-size: clamp(54px, 7vw, 126px);
   font-weight: 400;
-  line-height: .9;
-  letter-spacing: -.075em;
+  line-height: 1.15;
+  letter-spacing: -.035em;
+  text-wrap: balance;
 }
+.work-index[lang="en"] .work-museum__transition h2 { font-size: clamp(40px, 5.4vw, 88px); }
 .work-museum__transition h2 em {
-  font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  font-family: var(--site-font-display);
+  font-style: normal;
   font-weight: 400;
 }
 .work-museum__intro {
@@ -1311,9 +1315,9 @@ figcaption { padding: 12px 0 4px; color: var(--muted); }
     justify-content: start;
     gap: 12px;
   }
-  .work-museum__transition h2 {
-    max-width: 11ch;
-    font-size: clamp(48px, 14vw, 70px);
+  .work-museum__transition h2, .work-index[lang="en"] .work-museum__transition h2 {
+    max-width: none;
+    font-size: clamp(40px, 11vw, 60px);
   }
   .work-museum__intro {
     grid-column: 1;

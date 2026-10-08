@@ -19,7 +19,7 @@
   flex-wrap: wrap;
   gap: 10px 24px;
   border-bottom: 1px solid #9bdd2a30;
-  font: 500 12px/1.5 Arial, "Microsoft YaHei", sans-serif;
+  font: 400 12px/1.5 var(--site-font-body);
   letter-spacing: 0.04em;
 }
 

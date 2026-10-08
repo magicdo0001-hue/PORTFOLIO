@@ -1,6 +1,6 @@
 .project-city--battery { --city-accent: #ffc3a1; background: #869a97; }
 .project-city--arti64 { --city-accent: #ffd29b; background: #82928f; }
-.project-city .uni-city__brand { font-family: var(--site-font-body); letter-spacing: .04em; font-size: 18px; }
+.project-city .uni-city__brand { letter-spacing: .04em; font-size: 18px; }
 .project-city .uni-city__districts { gap: clamp(12px, 2.8vw, 48px); justify-content: space-between; }
 .project-city .uni-city__districts button { gap: 10px; font-size: 12px; }
 .project-city .uni-city__labels { visibility: hidden; }

@@ -929,6 +929,7 @@ async function start() {
       scene.load(),
       document.fonts.load("400 20px MiSans"),
       document.fonts.load("700 20px MiSans"),
+      document.fonts.load('400 20px "Azeret Mono"'),
     ]);
     scene.select(selected);
     scene.onSelect = (i, cell) => {

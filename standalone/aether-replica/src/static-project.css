@@ -1,8 +1,8 @@
 html.sangre-static,html.sangre-static body { height:auto;overflow:auto;background:var(--sangre-bg);color:var(--sangre-text); }
 html.sangre-static body { position:static; }
-.static-project { max-width:1440px;margin:auto;padding:0 5vw;font-family:Manrope,sans-serif; }
+.static-project { max-width:1440px;margin:auto;padding:0 5vw;font-family:var(--site-font-body); }
 .static-nav { display:flex;justify-content:space-between;align-items:center;gap:28px;padding:28px 0;border-bottom:1px solid #ffffff26; }
-.static-brand { font-size:16px;font-weight:700;letter-spacing:.06em; }
+.static-brand { font-family:var(--site-font-display);font-size:16px;font-weight:500;letter-spacing:.06em; }
 .static-nav nav { display:flex;flex-wrap:wrap;gap:24px; }
 .static-project a { color:inherit;text-decoration:none; }
 .static-project a:hover { text-decoration:underline; }

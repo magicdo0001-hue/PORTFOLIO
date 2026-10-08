@@ -104,7 +104,7 @@
   --project-muted: #626963;
 }
 
-.project :where(h1, h2, h3, strong) {
+.project :where(h1, h2, h3) {
   font-family: var(--project-font-display);
   font-synthesis: none;
   text-wrap: balance;
@@ -112,7 +112,7 @@
 
 .project :where(p, figcaption) { text-wrap: pretty; }
 
-.project :where(.project-hero__meta, .project-hero__title > p, .chapter-label, .scroll-cue, .screen-rail__intro, figcaption) {
+.project :where(.project-hero__meta, .project-hero__title > p, .chapter-label, .scroll-cue, .screen-rail__intro) {
   font-family: var(--project-font-data);
 }
 
@@ -126,6 +126,7 @@
 }
 
 .project figcaption {
+  font-family: var(--project-font-body);
   min-height: 38px;
   padding: 12px 14px 14px;
   color: var(--project-muted);
@@ -165,7 +166,7 @@
   font-size: clamp(64px, 8vw, 140px);
   line-height: 0.84;
   letter-spacing: -0.065em;
-  font-weight: 520;
+  font-weight: var(--site-heading-weight);
 }
 
 .project .project-hero__lede {
@@ -209,7 +210,7 @@
   font-size: clamp(50px, 5.8vw, 98px);
   line-height: 0.96;
   letter-spacing: -0.055em;
-  font-weight: 480;
+  font-weight: var(--site-heading-weight);
 }
 
 .project .chapter h2 {
@@ -217,7 +218,7 @@
   font-size: clamp(46px, 4.8vw, 80px);
   line-height: 1;
   letter-spacing: -0.05em;
-  font-weight: 480;
+  font-weight: var(--site-heading-weight);
 }
 
 .project :where(.project-brief .shell > p:last-child, .placeholder-copy .shell > p:last-child, .chapter p:not(.chapter-label)) {
@@ -269,7 +270,7 @@
   font-size: clamp(24px, 2.1vw, 36px);
   line-height: 1.08;
   letter-spacing: -0.035em;
-  font-weight: 560;
+  font-weight: var(--site-heading-weight);
 }
 
 .project .fact-rail p {
@@ -371,7 +372,7 @@
   font-size: clamp(46px, 5.4vw, 88px);
   line-height: 0.98;
   letter-spacing: -0.052em;
-  font-weight: 480;
+  font-weight: var(--site-heading-weight);
 }
 
 .project--arti64 .arti64-process__intro > p:last-child {
@@ -444,7 +445,7 @@
   font-size: clamp(44px, 4.5vw, 74px);
   line-height: 0.98;
   letter-spacing: -0.052em;
-  font-weight: 480;
+  font-weight: var(--site-heading-weight);
 }
 
 .project--arti64 .arti64-system__copy > p:last-of-type {
@@ -902,7 +903,7 @@
   font-size: clamp(22px, 2vw, 32px);
   line-height: 1.05;
   letter-spacing: -0.035em;
-  font-weight: 520;
+  font-weight: var(--site-heading-weight);
 }
 
 .battery-safety__goals p {
@@ -950,7 +951,7 @@
   margin-top: 12px;
   font-size: clamp(20px, 1.8vw, 28px);
   line-height: 1.25;
-  font-weight: 520;
+  font-weight: var(--site-heading-weight);
 }
 
 @media (max-width: 980px) {

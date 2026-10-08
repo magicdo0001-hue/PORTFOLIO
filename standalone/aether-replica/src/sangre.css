@@ -1,3 +1,16 @@
+@import "../../../shared/typography.css";
+
+body.body { font-family:var(--site-font-body); }
+.section__title,.startup-title,.static-project :is(h1,h2,h3),.nav__logo-w {
+  font-family:var(--site-font-display);
+  font-weight:500;
+}
+.tagcloud-w,.modal__close-w,.indicator-w,.preorder__footer-title,.specs__header,.specs__footer,.feature__desc {
+  font-family:var(--site-font-data);
+  font-weight:300;
+  font-variant-numeric:tabular-nums;
+}
+
 /* Charcoal and sage frame the supplied ivory hardware without recoloring it. */
 :root {
   --sangre-bg:#161b18;

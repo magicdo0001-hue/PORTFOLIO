@@ -6,7 +6,7 @@
 .screen-mirror-0 .device-ui { transform:translateY(var(--screen-reveal,0px)); }
 .is-interactive .screen-mirror { visibility:hidden; }
 .screen-live { pointer-events:auto; }
-.device-ui { width:600px;height:var(--screen-height,510px);display:flex;flex-direction:column;background:#f0f1f1;color:#263138;font-family:Manrope,Arial,sans-serif;letter-spacing:-.6px;text-align:left; }
+.device-ui { width:600px;height:var(--screen-height,510px);display:flex;flex-direction:column;background:#f0f1f1;color:#263138;font-family:var(--site-font-body);letter-spacing:-.6px;text-align:left; }
 .device-ui * { box-sizing:border-box; }
 .device-ui button,.device-ui select { font:inherit;color:inherit;cursor:pointer;letter-spacing:inherit; }
 .device-ui button { border:0;background:none;text-align:left;padding:0; }
@@ -67,6 +67,13 @@
 .screen-settings label { display:flex;flex-direction:column;gap:18px;font-size:28px;margin-top:34px; }
 .screen-settings select { width:100%;padding:22px;border:1px solid #aebac1;border-radius:12px;background:white;font-size:26px; }
 .screen-live .screen-back,.screen-live .screen-primary,.screen-live select { min-height:110px; }
+.screen-metric-value,.screen-gauge-value,.screen-detail-value,.screen-history strong {
+  font-family:var(--site-font-data);
+  font-weight:400;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:0;
+}
+.screen-metric-value small,.screen-detail-value small { font-family:var(--site-font-body); }
 @keyframes screen-bar { from { transform:scaleY(.1);opacity:.3; } }
 @keyframes screen-ring { from { stroke-dasharray:0 100; } }
 @keyframes screen-line { from { stroke-dashoffset:100; } to { stroke-dashoffset:0; } }

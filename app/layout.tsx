@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import "../shared/typography.css";
 import "./globals.css";
 import "./site-system.css";
 import "./project-system.css";

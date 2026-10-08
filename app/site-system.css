@@ -6,11 +6,6 @@
  */
 
 :root {
-  --site-font-display: "Helvetica Neue", "Arial Nova", "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-  --site-font-editorial: Georgia, "Times New Roman", "Songti SC", serif;
-  --site-font-body: Aptos, "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-  --site-font-data: "SFMono-Regular", "Roboto Mono", "Cascadia Mono", Consolas, monospace;
-
   --site-ink: #101410;
   --site-paper: #f1f3ee;
   --site-white: #f8faf5;

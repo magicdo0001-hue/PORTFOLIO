@@ -1,5 +1,7 @@
 # 项目字体检查报告
 
+> 本文记录字体统一前的状态。统一后的分工与验收见 [统一字体规范](font-system.md)。
+
 - 检查日期：2026-10-08。
 - 项目目录：`E:\Codex File\OWN WEB`。
 - 源码基线：`main`，提交 `ba2ccb62342ea3bcabff23afe8265c9d28af51c4`。

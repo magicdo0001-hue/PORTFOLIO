@@ -1,0 +1,67 @@
+/* All three app entry points bundle the same existing font assets. */
+@font-face {
+  font-family: MiSans;
+  src: url("../RhineLabUI/public/fonts/MiSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: MiSans;
+  src: url("../RhineLabUI/public/fonts/MiSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: MiSans;
+  src: url("../RhineLabUI/public/fonts/MiSans-Demibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: MiSans;
+  src: url("../RhineLabUI/public/fonts/MiSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Manrope;
+  src: url("../standalone/aether-replica/public/assets/vendor/260037fd616be9.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Manrope;
+  src: url("../standalone/aether-replica/public/assets/vendor/a66fc77c4cbb4c.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Azeret Mono";
+  src: url("../standalone/aether-replica/public/assets/vendor/6f990391e9b3f5.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Azeret Mono";
+  src: url("../standalone/aether-replica/public/assets/vendor/3fbc8f997d5d73.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --site-font-body: MiSans, sans-serif;
+  --site-font-display: Manrope, MiSans, sans-serif;
+  --site-font-data: "Azeret Mono", MiSans, monospace;
+  --site-heading-weight: 600;
+  font-synthesis: none;
+}
+
+:lang(en) { --site-heading-weight: 500; }
