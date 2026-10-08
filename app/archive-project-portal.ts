@@ -126,14 +126,16 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     doc.addEventListener("click", click, true); doc.addEventListener("keydown", key);
     removeProjectListeners = () => { doc.removeEventListener("click", click, true); doc.removeEventListener("keydown", key); };
   }
-  async function waitForPage(frame: HTMLIFrameElement, ticket: number) {
+  async function waitForPage(frame: HTMLIFrameElement, ticket: number, onProgress: (completed: number) => void) {
     const began = performance.now();
     while (ticket === generation && !disposed) {
       const doc = frame.contentDocument;
       const main = doc?.querySelector("main");
       const model = doc?.querySelector<HTMLElement>("[data-testid=model-viewport]");
-      if (main && doc?.readyState === "complete" && doc.fonts.status === "loaded" &&
-          (!model || model.dataset.status !== "loading" || performance.now() - began > 9000)) {
+      const pageReady = Boolean(main && doc?.readyState === "complete" && doc.fonts.status === "loaded");
+      const modelReady = pageReady && (!model || model.dataset.status !== "loading" || performance.now() - began > 9000);
+      onProgress(Number(Boolean(main)) + Number(pageReady) + Number(modelReady));
+      if (modelReady && doc) {
         await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
         return doc;
       }
@@ -163,7 +165,16 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     const message = document.createElement("span"); message.setAttribute("role", "status");
     message.textContent = url.pathname.startsWith("/en/") ? "Preparing the project…" : "正在展开项目…";
     const cancel = document.createElement("button"); cancel.textContent = url.pathname.startsWith("/en/") ? "Cancel" : "取消";
-    cancel.onclick = requestClose; status.append(message, cancel); overlay.append(status);
+    const loadingProgress = document.createElement("progress");
+    // Track readiness milestones; iframe resources have no shared download-byte total.
+    loadingProgress.max = 4; loadingProgress.value = 0;
+    loadingProgress.setAttribute("aria-label", url.pathname.startsWith("/en/") ? "Project preparation progress" : "项目加载进度");
+    let pageProgress = 0, archivePrepared = false;
+    const updateProgress = () => {
+      if (ticket !== generation || disposed) return;
+      loadingProgress.value = Math.max(loadingProgress.value, pageProgress + Number(archivePrepared));
+    };
+    cancel.onclick = requestClose; status.append(message, cancel, loadingProgress); overlay.append(status);
     document.body.append(overlay);
     siblings = Array.from(document.body.children).filter((node): node is HTMLElement => node instanceof HTMLElement && node !== overlay && !["SCRIPT", "STYLE"].includes(node.tagName)).map(node => ({ node, inert: node.inert }));
     siblings.forEach(({ node }) => { node.inert = true; });
@@ -173,7 +184,10 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
       history.pushState({ ...history.state, [marker]: url.pathname }, "", `${location.pathname}${location.search}#project=${encodeURIComponent(url.pathname)}`);
     }
     try {
-      const [doc] = await Promise.all([waitForPage(project, ticket), bridge.prepare(url.pathname)]);
+      const [doc] = await Promise.all([
+        waitForPage(project, ticket, completed => { pageProgress = completed; updateProgress(); }),
+        bridge.prepare(url.pathname).then(() => { archivePrepared = true; updateProgress(); }),
+      ]);
       if (ticket !== generation || disposed) { if (phase === "idle") bridge.release(false); return; }
       bindProject(doc); document.title = doc.title; measure();
       status.hidden = true; setPhase("opening");
