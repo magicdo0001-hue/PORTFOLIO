@@ -31,19 +31,20 @@
   #selected-title { max-width: 100%; }
   .file-summary > span:last-child { font-size: 10px; }
   .read-file { margin: 20px 0 0; padding: 0 16px; min-height: 48px; width: 100%; justify-content: space-between; border: 1px solid #9bdd2a70; background: #0d110ec9; font-size: 12px; }
-  [data-mode="archive"] .archive-counter { left: var(--gutter); bottom: calc(var(--bottom) + 138px); height: 36px; }
-  [data-mode="archive"] .archive-counter .tiny-label { position: static; font-size: 10px; margin-right: 16px; letter-spacing: .5px; }
-  .archive-counter > div { font-size: 30px; gap: 12px; }
-  .archive-counter i { font-size: 22px; }
-  .count-total { font-size: 16px; }
-  [data-mode="archive"] .archive-navigation { left: var(--gutter); right: var(--gutter); bottom: calc(var(--bottom) + 70px); height: 48px; gap: 8px; }
+  [data-mode="archive"] .archive-counter { left: var(--gutter); bottom: calc(var(--bottom) + 56px); height: 36px; }
+  [data-mode="archive"] .archive-counter .tiny-label { position: static; font-size: 9px; margin-right: 12px; letter-spacing: .5px; }
+  .archive-counter > div { font-size: 20px; gap: 10px; }
+  .archive-counter i { font-size: 18px; }
+  .count-total { font-size: 13px; }
+  [data-mode="archive"] .archive-navigation { left: var(--gutter); right: var(--gutter); bottom: var(--bottom); height: 48px; gap: 8px; }
   .archive-navigation > button, .column-navigation button { flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid #40513b; }
   .file-ticks { flex: 1; min-width: 0; justify-content: space-evenly; gap: 0; }
   .file-ticks button { flex: 1; min-width: 24px; height: 44px; }
-  [data-mode="archive"] .column-navigation { left: var(--gutter); right: var(--gutter); bottom: var(--bottom); height: 54px; gap: 12px; }
+  [data-mode="archive"] .column-navigation { left: var(--gutter); right: var(--gutter); bottom: calc(var(--bottom) + 112px); height: 62px; gap: 8px; }
+  .column-navigation button { flex-basis: 48px; width: 48px; height: 48px; border-color: #9bdd2a70; background: #0d110ec9; }
   .column-navigation > div { min-width: 0; flex: 1; gap: 4px; text-align: center; }
-  .column-navigation strong { font-size: 14px; }
-  .column-navigation > div > span { font-size: 9px; letter-spacing: .5px; }
+  .column-navigation strong { font-size: clamp(15px, 4.5vw, 24px); font-weight: 600; }
+  .column-navigation > div > span { font-size: 11px; letter-spacing: .5px; color: #9bdd2a; }
   .detail-content { left: var(--gutter); right: var(--gutter); top: 38%; bottom: var(--bottom); width: auto; padding: 20px 16px; overflow: auto; overscroll-behavior: contain; background: #0d110ef2; border: 1px solid #40513b; scrollbar-width: thin; }
   .back-button { left: var(--gutter); top: 164px; min-height: 44px; gap: 8px; }
   .back-button span { font-size: 10px; letter-spacing: .3px; }
@@ -144,7 +145,7 @@
   .read-file { margin-top: 12px; }
   [data-mode="archive"] .archive-counter { bottom: var(--bottom); }
   [data-mode="archive"] .archive-navigation { right: 52%; bottom: calc(var(--bottom) + 56px); }
-  [data-mode="archive"] .column-navigation { left: 52%; }
+  [data-mode="archive"] .column-navigation { left: 52%; bottom: var(--bottom); }
   .detail-content { top: 84px; left: 52%; }
   .back-button { top: 90px; }
   .object-caption { left: var(--gutter); right: auto; top: 140px; }
