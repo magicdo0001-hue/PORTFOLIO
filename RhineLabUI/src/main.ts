@@ -3,7 +3,7 @@ import { DocumentDecryption } from "./document-decryption";
 import "./document-decryption.css";
 import "./decryption.css";
 import { escapeHtml } from "./html";
-import { normalizeQuality, qualityPresets, type QualityPreset, type RenderQuality } from "./render-quality";
+import { matchingPreset, normalizeQuality, qualityPresets, type QualityPreset, type RenderQuality } from "./render-quality";
 import { qualityMarkup, syncQualityUI } from "./quality-settings";
 import "@kitlangton/rolling-number/styles.css";
 import "./style.css";
@@ -149,7 +149,11 @@ function readLocal<T>(key: string, fallback: T): T {
     return fallback;
   }
 }
-const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality }>>("rhine-settings", {});
+const storedPrefs = readLocal<Partial<{ sound: boolean; music: boolean; soundVolume: number; musicVolume: number; reduced: boolean; quality: boolean; rendering: RenderQuality; renderingChosen: boolean }>>("rhine-settings", {});
+// shortcut: legacy original choices cannot be distinguished from autosaved defaults; reselect to keep one.
+const renderingChosen = storedPrefs.renderingChosen ?? Boolean(
+  storedPrefs.rendering && matchingPreset(normalizeQuality(storedPrefs.rendering)) !== "original",
+);
 const prefs = {
   sound: true,
   music: storedPrefs.sound ?? true,
@@ -158,7 +162,11 @@ const prefs = {
   reduced: matchMedia("(prefers-reduced-motion: reduce)").matches,
   quality: true,
   ...storedPrefs,
-  rendering: normalizeQuality(storedPrefs.rendering, storedPrefs.quality !== false),
+  renderingChosen,
+  rendering: normalizeQuality(
+    renderingChosen ? storedPrefs.rendering : innerWidth <= 1000 ? qualityPresets.performance : undefined,
+    storedPrefs.quality !== false,
+  ),
 };
 const rollingMotion = {
   duration: 460,
@@ -628,9 +636,11 @@ document.addEventListener("input", (e) => {
 document.addEventListener("change", (e) => {
   const el = e.target as HTMLInputElement;
   if (el.id === "quality-preset" && Object.hasOwn(qualityPresets, el.value)) {
+    prefs.renderingChosen = true;
     prefs.rendering = { ...qualityPresets[el.value as QualityPreset] };
     savePrefs();
   } else if (el.dataset.quality) {
+    prefs.renderingChosen = true;
     const key = el.dataset.quality as keyof RenderQuality;
     prefs.rendering = normalizeQuality({ ...prefs.rendering, [key]: key === "antialias" ? el.value : Number(el.value) });
     savePrefs();
