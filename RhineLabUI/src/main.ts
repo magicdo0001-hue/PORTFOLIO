@@ -290,6 +290,11 @@ function fit() {
   stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
   stage.style.setProperty("--boot-scale", String(Math.min(innerWidth / 1920, innerHeight / 1080)));
   $("#viewport").style.setProperty("--scale", String(scale));
+  const defaultPreset = compact ? "performance" : "original";
+  if (!prefs.renderingChosen && matchingPreset(prefs.rendering) !== defaultPreset) {
+    prefs.rendering = { ...qualityPresets[defaultPreset] };
+    savePrefs();
+  }
   scene?.resize();
   viewer?.resize();
   const active = document.querySelector<HTMLElement>(`[data-tab="${activeTab}"]`);
