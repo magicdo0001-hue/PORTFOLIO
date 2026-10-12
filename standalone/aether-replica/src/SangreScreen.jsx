@@ -98,7 +98,7 @@ export const SangreScreen=forwardRef(function SangreScreen(_,ref) {
         const panel=panels.current[i],p=projected[i];
         panel.hidden=!p.facing;panel.style.height=`${p.height}px`;
         panel.style.transform=`matrix3d(${quadMatrix(p.quad,600,p.height).join(',')})`;
-        mesh.visible=!p.facing; // DOM uses the actual screen plane; the GLB material remains a transition fallback.
+        mesh.visible=!p.facing; // The GPU transition fallback uses captures of this same UI.
       });
       live.current.inert=!interactive;
       live.current.hidden=!interactive;

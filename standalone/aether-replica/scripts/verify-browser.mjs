@@ -180,7 +180,29 @@ try {
     check((await page.locator('.indicator-w').getAttribute('href')).endsWith('/work/sangre#story'),'Discover opens the portfolio case study');
     check(await page.locator('a[href="/specs"],a[href="/preorder"],.modal-w,.ae__btn-w').count()===0,'Obsolete Discover, preorder and private AI content removed');
    }
-   await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await page.waitForTimeout(7000);await snap('loop-return');check(await page.evaluate(()=>scrollY)<500,'End of page loops back to homepage');
+   if(sangre){
+    const frames=await page.evaluate(()=>new Promise(resolve=>{
+     const {bridge}=window.__sangre,samples=[],started=performance.now();
+     bridge.ScrollController.isIdleScrollAllowed=false;
+     window.scrollTo(0,document.documentElement.scrollHeight);
+     const sample=()=>{
+      if(bridge.gl.world.isTransitioning){
+       const scenes=['mainA','mainB'].map(name=>{
+        const scene=bridge.gl.world.scenes[name];
+        return {rendering:scene.isRendering,visible:scene.sangre.device.getObjectByName('display-lower-pixels').visible,
+         compact:scene.sangre.device.getObjectByName('display-lower-pixels').material.map.image.src,
+         expanded:bridge.gl.assets.textures.sangreExpanded.image.src};
+       });
+       samples.push(scenes);
+      }
+      if(performance.now()-started<5000)requestAnimationFrame(sample);else resolve(samples);
+     };requestAnimationFrame(sample);
+    }));
+    check(frames.length>5&&frames.every(scenes=>scenes.every(s=>s.compact.endsWith('/sangre/ui-compact.png')&&s.expanded.endsWith('/sangre/ui-expanded.png')))&&frames.some(scenes=>scenes.every(s=>s.rendering&&s.visible)),
+     'Both GPU loop scenes show the new compact/expanded UI throughout the return transition');
+    await page.waitForTimeout(1000);
+   }else {await page.evaluate(()=>window.scrollTo(0,document.documentElement.scrollHeight));await page.waitForTimeout(7000);}
+   await snap('loop-return');check(await page.evaluate(()=>scrollY)<500,'End of page loops back to homepage');
    if(kind==='implementation'){check(record.external.length===0,'No external runtime asset or analytics requests');check(record.failed.every(r=>r.url.endsWith('/api/agent')),'No failed local asset requests');check(record.errors.every(e=>/503|Submission failed|HTTP 503|original private AI/.test(e)),'No unexpected browser errors');}
    await fs.writeFile(path.join(dir,`${device}-results.json`),JSON.stringify(record,null,2));all.push(record);
    console.log('PASS',kind,device,record.states.length,'states',record.assertions.length,'assertions');await page.close();
