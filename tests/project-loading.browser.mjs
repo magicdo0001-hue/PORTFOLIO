@@ -24,6 +24,7 @@ try {
   await page.waitForFunction(() => document.querySelector('.archive-project-portal__status progress')?.value === 3);
   await page.waitForTimeout(350);
   assert.equal(await progress.evaluate(node => node.value), 3, 'Unfinished model must hold preparation below full');
+  assert.equal(await page.locator('.archive-project-portal__percent').textContent(), '75%');
   if (process.env.QA_OUTPUT) {
     await mkdir(process.env.QA_OUTPUT, { recursive: true });
     await page.screenshot({ path: join(process.env.QA_OUTPUT, 'project-loading-progress.png') });
@@ -32,6 +33,7 @@ try {
   await project.locator('[data-testid="model-viewport"]').evaluate(node => { node.dataset.status = 'ready'; });
   await page.locator('.archive-project-portal[data-phase="open"]').waitFor({ timeout: 15000 });
   assert.equal(await page.locator('.archive-project-portal progress').evaluate(node => node.value), 4);
+  assert.equal(await page.locator('.archive-project-portal__percent').textContent(), '100%');
   assert.equal(await page.locator('.archive-project-portal__status').isVisible(), false);
   await page.keyboard.press('Escape');
   await page.locator('.archive-project-portal').waitFor({ state: 'detached' });
@@ -42,6 +44,10 @@ try {
   await english.waitFor();
   const box = await page.locator('.archive-project-portal__status').boundingBox();
   assert(box.x >= 0 && box.x + box.width <= 390, 'Loading panel must fit a narrow viewport');
+  const barBox = await english.boundingBox();
+  const percentBox = await page.locator('.archive-project-portal__percent').boundingBox();
+  assert(percentBox.x >= barBox.x + barBox.width && percentBox.x + percentBox.width <= box.x + box.width, 'Percentage stays to the right of the bar');
+  assert(Math.abs(percentBox.y + percentBox.height / 2 - barBox.y - barBox.height / 2) < 1, 'Percentage and bar stay vertically aligned');
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await page.locator('.archive-project-portal').waitFor({ state: 'detached' });
   await page.waitForTimeout(250);

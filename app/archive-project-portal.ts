@@ -169,12 +169,15 @@ export function installArchiveProjectPortal(archive: HTMLIFrameElement) {
     // Track readiness milestones; iframe resources have no shared download-byte total.
     loadingProgress.max = 4; loadingProgress.value = 0;
     loadingProgress.setAttribute("aria-label", url.pathname.startsWith("/en/") ? "Project preparation progress" : "项目加载进度");
+    const percentage = document.createElement("span"); percentage.className = "archive-project-portal__percent";
+    percentage.setAttribute("aria-hidden", "true"); percentage.textContent = "0%";
     let pageProgress = 0, archivePrepared = false;
     const updateProgress = () => {
       if (ticket !== generation || disposed) return;
       loadingProgress.value = Math.max(loadingProgress.value, pageProgress + Number(archivePrepared));
+      percentage.textContent = `${Math.round(loadingProgress.value / loadingProgress.max * 100)}%`;
     };
-    cancel.onclick = requestClose; status.append(message, cancel, loadingProgress); overlay.append(status);
+    cancel.onclick = requestClose; status.append(message, cancel, loadingProgress, percentage); overlay.append(status);
     document.body.append(overlay);
     siblings = Array.from(document.body.children).filter((node): node is HTMLElement => node instanceof HTMLElement && node !== overlay && !["SCRIPT", "STYLE"].includes(node.tagName)).map(node => ({ node, inert: node.inert }));
     siblings.forEach(({ node }) => { node.inert = true; });
