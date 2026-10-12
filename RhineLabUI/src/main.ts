@@ -8,6 +8,7 @@ import { qualityMarkup, syncQualityUI } from "./quality-settings";
 import "@kitlangton/rolling-number/styles.css";
 import "./style.css";
 import "./quality-settings.css";
+import "./responsive.css";
 import { createRollingNumber, createRollingText } from "@kitlangton/rolling-number";
 import { ArchiveScene } from "./scene";
 import { ModelViewer } from "./model-viewer";
@@ -48,7 +49,7 @@ $("#stage").innerHTML = `
     <div class="welcome"><div class="welcome-panel"></div><div class="welcome-heading">WELCOME TO</div><div class="welcome-company"><strong>RHINE LAB.LLC.</strong><strong class="welcome-highlight" aria-hidden="true">RHINE LAB.LLC.</strong></div><div class="welcome-database">INTERNAL DATABASE</div><div class="welcome-logo">${logo}</div></div>
   </section>
   <div id="cinema-caption" class="cinema-caption"></div>
-  <svg id="inspection-marks" viewBox="0 0 1920 1080" aria-hidden="true"><path id="inspection-lines"/><g id="inspection-corners"></g><circle id="inspection-point" r="1.8"/></svg>
+  <svg id="inspection-marks" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><path id="inspection-lines"/><g id="inspection-corners"></g><circle id="inspection-point" r="1.8"/></svg>
   <div id="inspection-text" aria-hidden="true">CONFIDENTIALITY:<strong>GENERAL BUSINESS USE</strong></div>
   <section id="archive-ui" class="archive-ui" aria-label="档案选择">
     <div class="archive-callout"><div class="eyebrow">INTERNAL DATABASE <span>／</span> <span id="archive-category">机构档案</span></div><button class="file-title" data-action="open">FILE NUMBER: <span id="selected-id"><span id="selected-prefix">X<span id="selected-lane">3</span>-</span><span id="selected-code">01</span></span><span class="file-open">↗</span></button><div class="callout-rule"><i></i></div><div class="file-summary"><span id="selected-title">莱茵生命</span><span id="selected-clearance">BUSINESS AREA</span></div><button class="read-file" data-action="open">ACCESS FILE <span>→</span></button></div>
@@ -272,11 +273,19 @@ function savePrefs() {
   $("#stage").classList.toggle("reduce-motion", prefs.reduced);
 }
 function fit() {
-  const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
-  $("#stage").style.transform = `translate(-50%, -50%) scale(${scale})`;
+  const compact = innerWidth <= 1000;
+  const scale = compact ? 1 : Math.min(innerWidth / 1920, innerHeight / 1080);
+  const stage = $("#stage");
+  stage.dataset.layout = compact ? "compact" : "cinematic";
+  stage.style.width = `${compact ? innerWidth : 1920}px`;
+  stage.style.height = `${compact ? innerHeight : 1080}px`;
+  stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  stage.style.setProperty("--boot-scale", String(Math.min(innerWidth / 1920, innerHeight / 1080)));
   $("#viewport").style.setProperty("--scale", String(scale));
   scene?.resize();
   viewer?.resize();
+  const active = document.querySelector<HTMLElement>(`[data-tab="${activeTab}"]`);
+  if (active) $(".tab-indicator").style.transform = `translateX(${active.offsetLeft}px) scaleX(${active.offsetWidth})`;
   updateQualitySummary();
 }
 window.addEventListener("resize", fit);

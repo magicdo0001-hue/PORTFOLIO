@@ -31,6 +31,8 @@ test("renders the archive homepage and five distinct case studies", async () => 
   assert.equal(englishResponse.status, 200);
   const englishHtml = await englishResponse.text();
   for (const homeHtml of [html, englishHtml]) {
+    assert.match(homeHtml, /name="viewport"[^>]*content="[^"]*viewport-fit=cover/);
+    assert.equal((homeHtml.match(/name="viewport"/g) ?? []).length, 1);
     assert.match(homeHtml, /src="\/rhine-lab\/index.html"/);
     assert.equal((homeHtml.match(/<iframe\b/g) ?? []).length, 1);
     assert.doesNotMatch(homeHtml, /home-hero|home-project-wheel|profile-about|profile-capabilities|profile-contact/);

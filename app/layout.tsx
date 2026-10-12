@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import "../shared/typography.css";
 import "./globals.css";
@@ -8,6 +8,13 @@ import "./project-system.css";
 const title = "严文厚 | 产品设计师";
 const description =
   "严文厚的个人作品集，聚焦工业设计、UI/UX、视觉表达与快速原型。";
+
+export const viewport: Viewport = {
+  // shortcut: vinext 0.0.50 omits viewportFit; use that property when serialization supports it.
+  width: "device-width, viewport-fit=cover",
+  initialScale: 1,
+  themeColor: "#0d110e",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();

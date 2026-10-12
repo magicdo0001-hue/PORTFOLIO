@@ -517,8 +517,13 @@ export class ModelViewer {
       this.quality,
     );
     this.camera.aspect = width / height;
+    const portraitScale = Math.max(1, 0.8 * height / width);
+    this.camera.fov = THREE.MathUtils.radToDeg(
+      2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(17)) * portraitScale),
+    );
     this.camera.updateProjectionMatrix();
     this.controlCamera.aspect = this.camera.aspect;
+    this.controlCamera.fov = this.camera.fov;
     this.controlCamera.updateProjectionMatrix();
   }
 

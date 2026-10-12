@@ -1228,6 +1228,11 @@ export class ArchiveScene {
       anchorAim.addScaledVector(up, -(540 - screenY) / pixelScale);
       cameraAim.lerp(anchorAim, ease((shot - 27.3) / 0.5));
     }
+    const compact = this.container.clientWidth <= 1000;
+    const landscape = compact && this.container.clientWidth >= 600 && this.container.clientHeight <= 500;
+    const detailSpan = compact
+      ? Math.max(5.9, (landscape ? 11 : 5.5) / this.camera.aspect)
+      : 5.9;
     if (!cinematic) {
       const right = new THREE.Vector3()
         .crossVectors(new THREE.Vector3(0, 1, 0), viewDirection)
@@ -1235,12 +1240,18 @@ export class ArchiveScene {
       const up = new THREE.Vector3()
         .crossVectors(viewDirection, right)
         .normalize();
-      const pixelScale = 1080 / THREE.MathUtils.lerp(span, 5.9, detail);
+      const pixelScale = this.container.clientHeight / THREE.MathUtils.lerp(span, detailSpan, detail);
       const detailAim = this.model.position
         .clone()
         .add(new THREE.Vector3(0, 1.85, 0));
-      detailAim.addScaledVector(right, (960 - 550) / pixelScale);
-      detailAim.addScaledVector(up, (560 - 540) / pixelScale);
+      detailAim.addScaledVector(
+        right,
+        (compact ? (landscape ? this.container.clientWidth * .25 : 0) : 410) / pixelScale,
+      );
+      detailAim.addScaledVector(
+        up,
+        (compact && !landscape ? -this.container.clientHeight * .24 : 20) / pixelScale,
+      );
       cameraAim.lerp(detailAim, detail);
     }
     const cameraPosition = cameraAim
@@ -1258,7 +1269,7 @@ export class ArchiveScene {
     this.camera.fov = THREE.MathUtils.lerp(
       this.camera.fov,
       THREE.MathUtils.radToDeg(
-        2 * Math.atan(THREE.MathUtils.lerp(span, 5.9, detail) / (2 * distance)),
+        2 * Math.atan(THREE.MathUtils.lerp(span, cinematic ? 5.9 : detailSpan, detail) / (2 * distance)),
       ),
       cameraBlend,
     );
