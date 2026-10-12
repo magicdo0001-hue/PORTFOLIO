@@ -67,7 +67,7 @@ $("#stage").innerHTML = `
   <div class="powered">POWERED BY <b>RHINE LAB</b><i></i></div>
   <footer class="system-footer"><span id="clock">00:00:00</span></footer>
   <div id="modal-root"></div><div id="toast" class="toast" role="status"></div>
-  <div id="loading" class="loading"><div class="loading-mark">${logo}</div><span>CONNECTING TO INTERNAL DATABASE</span><i></i></div>
+  <div id="loading" class="loading"><span>CONNECTING TO INTERNAL DATABASE</span><i></i></div>
 `;
 
 $("#boot-background").insertAdjacentHTML(

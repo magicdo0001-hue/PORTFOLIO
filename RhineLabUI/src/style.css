@@ -1400,15 +1400,6 @@ button {
   opacity: 0;
   pointer-events: none;
 }
-.loading-mark {
-  width: 150px;
-  height: 90px;
-  margin-bottom: 49px;
-}
-.loading-mark svg {
-  width: 100%;
-  height: 100%;
-}
 .loading > span {
   font-size: 11px;
   letter-spacing: 2px;
