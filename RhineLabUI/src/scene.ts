@@ -1244,6 +1244,7 @@ export class ArchiveScene {
       const detailAim = this.model.position
         .clone()
         .add(new THREE.Vector3(0, 1.85, 0));
+      if (compact) cameraAim.copy(detailAim);
       detailAim.addScaledVector(
         right,
         (compact ? (landscape ? this.container.clientWidth * .25 : 0) : 410) / pixelScale,
