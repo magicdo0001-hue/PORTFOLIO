@@ -42,7 +42,7 @@
   .file-ticks button { flex: 1; min-width: 12px; height: 44px; }
   [data-mode="archive"] .column-navigation { left: var(--gutter); right: var(--gutter); bottom: calc(var(--bottom) + 64px); height: 62px; gap: 8px; }
   .column-navigation button { flex-basis: 48px; width: 48px; height: 48px; border-color: #9bdd2a70; background: #0d110ec9; }
-  .column-navigation > div { min-width: 0; flex: 1; gap: 4px; text-align: center; }
+  .column-navigation > div { min-width: 0; flex: 1; gap: 4px; text-align: left; }
   .column-navigation strong { font-size: clamp(15px, 4.5vw, 24px); font-weight: 600; }
   .column-navigation > div > span { font-size: 11px; letter-spacing: .5px; color: #9bdd2a; }
   .detail-content { left: var(--gutter); right: var(--gutter); top: 38%; bottom: var(--bottom); width: auto; padding: 20px 16px; overflow: auto; overscroll-behavior: contain; background: #0d110ef2; border: 1px solid #40513b; scrollbar-width: thin; }
