@@ -58,6 +58,7 @@ export class ArchiveScene {
   private bokeh: BokehPass;
   private instances: THREE.InstancedMesh[] = [];
   private model = new THREE.Group();
+  private pickTargets: THREE.Object3D[] = [this.model];
   private appearance = new CardAppearance();
   private decryption = new DecryptionController();
   private cursor = new THREE.Vector2();
@@ -336,6 +337,7 @@ export class ArchiveScene {
         inst.receiveShadow = true;
         inst.frustumCulled = false;
         this.instances.push(inst);
+        if (name === "Frosted_Polymer") this.pickTargets.push(inst);
         this.scene.add(inst);
       }
     }
@@ -804,7 +806,7 @@ export class ArchiveScene {
       );
       this.raycaster.setFromCamera(this.cursor, this.camera);
       const hit = this.raycaster.intersectObjects(
-        [this.instances[0], this.model],
+        this.pickTargets,
         true,
       )[0];
       canvas.style.cursor = hit ? "pointer" : "default";
@@ -832,7 +834,7 @@ export class ArchiveScene {
       );
       this.raycaster.setFromCamera(this.cursor, this.camera);
       const hit = this.raycaster.intersectObjects(
-        [this.instances[0], this.model],
+        this.pickTargets,
         true,
       )[0];
       if (hit)
