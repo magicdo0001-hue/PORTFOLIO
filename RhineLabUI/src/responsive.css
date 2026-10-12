@@ -36,10 +36,10 @@
   .archive-counter > div { font-size: 20px; gap: 10px; }
   .archive-counter i { font-size: 18px; }
   .count-total { font-size: 13px; }
-  [data-mode="archive"] .archive-navigation { left: calc(var(--gutter) + 180px); right: var(--gutter); bottom: var(--bottom); height: 48px; gap: 8px; justify-content: space-between; }
+  [data-mode="archive"] .archive-navigation { left: calc(var(--gutter) + 188px); right: var(--gutter); bottom: var(--bottom); height: 48px; gap: 8px; justify-content: space-between; }
   .archive-navigation > button, .column-navigation button { flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid #40513b; }
   .file-ticks { flex: 1; min-width: 0; justify-content: space-evenly; gap: 0; }
-  .file-ticks button { flex: 1; min-width: 24px; height: 44px; }
+  .file-ticks button { flex: 1; min-width: 12px; height: 44px; }
   [data-mode="archive"] .column-navigation { left: var(--gutter); right: var(--gutter); bottom: calc(var(--bottom) + 64px); height: 62px; gap: 8px; }
   .column-navigation button { flex-basis: 48px; width: 48px; height: 48px; border-color: #9bdd2a70; background: #0d110ec9; }
   .column-navigation > div { min-width: 0; flex: 1; gap: 4px; text-align: center; }
@@ -115,8 +115,10 @@
   .viewer-surface button { min-height: 44px; min-width: 60px; }
 }
 
-@media (max-width: 599px) {
-  .file-ticks { display: none; }
+@media (max-width: 479px), (min-width: 600px) and (max-width: 1000px) and (max-height: 500px) {
+  [data-mode="archive"] .archive-counter { flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; }
+  [data-mode="archive"] .archive-counter .tiny-label { font-size: 8px; letter-spacing: .2px; margin-right: 0; }
+  [data-mode="archive"] .archive-navigation { left: calc(var(--gutter) + 100px); }
 }
 
 @media (max-width: 599px) and (max-height: 650px) {
@@ -149,8 +151,8 @@
   .read-file { margin-top: 12px; }
   [data-mode="archive"] .archive-counter { bottom: var(--bottom); }
   [data-mode="archive"] .archive-navigation { right: 52%; }
-  .file-ticks { display: none; }
   [data-mode="archive"] .column-navigation { left: 52%; bottom: var(--bottom); }
+  .column-navigation strong { font-size: clamp(13px, 2.2vw, 22px); }
   .detail-content { top: 84px; left: 52%; }
   .back-button { top: 90px; }
   .object-caption { left: var(--gutter); right: auto; top: 140px; }
